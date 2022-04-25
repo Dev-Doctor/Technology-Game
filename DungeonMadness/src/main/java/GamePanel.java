@@ -1,4 +1,4 @@
-package main.Java;
+package main.java;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,7 +8,7 @@ import static java.lang.Thread.sleep;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
-import main.Java.entities.Player;
+import main.java.entities.Player;
 
 /**
  *

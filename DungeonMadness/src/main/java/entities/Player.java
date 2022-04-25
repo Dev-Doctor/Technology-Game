@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main.Java.entities;
+package main.java.entities;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import main.Java.GamePanel;
-import main.Java.KeyHandler;
+import main.java.GamePanel;
+import main.java.KeyHandler;
 
 /**
  *
