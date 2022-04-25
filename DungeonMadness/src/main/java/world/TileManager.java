@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main.java.world;
+package main.Java.world;
 
-import main.java.world.Tile;
+import main.Java.world.Tile;
 import java.awt.Graphics2D;
-import main.java.GamePanel;
-import main.java.GamePanel;
+import main.Java.GamePanel;
+import main.Java.GamePanel;
 
 /**
  *
