@@ -8,12 +8,12 @@ import static java.lang.Thread.sleep;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
+import main.Java.world.Tile;
+import main.Java.world.World;
 import main.java.entities.Player;
+import main.Java.world.TileManager;
 
-/**
- *
- * @author DevDoctor
- */
+/** @author DevDoctor */
 public class GamePanel extends JPanel implements Runnable {
 
     public final int TileResolution = 32; //32x32 pixel
@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public final int tileSize = TileResolution * scale; //actual tile size
     public final int MaxRowsTiles = 12;
-    public final int MaxColTiles = 16;
+    public final int MaxColTiles = 18;
 
     public final int WindowHeight = MaxRowsTiles * tileSize;
     public final int WindowWidth = MaxColTiles * tileSize;
@@ -29,6 +29,10 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     KeyHandler keyHandler = new KeyHandler();
     Player pl;
+    World world;
+    Tile[][] matrix; // TEMPORARY
+    
+    TileManager tileManager = new TileManager(this);
     
     public GamePanel() {
         this.setPreferredSize(new Dimension(WindowWidth, WindowHeight));
@@ -36,8 +40,12 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
-        
         pl = new Player(this, keyHandler);
+        world = new World(this);
+        world.LoadRoom(); // TEMPORARY
+        
+        matrix = new Tile[MaxRowsTiles][MaxColTiles];
+        matrix = world.GetTileMatrix(); // TEMPORARY
     }
 
     @Override
@@ -62,7 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(gra);
         Graphics2D gra2 = (Graphics2D) gra;
 
-        //tileManager.DrawMap(matrix, gra2);
+        tileManager.DrawMap(matrix, gra2);
         pl.draw(gra2);
         
         gra2.dispose();

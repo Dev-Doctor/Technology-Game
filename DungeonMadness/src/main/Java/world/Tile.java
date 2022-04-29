@@ -1,8 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package main.java.world;
+package main.Java.world;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -10,32 +6,33 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-/**
- *
- * @author DevDoctor
- */
+/** @author DevDoctor */
 public class Tile {
+
     boolean Collision;
     BufferedImage texture;
+    final String def_image = "/main/resources/assets/textures/default.png";
+    final String def_loc = "/main/resources/assets/textures/tiles";
 
     public Tile() {
         Collision = false;
         try {
-            texture = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/default.png"));
+            texture = ImageIO.read(getClass().getResourceAsStream(def_image));
         } catch (IOException ex) {
             Logger.getLogger(Tile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public Tile(boolean Collision, String loc) {
+    public Tile(boolean Collision, String image) {
         this.Collision = Collision;
         try {
-            texture = ImageIO.read(getClass().getResourceAsStream(loc));
+            System.out.println(def_loc+"/"+image);
+            texture = ImageIO.read(getClass().getResourceAsStream(def_loc + "/" + image));
         } catch (IOException ex) {
             Logger.getLogger(Tile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public boolean hasCollision() {
         return Collision;
     }
@@ -51,6 +48,4 @@ public class Tile {
     public void setImage(BufferedImage image) {
         this.texture = image;
     }
-    
-    
 }
