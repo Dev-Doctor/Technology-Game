@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main.java.entities;
+package main.Java.entities;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import main.java.GamePanel;
-import main.java.KeyHandler;
+import main.Java.GamePanel;
+import main.Java.KeyHandler;
 
 /**
  *
@@ -35,8 +35,8 @@ public class Player extends Entity {
     }
 
     public void SetDefaultValues() {
-        position[0] = 100;
-        position[1] = 100;
+        position[0] = 200;
+        position[1] = 200;
         direction = "up";
         speed = 4;
         health = 100;

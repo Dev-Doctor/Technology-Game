@@ -1,7 +1,7 @@
 package main.Java.world;
 
 import java.awt.Graphics2D;
-import main.java.GamePanel;
+import main.Java.GamePanel;
 
 /** @author DevDoctor */
 public class TileManager {

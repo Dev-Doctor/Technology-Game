@@ -1,8 +1,8 @@
 package main.Java;
 
-import main.java.entities.Entity;
+import main.Java.entities.Entity;
 
-public class CollisionChecker{
+public class CollisionChecker {
 
     GamePanel gp;
     

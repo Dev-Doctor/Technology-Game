@@ -1,4 +1,4 @@
-package main.java;
+package main.Java;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;

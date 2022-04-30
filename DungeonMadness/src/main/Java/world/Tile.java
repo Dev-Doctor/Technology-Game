@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 /** @author DevDoctor */
 public class Tile {
 
-    boolean Collision;
+    public boolean Collision;
     BufferedImage texture;
     final String def_image = "/main/resources/assets/textures/default.png";
     final String def_loc = "/main/resources/assets/textures/tiles";

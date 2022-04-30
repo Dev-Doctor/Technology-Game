@@ -1,4 +1,4 @@
-package main.java;
+package main.Java;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 import main.Java.world.Tile;
 import main.Java.world.World;
-import main.java.entities.Player;
+import main.Java.entities.Player;
 import main.Java.world.TileManager;
 
 /** @author DevDoctor */

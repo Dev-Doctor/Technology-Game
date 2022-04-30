@@ -1,6 +1,6 @@
 package main.Java.world;
 
-import main.java.GamePanel;
+import main.Java.GamePanel;
 /** @author DevDoctor */
 public class World {
     GamePanel gp;
