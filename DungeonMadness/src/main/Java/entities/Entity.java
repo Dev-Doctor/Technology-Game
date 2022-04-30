@@ -4,6 +4,7 @@
  */
 package main.java.entities;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 /**
@@ -22,6 +23,9 @@ public class Entity {
     
     int SpriteCounter = 0;
     int SpriteNumber = 1;
+    
+    public Rectangle solidArea;
+    public boolean collisionOn = false;
     
     public Entity() {
         health = 0;

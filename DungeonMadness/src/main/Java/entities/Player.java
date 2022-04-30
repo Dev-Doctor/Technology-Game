@@ -5,6 +5,7 @@
 package main.java.entities;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -27,6 +28,7 @@ public class Player extends Entity {
         this.keyHandler = keyHandler;
         this.gp = gp;
         name = "Player";
+        solidArea = new Rectangle(8, 16, 32, 32);
         
         SetDefaultValues();
         getPlayerImage();
@@ -58,23 +60,40 @@ public class Player extends Entity {
     public void update() {
         if (keyHandler.wPressed) {
             direction = "up";
-            position[1] -= speed;
         }
         if (keyHandler.sPressed) {
             direction = "down";
-            position[1] += speed;
         }
         if (keyHandler.aPressed) {
             direction = "left";
-            position[0] -= speed;
         }
         if (keyHandler.dPressed) {
             direction = "right";
-            position[0] += speed;
         }
         if (keyHandler.ePressed) {
 
         }
+        
+        collisionOn = false;
+        gp.collisionChecker.checkTile(this);
+        
+        if (collisionOn == false) {
+            switch(direction){
+                case "up":
+                    position[1] -= speed;
+                    break;
+                case "down":
+                    position[1] += speed;
+                    break;
+                case "left":
+                    position[0] -= speed;
+                    break;
+                case "right":
+                    position[0] += speed;
+                    break;
+            }
+        }
+        
         SpriteCounter++;
 
         if (!keyHandler.aPressed && !keyHandler.dPressed && !keyHandler.sPressed && !keyHandler.wPressed) {
