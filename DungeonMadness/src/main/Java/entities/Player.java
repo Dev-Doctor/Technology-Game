@@ -4,6 +4,7 @@
  */
 package main.Java.entities;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -14,10 +15,7 @@ import javax.imageio.ImageIO;
 import main.Java.GamePanel;
 import main.Java.KeyHandler;
 
-/**
- *
- * @author DevDoctor
- */
+/** @author DevDoctor */
 public class Player extends Entity {
 
     GamePanel gp;
@@ -26,10 +24,10 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler keyHandler) {
         animations = new BufferedImage[8];
         this.keyHandler = keyHandler;
+        this.solidArea = new Rectangle(16, 18, 32, 46);
         this.gp = gp;
         name = "Player";
-        solidArea = new Rectangle(8, 16, 32, 32);
-        
+
         SetDefaultValues();
         getPlayerImage();
     }
@@ -38,7 +36,7 @@ public class Player extends Entity {
         position[0] = 200;
         position[1] = 200;
         direction = "up";
-        speed = 4;
+        speed = 3;
         health = 100;
     }
 
@@ -58,6 +56,8 @@ public class Player extends Entity {
     }
 
     public void update() {
+        collisionOn = false;
+        gp.collisionChecker.checkTile(this);
         if (keyHandler.wPressed) {
             direction = "up";
         }
@@ -70,30 +70,26 @@ public class Player extends Entity {
         if (keyHandler.dPressed) {
             direction = "right";
         }
+
+        if (collisionOn == false) {
+            if (keyHandler.wPressed) {
+                position[1] -= speed;
+            }
+            if (keyHandler.sPressed) {
+                position[1] += speed;
+            }
+            if (keyHandler.aPressed) {
+                position[0] -= speed;
+            }
+            if (keyHandler.dPressed) {
+                position[0] += speed;
+            }
+        }
+
         if (keyHandler.ePressed) {
 
         }
-        
-        collisionOn = false;
-        gp.collisionChecker.checkTile(this);
-        
-        if (collisionOn == false) {
-            switch(direction){
-                case "up":
-                    position[1] -= speed;
-                    break;
-                case "down":
-                    position[1] += speed;
-                    break;
-                case "left":
-                    position[0] -= speed;
-                    break;
-                case "right":
-                    position[0] += speed;
-                    break;
-            }
-        }
-        
+
         SpriteCounter++;
 
         if (!keyHandler.aPressed && !keyHandler.dPressed && !keyHandler.sPressed && !keyHandler.wPressed) {
@@ -102,7 +98,8 @@ public class Player extends Entity {
             return;
         }
 
-        if (SpriteCounter > 10) {
+        if (SpriteCounter
+                > 10) {
             if (SpriteNumber == 1) {
                 SpriteNumber = 2;
             } else if (SpriteNumber == 2) {
@@ -145,6 +142,9 @@ public class Player extends Entity {
                 }
                 break;
         }
+
         gra2.drawImage(now, position[0], position[1], gp.tileSize, gp.tileSize, null);
+        gra2.setColor(Color.red);
+        gra2.drawRect(position[0] + solidArea.x, position[1] + solidArea.y, solidArea.width, solidArea.height);
     }
 }

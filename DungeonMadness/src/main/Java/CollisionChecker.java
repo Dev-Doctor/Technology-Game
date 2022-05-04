@@ -1,61 +1,64 @@
 package main.Java;
 
 import main.Java.entities.Entity;
+import main.Java.world.Tile;
 
+/** @author Jifrid - DevDoctor */
 public class CollisionChecker {
 
     GamePanel gp;
-    
+
     public CollisionChecker(GamePanel gp) {
         this.gp = gp;
-    }    
-    
-    public void checkTile(Entity entity){
-        int entityLeftX = entity.GetX() + entity.solidArea.x;
-        int entityRightX = entity.GetX() + entity.solidArea.x + entity.solidArea.width;
-        int entityTopY = entity.GetY() + entity.solidArea.y;
-        int entityBottomY = entity.GetY() + entity.solidArea.y + entity.solidArea.height;
-    
-        int entityLeftCol = entityLeftX/gp.tileSize;
-        int entityRightCol = entityRightX/gp.tileSize;
-        int entityTopRow = entityTopY/gp.tileSize;
-        int entityBottomRow = entityBottomY/gp.tileSize;
-        
-        int tileNum1, tileNum2;
-        
-        switch(entity.direction){
+    }
+
+    public void checkTile(Entity entity) {
+        int EntityLeftWorldX = entity.GetX() + entity.solidArea.x;
+        int EntityRightWorldX = entity.GetX() + entity.solidArea.x + entity.solidArea.width;
+
+        int EntityTopWorldY = entity.GetY() + entity.solidArea.y;
+        int EntityBottomWorldY = entity.GetY() + entity.solidArea.y + entity.solidArea.height;
+
+        int entityLeftCol = EntityLeftWorldX / gp.tileSize;
+        int entityRightCol = EntityRightWorldX / gp.tileSize;
+        int entityTopRow = EntityTopWorldY / gp.tileSize;
+        int entityBottomRow = EntityBottomWorldY / gp.tileSize;
+
+        Tile tile_1 = null, tile_2 = null;
+
+        Tile[][] room = gp.getRoomMatrix();
+
+        switch (entity.direction) {
             case "up":
-                entityTopRow = (entityTopY - entity.GetSpeed())/gp.tileSize;
-                tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityTopRow];
-                if (gp.tileManager.tile[tileNum1].Collision == true || gp.tileManager.tile[tileNum2].Collision == true) {
-                    entity.collisionOn = true;
-                }
+                entityTopRow = (EntityTopWorldY - entity.GetSpeed()) / gp.tileSize;
+                tile_1 = room[entityTopRow][entityLeftCol];
+                tile_2 = room[entityTopRow][entityRightCol];
                 break;
             case "down":
-                entityBottomRow = (entityBottomY + entity.GetSpeed())/gp.tileSize;
-                tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
-                tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
-                if (gp.tileManager.tile[tileNum1].Collision == true || gp.tileManager.tile[tileNum2].Collision == true) {
-                    entity.collisionOn = true;
-                }
+                entityBottomRow = (EntityBottomWorldY + entity.GetSpeed()) / gp.tileSize;
+                tile_1 = room[entityBottomRow][entityLeftCol];
+                tile_2 = room[entityBottomRow][entityRightCol];
                 break;
             case "left":
-                entityLeftCol = (entityLeftX - entity.GetSpeed())/gp.tileSize;
-                tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
-                if (gp.tileManager.tile[tileNum1].Collision == true || gp.tileManager.tile[tileNum2].Collision == true) {
-                    entity.collisionOn = true;
-                }
+                entityLeftCol = (EntityLeftWorldX - entity.GetSpeed()) / gp.tileSize;
+                tile_1 = room[entityTopRow][entityLeftCol];
+                tile_2 = room[entityBottomRow][entityRightCol];
                 break;
             case "right":
-                entityRightCol = (entityRightX + entity.GetSpeed())/gp.tileSize;
-                tileNum1 = gp.tileManager.mapTileNum[entityRightCol][entityTopRow];
-                tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
-                if (gp.tileManager.tile[tileNum1].Collision == true || gp.tileManager.tile[tileNum2].Collision == true) {
-                    entity.collisionOn = true;
-                }
+                entityRightCol = (EntityRightWorldX + entity.GetSpeed()) / gp.tileSize;
+                tile_1 = room[entityTopRow][entityRightCol];
+                tile_2 = room[entityBottomRow][entityRightCol];
                 break;
+            default:
+                throw new AssertionError();
         }
+
+        if (tile_1.Collision == true || tile_2.Collision == true) {
+            entity.collisionOn = true;
+        }
+
+//        System.out.println("LeftWorldX: " + EntityLeftWorldX + " RightWorldX: " + EntityRightWorldX);
+//        System.out.println("TopWorldY: " + EntityTopWorldY + " BottomWorldY: " + EntityBottomWorldY);
+//        System.out.println("--------------------------------------------------------------------");
     }
 }

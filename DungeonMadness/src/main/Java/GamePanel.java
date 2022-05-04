@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import static java.lang.Thread.sleep;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JPanel;
 import main.Java.world.Tile;
 import main.Java.world.World;
@@ -26,7 +23,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int WindowHeight = MaxRowsTiles * tileSize;
     public final int WindowWidth = MaxColTiles * tileSize;
 
-    public CollisionChecker collisionChecker = new CollisionChecker(this);
+    public CollisionChecker collisionChecker;
+    private final int FPS = 60;
+    
     Thread gameThread;
     KeyHandler keyHandler = new KeyHandler();
     Player pl;
@@ -41,25 +40,46 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+        
+        this.collisionChecker = new CollisionChecker(this);
+        this.matrix = new Tile[MaxRowsTiles][MaxColTiles];
+        
         pl = new Player(this, keyHandler);
         world = new World(this);
-        world.LoadRoom(); // TEMPORARY
         
-        matrix = new Tile[MaxRowsTiles][MaxColTiles];
-        matrix = world.GetTileMatrix(); // TEMPORARY
+        /** !!! TEMPORARY !!! **/
+        world.LoadRoom();
+        matrix = world.GetTileMatrix();
     }
 
     @Override
     public void run() {
-        while (gameThread != null) {
-            update();
+        double drawInterval = 1000000000/FPS;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+        long timer = 0;
+        float drawCount = 0;
+        
+        while(gameThread != null) {
+            currentTime = System.nanoTime();
+            delta += (currentTime - lastTime) / drawInterval;
+            timer += (currentTime - lastTime);
+            lastTime = currentTime;
             
-            repaint();
-            try {
-                sleep(16); // 33 = 30 FPS x second | 16 = 60 FPS x second
-            } catch (InterruptedException ex) {
-                Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
+            if(delta >= 1) {
+                update();
+                repaint();
+                delta--;
+                drawCount++;
             }
+            
+            if(timer >= 1000000000) {
+                System.out.println("FPS: " + drawCount);
+                drawCount = 0;
+                timer = 0;
+            }
+            
         }
     }
 
@@ -70,9 +90,14 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics gra) {
         super.paintComponent(gra);
         Graphics2D gra2 = (Graphics2D) gra;
-
-        tileManager.DrawMap(matrix, gra2);
+        // FIRST DRAW
+        if(world.DrawMap) {
+            tileManager.DrawMap(matrix, gra2);
+//            world.DrawMap = false;
+        }
         pl.draw(gra2);
+        
+        // LAST DRAW
         
         gra2.dispose();
     }
@@ -81,5 +106,9 @@ public class GamePanel extends JPanel implements Runnable {
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
+    }
+    
+    public Tile[][] getRoomMatrix() {
+        return matrix;
     }
 }

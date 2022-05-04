@@ -5,6 +5,7 @@ import main.Java.GamePanel;
 public class World {
     GamePanel gp;
     Room r;
+    public boolean DrawMap;
     int floor = 0;
     int[][] matrix;
     
@@ -12,6 +13,7 @@ public class World {
         this.gp = gp;
         this.matrix = new int[12][18];
         this.r = new Room();
+        this.DrawMap = true;
     }
 
     public void LoadRoom() {
