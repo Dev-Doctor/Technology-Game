@@ -28,6 +28,9 @@ public class Entity {
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public int actionLockCounter = 0;
+    public boolean invincible = false;
+    public int invincibleCounter = 0;
+    public int type; // 0=player 1=npc 2=monster
     
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -56,7 +59,17 @@ public class Entity {
         
         collisionOn = false;
         gp.collisionChecker.checkTile(this);
-        gp.collisionChecker.checkPlayer(this);
+        gp.collisionChecker.checkEntity(this, gp.npc);
+        gp.collisionChecker.checkEntity(this, gp.enemy);
+        boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
+        
+        if (this.type == 2 && contactPlayer == true) {
+            if (!gp.pl.invincible) {
+                gp.pl.health -= 20;
+                gp.pl.invincible = true;
+                //System.out.println("Health: " + gp.pl.health + "/" + gp.pl.maxHealth);
+            }
+        }
         
         if (collisionOn == false) {
             switch(direction){

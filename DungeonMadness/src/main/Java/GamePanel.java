@@ -32,9 +32,9 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     KeyHandler keyHandler = new KeyHandler();
     
-    Player pl;
-    testNPC npc1;
+    public Player pl;
     public Entity npc[] = new Entity[10];
+    public Entity enemy[] = new Entity[10];
     
     AssetSetter aSetter = new AssetSetter(this);
     
@@ -54,7 +54,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.matrix = new Tile[MaxRowsTiles][MaxColTiles];
         
         pl = new Player(this, keyHandler);
-        npc1 = new testNPC(this);
         
         world = new World(this);
         
@@ -65,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
     
     void setupGame() {
         aSetter.setNPC();
+        aSetter.setEnemy();
     }
 
     @Override
@@ -106,6 +106,12 @@ public class GamePanel extends JPanel implements Runnable {
                 npc[i].update();
             }
         }
+        
+        for (int i = 0; i < enemy.length; i++) {
+            if (enemy[i] != null) {
+                enemy[i].update();
+            }
+        }
     }
     
     public void paintComponent(Graphics gra) {
@@ -120,6 +126,12 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = 0; i < npc.length; i++) {
             if (npc[i] != null) {
                 npc[i].draw(gra2);
+            }
+        }
+        
+        for (int i = 0; i < enemy.length; i++) {
+            if (enemy[i] != null) {
+                enemy[i].draw(gra2);
             }
         }
         

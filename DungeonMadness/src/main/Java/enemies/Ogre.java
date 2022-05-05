@@ -6,7 +6,9 @@
 package main.Java.enemies;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -17,11 +19,16 @@ public class Ogre extends Entity {
 
     public Ogre(GamePanel gp) {
         super(gp);
+        type = 2;
         name = "Ogre";
         speed = 1;
         maxHealth = 2;
         health = maxHealth;
         solidArea = new Rectangle(0, 18, 64, 46);
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+        animations = new BufferedImage[8];
+        direction = "down";
         
         getImage();
     }
@@ -43,7 +50,25 @@ public class Ogre extends Entity {
    
     }
     
-    public void draw(){
+    public void setAction(){
+        
+        actionLockCounter++;
+        if (actionLockCounter == 60) {
+            
+            Random r = new Random();
+            int d = r.nextInt(100)+1;
+        
+            if (d <= 25) {
+                direction = "up";
+            }else if (d <= 50) {
+                direction = "down";
+            }else if (d <= 75) {
+                direction = "left";
+            }else if (d <= 100) {
+                direction = "right";
+            }  
+            actionLockCounter = 0;
+        }
         
     }
     

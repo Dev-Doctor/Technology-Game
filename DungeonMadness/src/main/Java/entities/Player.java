@@ -4,7 +4,9 @@
  */
 package main.Java.entities;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -15,7 +17,9 @@ import javax.imageio.ImageIO;
 import main.Java.GamePanel;
 import main.Java.KeyHandler;
 
-/** @author DevDoctor */
+/**
+ * @author DevDoctor
+ */
 public class Player extends Entity {
 
     KeyHandler keyHandler;
@@ -36,7 +40,8 @@ public class Player extends Entity {
         position[1] = 200;
         direction = "up";
         speed = 3;
-        health = 100;
+        maxHealth = 100;
+        health = maxHealth;
     }
 
     public void getPlayerImage() {
@@ -57,8 +62,7 @@ public class Player extends Entity {
     public void update() {
         collisionOn = false;
         gp.collisionChecker.checkTile(this);
-        
-        
+
         if (keyHandler.wPressed) {
             direction = "up";
         }
@@ -71,9 +75,12 @@ public class Player extends Entity {
         if (keyHandler.dPressed) {
             direction = "right";
         }
-        
+
         int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
         interactNPC(npcIndex);
+
+        int enemyIndex = gp.collisionChecker.checkEntity(this, gp.enemy);
+        contactEnemy(enemyIndex);
 
         if (collisionOn == false) {
             if (keyHandler.wPressed) {
@@ -99,7 +106,7 @@ public class Player extends Entity {
         if (!keyHandler.aPressed && !keyHandler.dPressed && !keyHandler.sPressed && !keyHandler.wPressed) {
             SpriteNumber = 1;
             SpriteCounter = 0;
-            return;
+            //return;
         }
 
         if (SpriteCounter
@@ -111,11 +118,29 @@ public class Player extends Entity {
             }
             SpriteCounter = 0;
         }
+
+        if (invincible) {
+            invincibleCounter++;
+            if (invincibleCounter > 60) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
     }
-    
+
     private void interactNPC(int i) {
         if (i != 999) {
             //System.out.println("Stai colpendo un NPC");
+        }
+    }
+
+    private void contactEnemy(int i) {
+        if (i != 999) {
+            if (!invincible) {
+                health -= 20;
+                //System.out.println("Health: " + health + "/" + maxHealth);
+                invincible = true;
+            }
         }
     }
 
@@ -153,8 +178,20 @@ public class Player extends Entity {
                 break;
         }
 
+        if (invincible) {
+            gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+
         gra2.drawImage(now, position[0], position[1], gp.tileSize, gp.tileSize, null);
         gra2.setColor(Color.red);
         gra2.drawRect(position[0] + solidArea.x, position[1] + solidArea.y, solidArea.width, solidArea.height);
+
+        gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+        gra2.setFont(new Font("Arial", Font.PLAIN, 26));
+        gra2.setColor(Color.white);
+        gra2.drawString("Health:" + health + "/" + maxHealth, 10, 400);
+
+        //gra2.drawString("Invincible:"+invincibleCounter, 10, 400);  
     }
 }
