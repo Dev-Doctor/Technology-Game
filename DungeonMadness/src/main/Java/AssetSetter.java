@@ -1,0 +1,22 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
+package main.Java;
+
+import main.Java.entities.testNPC;
+
+public class AssetSetter {
+    GamePanel gp;
+
+    public AssetSetter(GamePanel gp) {
+        this.gp = gp;
+    }
+    
+    public void setNPC(){
+        gp.npc[0] = new testNPC(gp);
+        gp.npc[0].SetX(200);
+        gp.npc[0].SetY(400);
+    }
+}

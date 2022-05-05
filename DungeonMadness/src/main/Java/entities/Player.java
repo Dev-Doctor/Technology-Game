@@ -18,14 +18,13 @@ import main.Java.KeyHandler;
 /** @author DevDoctor */
 public class Player extends Entity {
 
-    GamePanel gp;
     KeyHandler keyHandler;
 
     public Player(GamePanel gp, KeyHandler keyHandler) {
+        super(gp);
         animations = new BufferedImage[8];
         this.keyHandler = keyHandler;
         this.solidArea = new Rectangle(16, 18, 32, 46);
-        this.gp = gp;
         name = "Player";
 
         SetDefaultValues();
@@ -58,6 +57,8 @@ public class Player extends Entity {
     public void update() {
         collisionOn = false;
         gp.collisionChecker.checkTile(this);
+        
+        
         if (keyHandler.wPressed) {
             direction = "up";
         }
@@ -70,6 +71,9 @@ public class Player extends Entity {
         if (keyHandler.dPressed) {
             direction = "right";
         }
+        
+        int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
+        interactNPC(npcIndex);
 
         if (collisionOn == false) {
             if (keyHandler.wPressed) {
@@ -106,6 +110,12 @@ public class Player extends Entity {
                 SpriteNumber = 1;
             }
             SpriteCounter = 0;
+        }
+    }
+    
+    private void interactNPC(int i) {
+        if (i != 999) {
+            //System.out.println("Stai colpendo un NPC");
         }
     }
 

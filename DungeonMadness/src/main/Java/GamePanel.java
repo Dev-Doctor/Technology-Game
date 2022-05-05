@@ -5,9 +5,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
+import main.Java.enemies.Ogre;
+import main.Java.entities.Entity;
 import main.Java.world.Tile;
 import main.Java.world.World;
 import main.Java.entities.Player;
+import main.Java.entities.testNPC;
 import main.Java.world.TileManager;
 
 /** @author DevDoctor */
@@ -28,7 +31,13 @@ public class GamePanel extends JPanel implements Runnable {
     
     Thread gameThread;
     KeyHandler keyHandler = new KeyHandler();
+    
     Player pl;
+    testNPC npc1;
+    public Entity npc[] = new Entity[10];
+    
+    AssetSetter aSetter = new AssetSetter(this);
+    
     World world;
     Tile[][] matrix; // TEMPORARY
     
@@ -45,11 +54,17 @@ public class GamePanel extends JPanel implements Runnable {
         this.matrix = new Tile[MaxRowsTiles][MaxColTiles];
         
         pl = new Player(this, keyHandler);
+        npc1 = new testNPC(this);
+        
         world = new World(this);
         
         /** !!! TEMPORARY !!! **/
         world.LoadRoom();
         matrix = world.GetTileMatrix();
+    }
+    
+    void setupGame() {
+        aSetter.setNPC();
     }
 
     @Override
@@ -85,6 +100,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void update() {
         pl.update();
+        
+        for (int i = 0; i < npc.length; i++) {
+            if (npc[i] != null) {
+                npc[i].update();
+            }
+        }
     }
     
     public void paintComponent(Graphics gra) {
@@ -95,6 +116,13 @@ public class GamePanel extends JPanel implements Runnable {
             tileManager.DrawMap(matrix, gra2);
 //            world.DrawMap = false;
         }
+        
+        for (int i = 0; i < npc.length; i++) {
+            if (npc[i] != null) {
+                npc[i].draw(gra2);
+            }
+        }
+        
         pl.draw(gra2);
         
         // LAST DRAW
@@ -111,4 +139,5 @@ public class GamePanel extends JPanel implements Runnable {
     public Tile[][] getRoomMatrix() {
         return matrix;
     }
+
 }
