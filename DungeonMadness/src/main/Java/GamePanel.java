@@ -5,12 +5,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
-import main.Java.enemies.Ogre;
 import main.Java.entities.Entity;
 import main.Java.world.Tile;
 import main.Java.world.World;
 import main.Java.entities.Player;
-import main.Java.entities.testNPC;
+import main.Java.object.SuperObject;
 import main.Java.world.TileManager;
 
 /** @author DevDoctor */
@@ -27,16 +26,16 @@ public class GamePanel extends JPanel implements Runnable {
     public final int WindowWidth = MaxColTiles * tileSize;
 
     public CollisionChecker collisionChecker;
+    AssetSetter aSetter = new AssetSetter(this);
     private final int FPS = 60;
     
     Thread gameThread;
     KeyHandler keyHandler = new KeyHandler();
     
     public Player pl;
+    public SuperObject obj[] = new SuperObject[10];
     public Entity npc[] = new Entity[10];
     public Entity enemy[] = new Entity[10];
-    
-    AssetSetter aSetter = new AssetSetter(this);
     
     World world;
     Tile[][] matrix; // TEMPORARY
@@ -63,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
     
     void setupGame() {
+        aSetter.setObject();
         aSetter.setNPC();
         aSetter.setEnemy();
     }
@@ -132,6 +132,12 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = 0; i < enemy.length; i++) {
             if (enemy[i] != null) {
                 enemy[i].draw(gra2);
+            }
+        }
+        
+        for (int i = 0; i < obj.length; i++) {
+            if (obj[i] != null) {
+                obj[i].draw(gra2, this);
             }
         }
         

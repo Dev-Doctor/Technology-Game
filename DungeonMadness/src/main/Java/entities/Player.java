@@ -23,6 +23,7 @@ import main.Java.KeyHandler;
 public class Player extends Entity {
 
     KeyHandler keyHandler;
+    int nKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyHandler) {
         super(gp);
@@ -82,6 +83,9 @@ public class Player extends Entity {
         int enemyIndex = gp.collisionChecker.checkEntity(this, gp.enemy);
         contactEnemy(enemyIndex);
 
+        int objectIndex = gp.collisionChecker.checkObject(this, true);
+        pickUpObject(objectIndex);
+
         if (collisionOn == false) {
             if (keyHandler.wPressed) {
                 position[1] -= speed;
@@ -128,6 +132,27 @@ public class Player extends Entity {
         }
     }
 
+    private void pickUpObject(int i) {
+        if (i == 999) {
+            return;
+        }
+        String objName = gp.obj[i].getName();
+        switch (objName) {
+            case "key":
+                nKey++;
+                gp.obj[i] = null;
+                System.out.println("key:" + nKey);
+                break;
+            case "chest":
+                if (nKey > 0) {
+                    nKey--;
+                    gp.obj[i] = null;
+                    System.out.println("key:" + nKey);
+                }
+                break;
+        }
+    }
+
     private void interactNPC(int i) {
         if (i != 999) {
             //System.out.println("Stai colpendo un NPC");
@@ -136,8 +161,11 @@ public class Player extends Entity {
 
     private void contactEnemy(int i) {
         if (i != 999) {
+            if (!gp.enemy[i].isCDamageOn()) {
+                return;
+            }
             if (!invincible) {
-                health -= 20;
+                health -= gp.enemy[i].getDamage();
                 //System.out.println("Health: " + health + "/" + maxHealth);
                 invincible = true;
             }
@@ -194,4 +222,5 @@ public class Player extends Entity {
 
         //gra2.drawString("Invincible:"+invincibleCounter, 10, 400);  
     }
+
 }

@@ -16,6 +16,8 @@ public class Entity {
     public int armor;
     public String name;
     public int speed = 6;
+    public int damage = 0;
+    private boolean collisionDamageOn = false;
     public int[] position = new int[2];
     
     public BufferedImage[] animations;
@@ -61,6 +63,7 @@ public class Entity {
         gp.collisionChecker.checkTile(this);
         gp.collisionChecker.checkEntity(this, gp.npc);
         gp.collisionChecker.checkEntity(this, gp.enemy);
+        gp.collisionChecker.checkObject(this, false);
         boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
         
         if (this.type == 2 && contactPlayer == true) {
@@ -135,7 +138,7 @@ public class Entity {
         }
 
         gra2.drawImage(now, position[0], position[1], gp.tileSize, gp.tileSize, null);
-        gra2.setColor(Color.red);
+        gra2.setColor(Color.blue);
         gra2.drawRect(position[0] + solidArea.x, position[1] + solidArea.y, solidArea.width, solidArea.height);
     }
     
@@ -169,4 +172,18 @@ public class Entity {
     public String getName() {
         return name;
     }
+    
+    public void toggleCDamage(){
+        collisionDamageOn = true;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public boolean isCDamageOn() {
+        return collisionDamageOn;
+    }
+    
+    
 }
