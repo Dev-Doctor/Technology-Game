@@ -19,7 +19,6 @@ public class key extends SuperObject{
             e.printStackTrace();
         }
         
-        collision = true;
         solidArea = new Rectangle(8 , 20, 44, 20);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;

@@ -4,13 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import main.Java.DefaultValues;
 import main.Java.GamePanel;
 
-/** @author DevDoctor */
+/** @author DevDoctor Jifrid */
 public class Entity {
-    
+
     public GamePanel gp;
-    
+
     public int maxHealth;
     public int health;
     public int armor;
@@ -19,13 +20,13 @@ public class Entity {
     public int damage = 0;
     private boolean collisionDamageOn = false;
     public int[] position = new int[2];
-    
+
     public BufferedImage[] animations;
     public String direction;
-    
+
     public int SpriteCounter = 0;
     public int SpriteNumber = 1;
-    
+
     public Rectangle solidArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
@@ -33,7 +34,7 @@ public class Entity {
     public boolean invincible = false;
     public int invincibleCounter = 0;
     public int type; // 0=player 1=npc 2=monster
-    
+
     public Entity(GamePanel gp) {
         this.gp = gp;
         solidArea = new Rectangle(16, 18, 32, 46);
@@ -51,21 +52,21 @@ public class Entity {
         this.health = maxHealth;
         this.name = name;
     }
-    
-    public void setAction(){
-        
+
+    public void setAction() {
+
     }
-    
-    public void update(){
+
+    public void update() {
         setAction();
-        
+
         collisionOn = false;
         gp.collisionChecker.checkTile(this);
         gp.collisionChecker.checkEntity(this, gp.npc);
         gp.collisionChecker.checkEntity(this, gp.enemy);
         gp.collisionChecker.checkObject(this, false);
         boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
-        
+
         if (this.type == 2 && contactPlayer == true) {
             if (!gp.pl.invincible) {
                 gp.pl.health -= 20;
@@ -73,9 +74,9 @@ public class Entity {
                 //System.out.println("Health: " + gp.pl.health + "/" + gp.pl.maxHealth);
             }
         }
-        
+
         if (collisionOn == false) {
-            switch(direction){
+            switch (direction) {
                 case "up":
                     position[1] -= speed;
                     break;
@@ -102,9 +103,9 @@ public class Entity {
             SpriteCounter = 0;
         }
     }
-    
-    public void draw(Graphics2D gra2){
-         BufferedImage now = null;
+
+    public void draw(Graphics2D gra2) {
+        BufferedImage now = null;
 
         switch (direction) {
             case "up":
@@ -137,43 +138,49 @@ public class Entity {
                 break;
         }
 
-        gra2.drawImage(now, position[0], position[1], gp.tileSize, gp.tileSize, null);
-        gra2.setColor(Color.blue);
-        gra2.drawRect(position[0] + solidArea.x, position[1] + solidArea.y, solidArea.width, solidArea.height);
+        // DRAW ENTITY SPRITE
+        gra2.drawImage(now, position[0], position[1], DefaultValues.tileSize, DefaultValues.tileSize, null);
+
+        // DRAW HITBOX
+        if (DefaultValues.showHitboxes) {
+            gra2.setColor(Color.blue);
+            gra2.drawRect(position[0] + solidArea.x, position[1] + solidArea.y, solidArea.width, solidArea.height);
+        }
     }
-    
+
     public int GetX() {
         return position[0];
     }
-    
+
     public int GetY() {
         return position[1];
     }
-    
+
     public void SetX(int x) {
         position[0] = x;
     }
-    
+
     public void SetY(int y) {
         position[1] = y;
     }
-    
+
     public int GetSpeed() {
         return speed;
     }
-    
+
     public int getHealth() {
         return health;
     }
+
     public void setHealth(int health) {
         this.health = health;
     }
-    
+
     public String getName() {
         return name;
     }
-    
-    public void toggleCDamage(){
+
+    public void toggleCDamage() {
         collisionDamageOn = true;
     }
 
@@ -184,6 +191,5 @@ public class Entity {
     public boolean isCDamageOn() {
         return collisionDamageOn;
     }
-    
-    
+
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package main.Java.entities;
 
 import java.awt.AlphaComposite;
@@ -14,12 +10,12 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import main.Java.DefaultValues;
 import main.Java.GamePanel;
 import main.Java.KeyHandler;
 
 /**
- * @author DevDoctor
- */
+ * @author DevDoctor */
 public class Player extends Entity {
 
     KeyHandler keyHandler;
@@ -37,8 +33,8 @@ public class Player extends Entity {
     }
 
     public void SetDefaultValues() {
-        position[0] = 200;
-        position[1] = 200;
+        position[0] = DefaultValues.PlDefaultX;
+        position[1] = DefaultValues.PlDefaultY;
         direction = "up";
         speed = 3;
         maxHealth = 100;
@@ -63,7 +59,8 @@ public class Player extends Entity {
     public void update() {
         collisionOn = false;
         gp.collisionChecker.checkTile(this);
-
+        gp.collisionChecker.CheckBorder(this);
+        
         if (keyHandler.wPressed) {
             direction = "up";
         }
@@ -171,6 +168,11 @@ public class Player extends Entity {
             }
         }
     }
+    
+    public void SetNewCordinates(int X, int Y) {
+        position[0] = X;
+        position[1] = Y;
+    }
 
     public void draw(Graphics2D gra2) {
         BufferedImage now = null;
@@ -209,13 +211,19 @@ public class Player extends Entity {
         if (invincible) {
             gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         }
+        
+        // DRAW PLAYER
+        gra2.drawImage(now, position[0], position[1], DefaultValues.tileSize, DefaultValues.tileSize, null);
 
-        gra2.drawImage(now, position[0], position[1], gp.tileSize, gp.tileSize, null);
-        gra2.setColor(Color.red);
-        gra2.drawRect(position[0] + solidArea.x, position[1] + solidArea.y, solidArea.width, solidArea.height);
+        // DRAW HITBOX
+        if (DefaultValues.showHitboxes) {
+            gra2.setColor(Color.red);
+            gra2.drawRect(position[0] + solidArea.x, position[1] + solidArea.y, solidArea.width, solidArea.height);
+        }
 
         gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-
+        
+        // DRAW HEALTH
         gra2.setFont(new Font("Arial", Font.PLAIN, 26));
         gra2.setColor(Color.white);
         gra2.drawString("Health:" + health + "/" + maxHealth, 10, 400);

@@ -28,13 +28,13 @@ public class testNPC extends Entity{
     public void getImage(){
         try {
             animations[0] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def.png"));
-            animations[1] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def.png"));
+            animations[1] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def2.png"));
             animations[2] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def.png"));
-            animations[3] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def.png"));
+            animations[3] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def2.png"));
             animations[4] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def.png"));
-            animations[5] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def.png"));
+            animations[5] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def2.png"));
             animations[6] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def.png"));
-            animations[7] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def.png"));
+            animations[7] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def2.png"));
         } catch (IOException ex) {
             Logger.getLogger(testNPC.class.getName()).log(Level.SEVERE, null, ex);
         }

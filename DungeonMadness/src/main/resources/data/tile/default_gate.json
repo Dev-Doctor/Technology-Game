@@ -1,0 +1,6 @@
+{
+  "collision": false,
+  "texture": "gate.png",
+  "damage": 0,
+  "gate": true
+}

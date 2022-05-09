@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 public class Tile {
 
     public boolean Collision;
+    public boolean isGate = false;
     BufferedImage texture;
     final String def_image = "/main/resources/assets/textures/default.png";
     final String def_loc = "/main/resources/assets/textures/tiles";
@@ -25,6 +26,17 @@ public class Tile {
 
     public Tile(boolean Collision, String image) {
         this.Collision = Collision;
+        try {
+            System.out.println(def_loc+"/"+image);
+            texture = ImageIO.read(getClass().getResourceAsStream(def_loc + "/" + image));
+        } catch (IOException ex) {
+            Logger.getLogger(Tile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public Tile(boolean Collision, String image, boolean isGate) {
+        this.Collision = Collision;
+        this.isGate = isGate;
         try {
             System.out.println(def_loc+"/"+image);
             texture = ImageIO.read(getClass().getResourceAsStream(def_loc + "/" + image));

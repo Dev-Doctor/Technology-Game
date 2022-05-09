@@ -14,18 +14,8 @@ import main.Java.world.TileManager;
 
 /** @author DevDoctor */
 public class GamePanel extends JPanel implements Runnable {
-
-    public final int TileResolution = 32; //32x32 pixel
-    public final int scale = 2;
-
-    public final int tileSize = TileResolution * scale; //actual tile size
-    public final int MaxRowsTiles = 12;
-    public final int MaxColTiles = 18;
-
-    public final int WindowHeight = MaxRowsTiles * tileSize;
-    public final int WindowWidth = MaxColTiles * tileSize;
-
     public CollisionChecker collisionChecker;
+    TileManager tileManager = new TileManager(this);
     AssetSetter aSetter = new AssetSetter(this);
     private final int FPS = 60;
     
@@ -40,31 +30,31 @@ public class GamePanel extends JPanel implements Runnable {
     World world;
     Tile[][] matrix; // TEMPORARY
     
-    TileManager tileManager = new TileManager(this);
+    
     
     public GamePanel() {
-        this.setPreferredSize(new Dimension(WindowWidth, WindowHeight));
+        this.setPreferredSize(new Dimension(DefaultValues.WindowWidth, DefaultValues.WindowHeight));
         this.setBackground(Color.white);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
         
         this.collisionChecker = new CollisionChecker(this);
-        this.matrix = new Tile[MaxRowsTiles][MaxColTiles];
+        this.matrix = new Tile[DefaultValues.MaxRowsTiles][DefaultValues.MaxColTiles];
         
         pl = new Player(this, keyHandler);
         
         world = new World(this);
+        world.LoadDungeon("default");
         
         /** !!! TEMPORARY !!! **/
-        world.LoadRoom();
-        matrix = world.GetTileMatrix();
+        matrix = world.GetCurrentRoom().getMatrix();
     }
     
     void setupGame() {
-        aSetter.setObject();
-        aSetter.setNPC();
-        aSetter.setEnemy();
+//        aSetter.setObject();
+//        aSetter.setNPC();
+//        aSetter.setEnemy();
     }
 
     @Override
@@ -97,7 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
             
         }
     }
-
+    
     private void update() {
         pl.update();
         
@@ -119,7 +109,7 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D gra2 = (Graphics2D) gra;
         // FIRST DRAW
         if(world.DrawMap) {
-            tileManager.DrawMap(matrix, gra2);
+            tileManager.DrawMap(world.GetCurrentRoom(), gra2);
 //            world.DrawMap = false;
         }
         
@@ -154,8 +144,19 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
     
-    public Tile[][] getRoomMatrix() {
+    public Player GetPlayer() {
+        return pl;
+    }
+    
+    public Tile[][] GetRoomMatrix() {
         return matrix;
     }
 
+    public World GetWorld() {
+        return world;
+    }
+    
+    public TileManager GetTileManager() {
+        return tileManager;
+    }
 }

@@ -2,7 +2,6 @@ package main.Java;
 
 import main.Java.entities.Entity;
 import main.Java.entities.Player;
-import main.Java.object.SuperObject;
 import main.Java.world.Tile;
 
 /**
@@ -23,33 +22,33 @@ public class CollisionChecker {
         int EntityTopWorldY = entity.GetY() + entity.solidArea.y;
         int EntityBottomWorldY = entity.GetY() + entity.solidArea.y + entity.solidArea.height;
 
-        int entityLeftCol = EntityLeftWorldX / gp.tileSize;
-        int entityRightCol = EntityRightWorldX / gp.tileSize;
-        int entityTopRow = EntityTopWorldY / gp.tileSize;
-        int entityBottomRow = EntityBottomWorldY / gp.tileSize;
+        int entityLeftCol = EntityLeftWorldX / DefaultValues.tileSize;
+        int entityRightCol = EntityRightWorldX / DefaultValues.tileSize;
+        int entityTopRow = EntityTopWorldY / DefaultValues.tileSize;
+        int entityBottomRow = EntityBottomWorldY / DefaultValues.tileSize;
 
         Tile tile_1 = null, tile_2 = null;
 
-        Tile[][] room = gp.getRoomMatrix();
+        Tile[][] room = gp.GetWorld().GetCurrentRoom().getMatrix();
 
         switch (entity.direction) {
             case "up":
-                entityTopRow = (EntityTopWorldY - entity.GetSpeed()) / gp.tileSize;
+                entityTopRow = (EntityTopWorldY - entity.GetSpeed()) / DefaultValues.tileSize;
                 tile_1 = room[entityTopRow][entityLeftCol];
                 tile_2 = room[entityTopRow][entityRightCol];
                 break;
             case "down":
-                entityBottomRow = (EntityBottomWorldY + entity.GetSpeed()) / gp.tileSize;
+                entityBottomRow = (EntityBottomWorldY + entity.GetSpeed()) / DefaultValues.tileSize;
                 tile_1 = room[entityBottomRow][entityLeftCol];
                 tile_2 = room[entityBottomRow][entityRightCol];
                 break;
             case "left":
-                entityLeftCol = (EntityLeftWorldX - entity.GetSpeed()) / gp.tileSize;
+                entityLeftCol = (EntityLeftWorldX - entity.GetSpeed()) / DefaultValues.tileSize;
                 tile_1 = room[entityTopRow][entityLeftCol];
                 tile_2 = room[entityBottomRow][entityRightCol];
                 break;
             case "right":
-                entityRightCol = (EntityRightWorldX + entity.GetSpeed()) / gp.tileSize;
+                entityRightCol = (EntityRightWorldX + entity.GetSpeed()) / DefaultValues.tileSize;
                 tile_1 = room[entityTopRow][entityRightCol];
                 tile_2 = room[entityBottomRow][entityRightCol];
                 break;
@@ -194,5 +193,29 @@ public class CollisionChecker {
         gp.pl.solidArea.y = gp.pl.solidAreaDefaultY;
 
         return contactPlayer;
+    }
+
+    public void CheckBorder(Player player) {
+        player.solidArea.x += player.GetX();
+        player.solidArea.y += player.GetY();
+        
+        if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_top)) {
+            gp.world.GetCurrentFloor().ChangeRoom("up");
+        }
+        
+        if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_right)) {
+            gp.world.GetCurrentFloor().ChangeRoom("right");
+        }
+        
+        if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_bottom)) {
+            gp.world.GetCurrentFloor().ChangeRoom("bottom");
+        }
+        
+        if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_left)) {
+            gp.world.GetCurrentFloor().ChangeRoom("left");
+        }
+        
+        player.solidArea.x = player.solidAreaDefaultX;
+        player.solidArea.y = player.solidAreaDefaultY;
     }
 }

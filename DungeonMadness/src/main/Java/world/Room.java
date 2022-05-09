@@ -1,5 +1,6 @@
 package main.Java.world;
 
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,25 +10,55 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import main.Java.GamePanel;
+import main.Java.DefaultValues;
 import org.json.*;
 
-/** @author DevDoctor */
+/**
+ * @author DevDoctor
+ */
 public class Room {
 
+    GamePanel gp;
+
     final String tile_loc = "src\\main\\resources\\data\\tile";
+    final int gate_pos[][] = {
+        {0, 7}, {0, 8}, {0, 9}, {0, 10},
+        {4, 17}, {5, 17}, {6, 17}, {7, 17},
+        {11, 7}, {11, 8}, {11, 9}, {11, 10},
+        {4, 0}, {5, 0}, {6, 0}, {7, 0}
+    };
     List<String> AllFiles;
+
+    final public Rectangle hit_top = new Rectangle(DefaultValues.tileSize * 7, DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2);
+    final public Rectangle hit_right = new Rectangle(DefaultValues.tileSize * 17 + DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2, DefaultValues.tileSize * 4);
+    final public Rectangle hit_bottom = new Rectangle(DefaultValues.tileSize * 7, DefaultValues.tileSize * 11 + DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2);
+    final public Rectangle hit_left = new Rectangle(DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2, DefaultValues.tileSize * 4);
 
     JSONObject jo;
     HashMap<String, Tile> materials_map;
 
     Tile[][] tile_matrix;
     int[][] matrix;
+    int value;
 
-    public Room() {
-        this.materials_map = new HashMap<String, Tile>();
-        this.tile_matrix = new Tile[12][18];
-        this.matrix = new int[12][18];
+    public Room(GamePanel gp) {
+        this.gp = gp;
+        SetDefaultValues();
         GetJSONfiles();
+    }
+
+    public Room(GamePanel gp, int value) {
+        this.gp = gp;
+        this.value = value;
+        SetDefaultValues();
+        GetJSONfiles();
+    }
+
+    private void SetDefaultValues() {
+        this.materials_map = new HashMap<String, Tile>();
+        this.tile_matrix = new Tile[DefaultValues.MaxRowsTiles][DefaultValues.MaxColTiles];
+        this.matrix = new int[DefaultValues.MaxRowsTiles][DefaultValues.MaxColTiles];
     }
 
     public void Load(String type) {
@@ -63,7 +94,14 @@ public class Room {
                     Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 tl = new JSONObject(Tilejson);
-                materials_map.put(key, new Tile(tl.getBoolean("collision"), tl.getString("texture")));
+
+                try {
+                    if (tl.getBoolean("gate") == true) {
+                        materials_map.put(key, new Tile(tl.getBoolean("collision"), tl.getString("texture"), tl.getBoolean("gate")));
+                    }
+                } catch (Exception ex) {
+                    materials_map.put(key, new Tile(tl.getBoolean("collision"), tl.getString("texture")));
+                }
             } else {
                 materials_map.put(key, new Tile());
             }
@@ -84,19 +122,55 @@ public class Room {
         AllFiles = Arrays.asList(fl.list());
     }
 
-//    public void Write() {
-//        String result = "";
-//        for (int r = 0; r < 12; r++) {
-//            for (int c = 0; c < 18; c++) {
-//                result += matrix[r][c];
-//                result += "-";
-//            }
-//            result += "\n";
-//        }
-//        System.out.println(result);
-//    }
+    public void DefineGates(boolean top, boolean right, boolean bottom, boolean left) {
+        if (top == false) {
+            // {0, 7}, {0, 8}, {0, 9}, {0, 10},
+            tile_matrix[0][7] = materials_map.get("1");
+            tile_matrix[0][8] = materials_map.get("1");
+            tile_matrix[0][9] = materials_map.get("1");
+            tile_matrix[0][10] = materials_map.get("1");
+        }
+        if (right == false) {
+//            {4, 17}, {5, 17}, {6, 17}, {7, 17},
+            tile_matrix[4][17] = materials_map.get("1");
+            tile_matrix[5][17] = materials_map.get("1");
+            tile_matrix[6][17] = materials_map.get("1");
+            tile_matrix[7][17] = materials_map.get("1");
+        }
+        if (bottom == false) {
+//            {11, 7}, {11, 8}, {11, 9}, {11, 10},
+            tile_matrix[11][7] = materials_map.get("1");
+            tile_matrix[11][8] = materials_map.get("1");
+            tile_matrix[11][9] = materials_map.get("1");
+            tile_matrix[11][10] = materials_map.get("1");
+        }
+
+        if (left == false) {
+//            {4, 0}, {5, 0}, {6, 0}, {7, 0}
+            tile_matrix[4][0] = materials_map.get("1");
+            tile_matrix[5][0] = materials_map.get("1");
+            tile_matrix[6][0] = materials_map.get("1");
+            tile_matrix[7][0] = materials_map.get("1");
+        }
+    }
+
+    public int GetValue() {
+        return value;
+    }
+
     public Tile[][] getMatrix() {
         return tile_matrix;
     }
-
+    
+    public void Write() {
+        String result = "";
+        for (int r = 0; r < 12; r++) {
+            for (int c = 0; c < 18; c++) {
+                result += matrix[r][c];
+                result += "-";
+            }
+            result += "\n";
+        }
+        System.out.println(result);
+    }
 }
