@@ -19,7 +19,7 @@ import main.Java.KeyHandler;
 public class Player extends Entity {
 
     KeyHandler keyHandler;
-    int nKey = 0;
+    public int nKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyHandler) {
         super(gp);
@@ -138,26 +138,29 @@ public class Player extends Entity {
             case "key":
                 nKey++;
                 gp.obj[i] = null;
-                System.out.println("key:" + nKey);
+                //System.out.println("key:" + nKey);
                 break;
             case "chest":
                 if (nKey > 0) {
                     nKey--;
                     gp.obj[i] = null;
-                    System.out.println("key:" + nKey);
+                   //System.out.println("key:" + nKey);
                 }
                 break;
         }
     }
 
     private void interactNPC(int i) {
-        if (i != 999) {
-            //System.out.println("Stai colpendo un NPC");
+        if (i == 999) {
+            return;
         }
+        //System.out.println("Stai colpendo un NPC");
     }
 
     private void contactEnemy(int i) {
-        if (i != 999) {
+        if (i == 999) {
+            return;
+        }
             if (!gp.enemy[i].isCDamageOn()) {
                 return;
             }
@@ -165,8 +168,7 @@ public class Player extends Entity {
                 health -= gp.enemy[i].getDamage();
                 //System.out.println("Health: " + health + "/" + maxHealth);
                 invincible = true;
-            }
-        }
+            }   
     }
     
     public void SetNewCordinates(int X, int Y) {

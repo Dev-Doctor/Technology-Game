@@ -26,7 +26,7 @@ public class Ogre extends Entity {
         animations = new BufferedImage[8];
         direction = "down";
         
-        toggleCDamage();
+        cDamageOn();
         getImage();
     }
     

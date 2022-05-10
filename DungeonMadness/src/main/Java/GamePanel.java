@@ -17,15 +17,20 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker collisionChecker;
     TileManager tileManager = new TileManager(this);
     AssetSetter aSetter = new AssetSetter(this);
+    public UI ui = new UI(this);
     private final int FPS = 60;
     
     Thread gameThread;
-    KeyHandler keyHandler = new KeyHandler();
+    KeyHandler keyHandler = new KeyHandler(this);
     
     public Player pl;
     public SuperObject obj[] = new SuperObject[10];
     public Entity npc[] = new Entity[10];
     public Entity enemy[] = new Entity[10];
+    
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
     
     World world;
     Tile[][] matrix; // TEMPORARY
@@ -55,6 +60,8 @@ public class GamePanel extends JPanel implements Runnable {
 //        aSetter.setObject();
 //        aSetter.setNPC();
 //        aSetter.setEnemy();
+
+        gameState = playState;
     }
 
     @Override
@@ -89,6 +96,10 @@ public class GamePanel extends JPanel implements Runnable {
     }
     
     private void update() {
+        if (gameState == pauseState) {
+            return;
+        }
+        
         pl.update();
         
         for (int i = 0; i < npc.length; i++) {
@@ -132,6 +143,8 @@ public class GamePanel extends JPanel implements Runnable {
         }
         
         pl.draw(gra2);
+        
+        ui.draw(gra2);
         
         // LAST DRAW
         

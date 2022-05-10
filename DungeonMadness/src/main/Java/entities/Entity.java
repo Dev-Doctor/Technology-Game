@@ -180,7 +180,7 @@ public class Entity {
         return name;
     }
 
-    public void toggleCDamage() {
+    public void cDamageOn() {
         collisionDamageOn = true;
     }
 
