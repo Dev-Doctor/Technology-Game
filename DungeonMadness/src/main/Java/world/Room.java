@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -12,13 +13,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.Java.GamePanel;
 import main.Java.DefaultValues;
+import main.Java.enemies.Ogre;
+import main.Java.entities.Entity;
 import org.json.*;
 
-/**
- * @author DevDoctor
- */
+/** @author DevDoctor */
 public class Room {
 
+    final public Rectangle hit_top = new Rectangle(DefaultValues.tileSize * 7, DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2);
+    final public Rectangle hit_right = new Rectangle(DefaultValues.tileSize * 17 + DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2, DefaultValues.tileSize * 4);
+    final public Rectangle hit_bottom = new Rectangle(DefaultValues.tileSize * 7, DefaultValues.tileSize * 11 + DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2);
+    final public Rectangle hit_left = new Rectangle(DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2, DefaultValues.tileSize * 4);
+    final public Rectangle next_floor = new Rectangle();
     GamePanel gp;
 
     final String tile_loc = "src\\main\\resources\\data\\tile";
@@ -30,17 +36,16 @@ public class Room {
     };
     List<String> AllFiles;
 
-    final public Rectangle hit_top = new Rectangle(DefaultValues.tileSize * 7, DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2);
-    final public Rectangle hit_right = new Rectangle(DefaultValues.tileSize * 17 + DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2, DefaultValues.tileSize * 4);
-    final public Rectangle hit_bottom = new Rectangle(DefaultValues.tileSize * 7, DefaultValues.tileSize * 11 + DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2);
-    final public Rectangle hit_left = new Rectangle(DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2, DefaultValues.tileSize * 4);
-
     JSONObject jo;
     HashMap<String, Tile> materials_map;
 
+    ArrayList<Entity> entities;
+
     Tile[][] tile_matrix;
     int[][] matrix;
+
     int value;
+    boolean isEmpty;
 
     public Room(GamePanel gp) {
         this.gp = gp;
@@ -59,6 +64,13 @@ public class Room {
         this.materials_map = new HashMap<String, Tile>();
         this.tile_matrix = new Tile[DefaultValues.MaxRowsTiles][DefaultValues.MaxColTiles];
         this.matrix = new int[DefaultValues.MaxRowsTiles][DefaultValues.MaxColTiles];
+        this.entities = new ArrayList<Entity>();
+        this.isEmpty = false;
+        if (value != 1) {
+            Ogre t = new Ogre(gp);
+            t.SetNewCordinates(300, 300);
+            entities.add(t);
+        }
     }
 
     public void Load(String type) {
@@ -154,6 +166,52 @@ public class Room {
         }
     }
 
+    public void CloseGates() {
+        tile_matrix[0][7] = materials_map.get("1");
+        tile_matrix[0][8] = materials_map.get("1");
+        tile_matrix[0][9] = materials_map.get("1");
+        tile_matrix[0][10] = materials_map.get("1");
+        tile_matrix[4][17] = materials_map.get("1");
+        tile_matrix[5][17] = materials_map.get("1");
+        tile_matrix[6][17] = materials_map.get("1");
+        tile_matrix[7][17] = materials_map.get("1");
+        tile_matrix[11][7] = materials_map.get("1");
+        tile_matrix[11][8] = materials_map.get("1");
+        tile_matrix[11][9] = materials_map.get("1");
+        tile_matrix[11][10] = materials_map.get("1");
+        tile_matrix[4][0] = materials_map.get("1");
+        tile_matrix[5][0] = materials_map.get("1");
+        tile_matrix[6][0] = materials_map.get("1");
+        tile_matrix[7][0] = materials_map.get("1");
+    }
+
+    public void OpenAllGates() {
+        tile_matrix[0][7] = materials_map.get("0");
+        tile_matrix[0][8] = materials_map.get("0");
+        tile_matrix[0][9] = materials_map.get("0");
+        tile_matrix[0][10] = materials_map.get("0");
+        tile_matrix[4][17] = materials_map.get("0");
+        tile_matrix[5][17] = materials_map.get("0");
+        tile_matrix[6][17] = materials_map.get("0");
+        tile_matrix[7][17] = materials_map.get("0");
+        tile_matrix[11][7] = materials_map.get("0");
+        tile_matrix[11][8] = materials_map.get("0");
+        tile_matrix[11][9] = materials_map.get("0");
+        tile_matrix[11][10] = materials_map.get("0");
+        tile_matrix[4][0] = materials_map.get("0");
+        tile_matrix[5][0] = materials_map.get("0");
+        tile_matrix[6][0] = materials_map.get("0");
+        tile_matrix[7][0] = materials_map.get("0");
+    }
+
+    public void SetIsEmpty(boolean value) {
+        isEmpty = value;
+    }
+
+    public ArrayList<Entity> GetEnemies() {
+        return entities;
+    }
+
     public int GetValue() {
         return value;
     }
@@ -161,7 +219,7 @@ public class Room {
     public Tile[][] getMatrix() {
         return tile_matrix;
     }
-    
+
     public void Write() {
         String result = "";
         for (int r = 0; r < 12; r++) {

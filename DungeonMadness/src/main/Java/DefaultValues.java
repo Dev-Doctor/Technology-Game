@@ -19,6 +19,8 @@ public class DefaultValues {
     public static final int WindowWidth = MaxColTiles * tileSize;
     
     public static boolean showHitboxes = false;
+    public static boolean isImmortal = true;
+    public static boolean deactiveEI = false;
 
     public static final int PlDefaultX = tileSize * (MaxColTiles / 2) - tileSize / 2; // Default Player X cord
     public static final int PlDefaultY = tileSize * (MaxRowsTiles / 2) - tileSize / 2; // Default Player Y cord

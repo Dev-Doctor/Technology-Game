@@ -1,12 +1,11 @@
 package main.Java;
 
+import java.util.ArrayList;
 import main.Java.entities.Entity;
 import main.Java.entities.Player;
 import main.Java.world.Tile;
 
-/**
- * @author Jifrid - DevDoctor
- */
+/** @author Jifrid - DevDoctor */
 public class CollisionChecker {
 
     GamePanel gp;
@@ -65,18 +64,18 @@ public class CollisionChecker {
 //        System.out.println("--------------------------------------------------------------------");
     }
     
-    public int checkEntity(Entity entity, Entity[] target) {
+    public int checkEntity(Entity entity, ArrayList<Entity> target) {
         int index = 999;
 
-        for (int i = 0; i < target.length; i++) {
+        for (int i = 0; i < target.size(); i++) {
 
-            if (target[i] != null) {
+            if (target.get(i) != null) {
 
                 entity.solidArea.x += entity.GetX();
                 entity.solidArea.y += entity.GetY();
 
-                target[i].solidArea.x += target[i].GetX();
-                target[i].solidArea.y += target[i].GetY();
+                target.get(i).solidArea.x += target.get(i).GetX();
+                target.get(i).solidArea.y += target.get(i).GetY();
 
                 switch (entity.direction) {
                     case "up":
@@ -93,8 +92,8 @@ public class CollisionChecker {
                         break;
                 }
 
-                if (entity.solidArea.intersects(target[i].solidArea)) {
-                    if (target[i] != entity) {
+                if (entity.solidArea.intersects(target.get(i).solidArea)) {
+                    if (target.get(i) != entity) {
                         entity.collisionOn = true;
                         index = i;
                     }
@@ -102,8 +101,8 @@ public class CollisionChecker {
 
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
-                target[i].solidArea.x = target[i].solidAreaDefaultX;
-                target[i].solidArea.y = target[i].solidAreaDefaultY;
+                target.get(i).solidArea.x = target.get(i).solidAreaDefaultX;
+                target.get(i).solidArea.y = target.get(i).solidAreaDefaultY;
             }
 
         }

@@ -1,5 +1,6 @@
 package main.Java.world;
 
+import java.util.ArrayList;
 import java.util.List;
 import main.Java.GamePanel;
 
@@ -9,34 +10,37 @@ import main.Java.GamePanel;
 public class World {
 
     GamePanel gp;
-    List<Floor> floors;
-
+    ArrayList<Floor> floors;
+    
     public boolean DrawMap;
     int floor_number = 0;
     int[][] matrix;
-
+    String theme;
+    
 //  !!! TEMPORARY !!!
     Room r;
     Floor temp;
 
-    public World(GamePanel gp) {
+    public World(GamePanel gp, String theme) {
         this.gp = gp;
         this.matrix = new int[12][18];
         this.r = null;
+        this.theme = theme;
         this.DrawMap = true;
-        this.temp = new Floor(gp);
+        this.floors = new ArrayList<Floor>();
+        this.floors.add(new Floor(gp, theme));
     }
-    
-    public void LoadDungeon(String theme) {
+
+    public void LoadDungeon() {
+        floors.get(floor_number).Load();
         floor_number++;
-        temp.Load(theme);
     }
-    
+
     public Room GetCurrentRoom() {
-        return temp.GetCurrentRoom();
+        return floors.get(floor_number - 1).GetCurrentRoom();
     }
-    
+
     public Floor GetCurrentFloor() {
-        return temp;
+        return floors.get(floor_number - 1);
     }
 }

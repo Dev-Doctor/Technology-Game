@@ -22,6 +22,9 @@ public class Player extends Entity {
     KeyHandler keyHandler;
     public int nKey = 0;
 
+    public int EnemyKilled = 0;
+    public int RoomExplored = 0;
+
     public Player(GamePanel gp, KeyHandler keyHandler) {
         super(gp);
         animations = new BufferedImage[8];
@@ -101,10 +104,10 @@ public class Player extends Entity {
             gp.collisionChecker.checkTile(this);
             gp.collisionChecker.CheckBorder(this);
 
-            int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
+            int npcIndex = gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies()); // NPCS
             interactNPC(npcIndex);
 
-            int enemyIndex = gp.collisionChecker.checkEntity(this, gp.enemy);
+            int enemyIndex = gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies()); //ENEMIES
             contactEnemy(enemyIndex);
 
             int objectIndex = gp.collisionChecker.checkObject(this, true);
@@ -162,13 +165,13 @@ public class Player extends Entity {
         }
         if (SpriteCounter > 5 && SpriteCounter <= 25) {
             SpriteNumber = 2;
-            
+
             int currentX = position[0];
             int currentY = position[1];
             int solidAreaWidth = solidArea.width;
             int solidAreaHeight = solidArea.height;
-            
-            switch(direction){
+
+            switch (direction) {
                 case "up":
                     position[1] -= attackArea.height;
                     break;
@@ -182,13 +185,13 @@ public class Player extends Entity {
                     position[0] += attackArea.width;
                     break;
             }
-            
+
             solidArea.width = attackArea.width;
             solidArea.height = attackArea.height;
-            
-            int enemyIndex = gp.collisionChecker.checkEntity(this, gp.enemy);
+
+            int enemyIndex = gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies());
             damageEnemy(enemyIndex);
-            
+
             position[0] = currentX;
             position[1] = currentY;
             solidArea.width = solidAreaWidth;
@@ -234,28 +237,31 @@ public class Player extends Entity {
         if (i == 999) {
             return;
         }
-        if (!gp.enemy[i].isCDamageOn()) {
+        if (!gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).isCDamageOn()) {
             return;
         }
         if (!invincible) {
-            health -= gp.enemy[i].getDamage();
-            //System.out.println("Health: " + health + "/" + maxHealth);
+            health -= gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).getDamage();
             invincible = true;
         }
     }
-    
+
     private void damageEnemy(int i) {
         if (i == 999) {
             //System.out.println("miss");
             return;
         }
         //System.out.println("hit");
-        if (!gp.enemy[i].invincible) {
-            gp.enemy[i].health -= 20;
-            gp.enemy[i].invincible = true;
-            
-            if (gp.enemy[i].health <= 0) {
-                gp.enemy[i] = null;
+        if (!gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).invincible) {
+            gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health -= 20;
+            gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).invincible = true;
+
+            if (gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health <= 0) {
+                gp.GetWorld().GetCurrentRoom().GetEnemies().remove(i);
+                if (gp.GetWorld().GetCurrentRoom().GetEnemies().size() == 0) {
+                    gp.GetWorld().GetCurrentFloor().UnlockRoom();
+                    EnemyKilled++;
+                }
             }
         }
     }
@@ -355,10 +361,10 @@ public class Player extends Entity {
         // DRAW HEALTH
         gra2.setFont(new Font("Arial", Font.PLAIN, 26));
         gra2.setColor(Color.white);
-        gra2.drawString("Health:" + health + "/" + maxHealth, 10, 400);
-
+        gra2.drawString("Health:" + health + "/" + maxHealth, 10, 30);
+        gra2.drawString("Explored Rooms: " + RoomExplored + "/" + gp.GetWorld().GetCurrentFloor().tot_rooms, 10, 70);
+        gra2.drawString("Kills: " + EnemyKilled, 10, 110);
         //gra2.drawString("Attacking:" + attacking, 10, 500);
         //gra2.drawString("Invincible:"+invincibleCounter, 10, 600);  
     }
-
 }

@@ -1,19 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package main.Java.world;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.Java.DefaultValues;
 import main.Java.GamePanel;
+import main.Java.entities.Entity;
 import org.json.*;
 
-/** @author DevDoctor */
+/**
+ * @author DevDoctor
+ */
 public class Floor {
 
     JSONObject jo;
@@ -23,20 +24,23 @@ public class Floor {
     int[][] rooms_value;
     int[] curr_room_cords;
     Room current_room;
-    int tot_rooms;
-
-    public Floor(GamePanel gp) {
+    public int tot_rooms;
+    String theme;
+    
+    public Floor(GamePanel gp, String theme) {
         this.gp = gp;
+        this.theme = theme;
         rooms = new Room[7][7];
         rooms_value = new int[7][7];
         current_room = null;
         tot_rooms = -1;
     }
 
-    public void Load(String theme) {
+    public void Load() {
         LoadMapFromJSON();
-        current_room.Load("default");
+        current_room.Load(theme);
         DefineRoomGates();
+        current_room.isEmpty = true;
     }
 
     private void LoadMapFromJSON() {
@@ -54,9 +58,14 @@ public class Floor {
             for (int c = 0; c < 7; c++) {
                 rooms_value[r][c] = Integer.parseInt(json_map.getString(r).substring(c, c + 1));
                 rooms[r][c] = new Room(gp, rooms_value[r][c]);
+                
                 if (rooms[r][c].GetValue() == 1) {
                     current_room = rooms[r][c];
                     curr_room_cords = new int[]{r, c};
+                }
+                
+                if(rooms_value[r][c] != 0 && rooms_value[r][c] != 1) {
+                    tot_rooms++;
                 }
             }
         }
@@ -64,6 +73,9 @@ public class Floor {
 
     private void DefineRoomGates() {
         boolean top = true, right = true, bottom = true, left = true;
+        if(current_room.isEmpty == true) {
+            current_room.OpenAllGates();
+        }
         if (curr_room_cords[0] - 1 < 0
                 || rooms_value[curr_room_cords[0] - 1][curr_room_cords[1]] == 0 || (rooms_value[curr_room_cords[0] - 1][curr_room_cords[1]] != current_room.value + 1
                 && rooms_value[curr_room_cords[0] - 1][curr_room_cords[1]] != current_room.value - 1)) {
@@ -116,9 +128,34 @@ public class Floor {
             default:
                 throw new AssertionError();
         }
-        current_room.Load("default");
+        current_room.Load(theme);
         DefineRoomGates();
+        if(current_room.isEmpty == false) {
+            current_room.CloseGates();
+            gp.GetPlayer().RoomExplored++;
+        }
         gp.GetWorld().GetCurrentRoom();
+    }
+
+    public void UpdateRoomEnemies() {
+        ArrayList<Entity> entities = current_room.GetEnemies();
+        if (gp.GetWorld().GetCurrentRoom().isEmpty == false) {
+            for (int i = 0; i < entities.size(); i++) {
+                entities.get(i).update();
+            }
+        }
+    }
+
+    public void DrawRoomEnemies(Graphics2D gra2) {
+        ArrayList<Entity> entities = current_room.GetEnemies();
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).draw(gra2);
+        }
+    }
+    
+    public void UnlockRoom() {
+        current_room.SetIsEmpty(true);
+        DefineRoomGates();
     }
 
 //    public void Write() {

@@ -69,8 +69,8 @@ public class Entity {
 
         collisionOn = false;
         gp.collisionChecker.checkTile(this);
-        gp.collisionChecker.checkEntity(this, gp.npc);
-        gp.collisionChecker.checkEntity(this, gp.enemy);
+        gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies()); // NPCS
+        gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies()); // ENEMIES
         gp.collisionChecker.checkObject(this, false);
         boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
 
@@ -97,6 +97,7 @@ public class Entity {
                     position[0] += speed;
                     break;
             }
+
         }
 
         SpriteCounter++;
@@ -109,7 +110,7 @@ public class Entity {
             }
             SpriteCounter = 0;
         }
-        
+
         if (invincible) {
             invincibleCounter++;
             if (invincibleCounter > 40) {
@@ -152,7 +153,7 @@ public class Entity {
                 }
                 break;
         }
-        
+
         //SET TRANSPARENCY
         if (invincible) {
             gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
@@ -160,7 +161,7 @@ public class Entity {
 
         // DRAW ENTITY SPRITE
         gra2.drawImage(now, position[0], position[1], DefaultValues.tileSize, DefaultValues.tileSize, null);
-        
+
         //RESET TRANSPARENCY
         gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
@@ -177,6 +178,11 @@ public class Entity {
 
     public int GetY() {
         return position[1];
+    }
+
+    public void SetNewCordinates(int X, int Y) {
+        position[0] = X;
+        position[1] = Y;
     }
 
     public void SetX(int x) {

@@ -49,8 +49,8 @@ public class GamePanel extends JPanel implements Runnable {
         
         pl = new Player(this, keyHandler);
         
-        world = new World(this);
-        world.LoadDungeon("default");
+        world = new World(this, "default");
+        world.LoadDungeon();
         
         /** !!! TEMPORARY !!! **/
         matrix = world.GetCurrentRoom().getMatrix();
@@ -99,20 +99,23 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == pauseState) {
             return;
         }
-        
+        // UPDATE PLAYER
         pl.update();
         
-        for (int i = 0; i < npc.length; i++) {
-            if (npc[i] != null) {
-                npc[i].update();
-            }
-        }
+        // UPDATE ENEMIES
+        world.GetCurrentFloor().UpdateRoomEnemies();
         
-        for (int i = 0; i < enemy.length; i++) {
-            if (enemy[i] != null) {
-                enemy[i].update();
-            }
-        }
+//        for (int i = 0; i < npc.length; i++) {
+//            if (npc[i] != null) {
+//                npc[i].update();
+//            }
+//        }
+//        
+//        for (int i = 0; i < enemy.length; i++) {
+//            if (enemy[i] != null) {
+//                enemy[i].update();
+//            }
+//        }
     }
     
     public void paintComponent(Graphics gra) {
@@ -124,26 +127,31 @@ public class GamePanel extends JPanel implements Runnable {
 //            world.DrawMap = false;
         }
         
-        for (int i = 0; i < npc.length; i++) {
-            if (npc[i] != null) {
-                npc[i].draw(gra2);
-            }
-        }
+//        for (int i = 0; i < npc.length; i++) {
+//            if (npc[i] != null) {
+//                npc[i].draw(gra2);
+//            }
+//        }
+//        
+//        for (int i = 0; i < enemy.length; i++) {
+//            if (enemy[i] != null) {
+//                enemy[i].draw(gra2);
+//            }
+//        }
+//        
+//        for (int i = 0; i < obj.length; i++) {
+//            if (obj[i] != null) {
+//                obj[i].draw(gra2, this);
+//            }
+//        }
         
-        for (int i = 0; i < enemy.length; i++) {
-            if (enemy[i] != null) {
-                enemy[i].draw(gra2);
-            }
-        }
+        // DRAW ENEMIES
+        world.GetCurrentFloor().DrawRoomEnemies(gra2);
         
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i] != null) {
-                obj[i].draw(gra2, this);
-            }
-        }
-        
+        // DRAW PLAYER
         pl.draw(gra2);
         
+        // DRAW GUI
         ui.draw(gra2);
         
         // LAST DRAW
