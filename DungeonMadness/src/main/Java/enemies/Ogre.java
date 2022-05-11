@@ -17,7 +17,7 @@ public class Ogre extends Entity {
         type = 2;
         name = "Ogre";
         speed = 1;
-        maxHealth = 2;
+        maxHealth = 100;
         health = maxHealth;
         damage = 20;
         solidArea = new Rectangle(0, 18, 64, 46);

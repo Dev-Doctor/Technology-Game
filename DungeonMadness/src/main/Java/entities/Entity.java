@@ -1,5 +1,6 @@
 package main.Java.entities;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -7,7 +8,9 @@ import java.awt.image.BufferedImage;
 import main.Java.DefaultValues;
 import main.Java.GamePanel;
 
-/** @author DevDoctor Jifrid */
+/**
+ * @author DevDoctor Jifrid
+ */
 public class Entity {
 
     public GamePanel gp;
@@ -22,6 +25,7 @@ public class Entity {
     public int[] position = new int[2];
 
     public BufferedImage[] animations;
+    public BufferedImage[] attackAnimations;
     public String direction;
 
     public int SpriteCounter = 0;
@@ -29,15 +33,18 @@ public class Entity {
 
     public Rectangle solidArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
+    public Rectangle attackArea;
     public boolean collisionOn = false;
     public int actionLockCounter = 0;
     public boolean invincible = false;
     public int invincibleCounter = 0;
+    public boolean attacking = false;
     public int type; // 0=player 1=npc 2=monster
 
     public Entity(GamePanel gp) {
         this.gp = gp;
         solidArea = new Rectangle(16, 18, 32, 46);
+        attackArea = new Rectangle(0, 0, 0, 0);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         maxHealth = 0;
@@ -102,6 +109,14 @@ public class Entity {
             }
             SpriteCounter = 0;
         }
+        
+        if (invincible) {
+            invincibleCounter++;
+            if (invincibleCounter > 40) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
     }
 
     public void draw(Graphics2D gra2) {
@@ -137,9 +152,17 @@ public class Entity {
                 }
                 break;
         }
+        
+        //SET TRANSPARENCY
+        if (invincible) {
+            gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+        }
 
         // DRAW ENTITY SPRITE
         gra2.drawImage(now, position[0], position[1], DefaultValues.tileSize, DefaultValues.tileSize, null);
+        
+        //RESET TRANSPARENCY
+        gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         // DRAW HITBOX
         if (DefaultValues.showHitboxes) {
