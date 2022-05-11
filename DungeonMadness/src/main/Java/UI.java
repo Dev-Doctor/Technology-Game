@@ -34,7 +34,7 @@ public class UI {
     }
     
     public void drawPauseScreen(){
-        String text = "PAUSA";
+        String text = "PAUSED";
         int x = getXforCenteredText(text);
         int y = DefaultValues.WindowHeight/2;
         g2.drawString(text, x, y);

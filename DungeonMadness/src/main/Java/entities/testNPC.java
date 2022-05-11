@@ -19,7 +19,6 @@ public class testNPC extends Entity{
         super(gp);
         
         speed = 1;
-        direction = "down";
         animations = new BufferedImage[8];
         
         getImage();

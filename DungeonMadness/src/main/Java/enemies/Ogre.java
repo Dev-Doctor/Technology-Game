@@ -24,7 +24,6 @@ public class Ogre extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         animations = new BufferedImage[8];
-        direction = "down";
         
         cDamageOn();
         getImage();
@@ -67,6 +66,12 @@ public class Ogre extends Entity {
             actionLockCounter = 0;
         }
         
+    }
+    
+    @Override
+    public void damageReaction() {
+        actionLockCounter = 0;
+        direction = gp.pl.direction;
     }
     
 }

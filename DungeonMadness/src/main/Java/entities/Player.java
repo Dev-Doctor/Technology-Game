@@ -255,9 +255,10 @@ public class Player extends Entity {
         if (!gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).invincible) {
             gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health -= 20;
             gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).invincible = true;
+            gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).damageReaction();
 
             if (gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health <= 0) {
-                gp.GetWorld().GetCurrentRoom().GetEnemies().remove(i);
+                gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).dying = true;
                 if (gp.GetWorld().GetCurrentRoom().GetEnemies().size() == 0) {
                     gp.GetWorld().GetCurrentFloor().UnlockRoom();
                     EnemyKilled++;

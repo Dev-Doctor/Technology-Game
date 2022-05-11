@@ -26,7 +26,7 @@ public class Floor {
     Room current_room;
     public int tot_rooms;
     String theme;
-    
+
     public Floor(GamePanel gp, String theme) {
         this.gp = gp;
         this.theme = theme;
@@ -58,13 +58,13 @@ public class Floor {
             for (int c = 0; c < 7; c++) {
                 rooms_value[r][c] = Integer.parseInt(json_map.getString(r).substring(c, c + 1));
                 rooms[r][c] = new Room(gp, rooms_value[r][c]);
-                
+
                 if (rooms[r][c].GetValue() == 1) {
                     current_room = rooms[r][c];
                     curr_room_cords = new int[]{r, c};
                 }
-                
-                if(rooms_value[r][c] != 0 && rooms_value[r][c] != 1) {
+
+                if (rooms_value[r][c] != 0 && rooms_value[r][c] != 1) {
                     tot_rooms++;
                 }
             }
@@ -73,7 +73,7 @@ public class Floor {
 
     private void DefineRoomGates() {
         boolean top = true, right = true, bottom = true, left = true;
-        if(current_room.isEmpty == true) {
+        if (current_room.isEmpty == true) {
             current_room.OpenAllGates();
         }
         if (curr_room_cords[0] - 1 < 0
@@ -130,7 +130,7 @@ public class Floor {
         }
         current_room.Load(theme);
         DefineRoomGates();
-        if(current_room.isEmpty == false) {
+        if (current_room.isEmpty == false) {
             current_room.CloseGates();
             gp.GetPlayer().RoomExplored++;
         }
@@ -141,7 +141,12 @@ public class Floor {
         ArrayList<Entity> entities = current_room.GetEnemies();
         if (gp.GetWorld().GetCurrentRoom().isEmpty == false) {
             for (int i = 0; i < entities.size(); i++) {
-                entities.get(i).update();
+                if (entities.get(i).alive && !entities.get(i).dying) {
+                    entities.get(i).update();
+                }
+                if (!entities.get(i).alive) {
+                    entities.remove(i);
+                }
             }
         }
     }
@@ -152,7 +157,7 @@ public class Floor {
             entities.get(i).draw(gra2);
         }
     }
-    
+
     public void UnlockRoom() {
         current_room.SetIsEmpty(true);
         DefineRoomGates();
