@@ -24,7 +24,7 @@ public class Room {
     final public Rectangle hit_right = new Rectangle(DefaultValues.tileSize * 17 + DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2, DefaultValues.tileSize * 4);
     final public Rectangle hit_bottom = new Rectangle(DefaultValues.tileSize * 7, DefaultValues.tileSize * 11 + DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2);
     final public Rectangle hit_left = new Rectangle(DefaultValues.tileSize / 4, DefaultValues.tileSize * 4, DefaultValues.tileSize / 2, DefaultValues.tileSize * 4);
-    final public Rectangle next_floor = new Rectangle();
+    public Rectangle next_floor = null;
     GamePanel gp;
 
     final String tile_loc = "src\\main\\resources\\data\\tile";
@@ -45,7 +45,9 @@ public class Room {
     int[][] matrix;
 
     int value;
+    
     boolean isEmpty;
+    boolean isLast;
 
     public Room(GamePanel gp) {
         this.gp = gp;
@@ -66,6 +68,7 @@ public class Room {
         this.matrix = new int[DefaultValues.MaxRowsTiles][DefaultValues.MaxColTiles];
         this.entities = new ArrayList<Entity>();
         this.isEmpty = false;
+        this.isLast = false;
         if (value != 1) {
             Ogre t = new Ogre(gp);
             t.SetNewCordinates(300, 300);
@@ -126,6 +129,9 @@ public class Room {
             for (int c = 0; c < 18; c++) {
                 tile_matrix[r][c] = materials_map.get(String.valueOf(matrix[r][c]));
             }
+        }
+        if(isLast) {
+            next_floor = new Rectangle(DefaultValues.tileSize * (DefaultValues.MaxColTiles / 2),DefaultValues.tileSize * (DefaultValues.MaxRowsTiles / 2), DefaultValues.tileSize, DefaultValues.tileSize);
         }
     }
 
@@ -203,7 +209,12 @@ public class Room {
         tile_matrix[6][0] = materials_map.get("0");
         tile_matrix[7][0] = materials_map.get("0");
     }
-
+    
+    public void SetIsLast(boolean value) {
+        isLast = value;
+        entities.clear();
+    }
+    
     public void SetIsEmpty(boolean value) {
         isEmpty = value;
     }
@@ -212,6 +223,14 @@ public class Room {
         return entities;
     }
 
+    public boolean isLast() {
+        return isLast;
+    }
+    
+    public boolean isEmpty() {
+        return isEmpty;
+    }
+    
     public int GetValue() {
         return value;
     }

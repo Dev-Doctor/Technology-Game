@@ -259,10 +259,6 @@ public class Player extends Entity {
 
             if (gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health <= 0) {
                 gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).dying = true;
-                if (gp.GetWorld().GetCurrentRoom().GetEnemies().size() == 0) {
-                    gp.GetWorld().GetCurrentFloor().UnlockRoom();
-                    EnemyKilled++;
-                }
             }
         }
     }
@@ -358,14 +354,19 @@ public class Player extends Entity {
 
         //RESET TRANSPARENCY
         gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-
-        // DRAW HEALTH
-        gra2.setFont(new Font("Arial", Font.PLAIN, 26));
-        gra2.setColor(Color.white);
-        gra2.drawString("Health:" + health + "/" + maxHealth, 10, 30);
-        gra2.drawString("Explored Rooms: " + RoomExplored + "/" + gp.GetWorld().GetCurrentFloor().tot_rooms, 10, 70);
-        gra2.drawString("Kills: " + EnemyKilled, 10, 110);
+        
         //gra2.drawString("Attacking:" + attacking, 10, 500);
         //gra2.drawString("Invincible:"+invincibleCounter, 10, 600);  
     }
+
+    public int getRoomExplored() {
+        return RoomExplored;
+    }
+
+    public int getEnemyKilled() {
+        return EnemyKilled;
+    }
+    
+    
+    
 }

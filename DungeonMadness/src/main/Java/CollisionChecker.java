@@ -5,7 +5,9 @@ import main.Java.entities.Entity;
 import main.Java.entities.Player;
 import main.Java.world.Tile;
 
-/** @author Jifrid - DevDoctor */
+/**
+ * @author Jifrid - DevDoctor
+ */
 public class CollisionChecker {
 
     GamePanel gp;
@@ -63,7 +65,7 @@ public class CollisionChecker {
 //        System.out.println("TopWorldY: " + EntityTopWorldY + " BottomWorldY: " + EntityBottomWorldY);
 //        System.out.println("--------------------------------------------------------------------");
     }
-    
+
     public int checkEntity(Entity entity, ArrayList<Entity> target) {
         int index = 999;
 
@@ -137,13 +139,13 @@ public class CollisionChecker {
                         break;
                 }
 
-                if (entity.solidArea.intersects(gp.obj[i].solidArea)) { 
+                if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
                     if (gp.obj[i].collision) {
                         entity.collisionOn = true;
                     }
-                    
-                        index = i;
-                    
+
+                    index = i;
+
                 }
 
                 entity.solidArea.x = entity.solidAreaDefaultX;
@@ -197,23 +199,29 @@ public class CollisionChecker {
     public void CheckBorder(Player player) {
         player.solidArea.x += player.GetX();
         player.solidArea.y += player.GetY();
-        
+
         if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_top)) {
             gp.world.GetCurrentFloor().ChangeRoom("up");
         }
-        
+
         if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_right)) {
             gp.world.GetCurrentFloor().ChangeRoom("right");
         }
-        
+
         if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_bottom)) {
             gp.world.GetCurrentFloor().ChangeRoom("bottom");
         }
-        
+
         if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_left)) {
             gp.world.GetCurrentFloor().ChangeRoom("left");
         }
-        
+
+        if (gp.world.GetCurrentRoom().isLast()) {
+            if (player.solidArea.intersects(gp.world.GetCurrentRoom().next_floor)) {
+                gp.world.GetCurrentFloor().ChangeRoom("floor");
+            }
+        }
+
         player.solidArea.x = player.solidAreaDefaultX;
         player.solidArea.y = player.solidAreaDefaultY;
     }

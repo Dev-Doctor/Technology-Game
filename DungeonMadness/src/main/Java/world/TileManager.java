@@ -28,6 +28,10 @@ public class TileManager {
             gra2.drawRect(r.hit_right.x, r.hit_right.y, r.hit_right.width, r.hit_right.height);
             gra2.drawRect(r.hit_bottom.x, r.hit_bottom.y, r.hit_bottom.width, r.hit_bottom.height);
             gra2.drawRect(r.hit_left.x, r.hit_left.y, r.hit_left.width, r.hit_left.height);
+            if(r.isLast) {
+                gra2.setColor(Color.green);
+                gra2.drawRect(r.next_floor.x, r.next_floor.y, r.next_floor.width, r.next_floor.height);
+            }
         }
 
     }

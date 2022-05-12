@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.Java.DefaultValues;
+import static main.Java.DefaultValues.Random;
 import main.Java.GamePanel;
 import main.Java.entities.Entity;
 import org.json.*;
@@ -22,10 +23,15 @@ public class Floor {
 
     Room[][] rooms;
     int[][] rooms_value;
+
     int[] curr_room_cords;
+    int[] last_room_cords;
+
     Room current_room;
     public int tot_rooms;
     String theme;
+
+    int size = 7;
 
     public Floor(GamePanel gp, String theme) {
         this.gp = gp;
@@ -41,6 +47,7 @@ public class Floor {
         current_room.Load(theme);
         DefineRoomGates();
         current_room.isEmpty = true;
+        rooms[last_room_cords[0]][last_room_cords[1]].isEmpty = true;
     }
 
     private void LoadMapFromJSON() {
@@ -54,8 +61,8 @@ public class Floor {
         jo = new JSONObject(json);
         JSONArray json_map = jo.getJSONArray("floor");
 
-        for (int r = 0; r < 7; r++) {
-            for (int c = 0; c < 7; c++) {
+        for (int r = 0; r < size; r++) {
+            for (int c = 0; c < size; c++) {
                 rooms_value[r][c] = Integer.parseInt(json_map.getString(r).substring(c, c + 1));
                 rooms[r][c] = new Room(gp, rooms_value[r][c]);
 
@@ -69,6 +76,10 @@ public class Floor {
                 }
             }
         }
+
+        DefineLastRoom();
+        rooms[last_room_cords[0]][last_room_cords[1]].SetIsLast(true);
+        System.out.println(last_room_cords[0] + " " + last_room_cords[1]);
     }
 
     private void DefineRoomGates() {
@@ -125,6 +136,9 @@ public class Floor {
                 current_room = rooms[curr_room_cords[0]][curr_room_cords[1] - 1];
                 curr_room_cords = new int[]{curr_room_cords[0], curr_room_cords[1] - 1};
                 break;
+            case "floor":
+                gp.GetWorld().ChangeFloor();
+                break;
             default:
                 throw new AssertionError();
         }
@@ -148,7 +162,12 @@ public class Floor {
                     entities.remove(i);
                 }
             }
+            if (gp.GetWorld().GetCurrentRoom().GetEnemies().isEmpty()) {
+                gp.GetWorld().GetCurrentFloor().UnlockRoom();
+                gp.GetPlayer().EnemyKilled++;
+            }
         }
+
     }
 
     public void DrawRoomEnemies(Graphics2D gra2) {
@@ -158,11 +177,43 @@ public class Floor {
         }
     }
 
+    public void DefineLastRoom() {
+        ArrayList<int[]> last_rooms = new ArrayList<int[]>();
+        int current_last_room = -1;
+
+        for (int r = 0; r < 7; r++) {
+            for (int c = 0; c < 7; c++) {
+                if (current_last_room < rooms_value[r][c]) {
+                    current_last_room = rooms_value[r][c];
+                }
+            }
+        }
+
+        for (int r = 0; r < 7; r++) {
+            for (int c = 0; c < 7; c++) {
+                if (rooms_value[r][c] == current_last_room) {
+                    last_rooms.add(new int[]{r, c});
+                }
+            }
+        }
+
+        int selected = Random(0, last_rooms.size() - 1);
+        last_room_cords = last_rooms.get(selected);
+    }
+
     public void UnlockRoom() {
         current_room.SetIsEmpty(true);
         DefineRoomGates();
     }
 
+    public int[] getCurr_room_cords() {
+        return curr_room_cords;
+    }
+
+    public Room[][] getRoomsMatrix() {
+        return rooms;
+    }
+    
 //    public void Write() {
 //        String result = "";
 //        for (int r = 0; r < 7; r++) {
@@ -174,4 +225,8 @@ public class Floor {
 //        }
 //        System.out.println(result);
 //    }
+
+    public int getSize() {
+        return size;
+    }
 }

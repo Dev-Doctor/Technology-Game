@@ -35,6 +35,12 @@ public class World {
         floors.get(floor_number).Load();
         floor_number++;
     }
+    
+    public void ChangeFloor() {
+        floors.add(new Floor(gp, theme));
+        floors.get(floor_number).Load();
+        floor_number++;
+    }
 
     public Room GetCurrentRoom() {
         return floors.get(floor_number - 1).GetCurrentRoom();

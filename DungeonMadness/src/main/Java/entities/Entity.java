@@ -22,6 +22,7 @@ public class Entity {
 
     //ATTRIBUTES
     public int maxHealth;
+    
     public int health;
     public int armor;
     public String name;
@@ -282,6 +283,10 @@ public class Entity {
 
     public boolean isCDamageOn() {
         return collisionDamageOn;
+    }
+    
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
 }

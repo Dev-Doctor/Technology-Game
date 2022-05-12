@@ -16,7 +16,7 @@
   "materials":{
 	"0":"cut_copper.json",
 	"1":"default_wall.json",
-        "2":"default_floor.json",
-        "3":"default_gate.json"
+      "2":"default_floor.json",
+      "3":"default_gate.json"
   }
 }

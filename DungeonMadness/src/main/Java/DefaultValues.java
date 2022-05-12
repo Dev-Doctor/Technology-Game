@@ -1,8 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package main.Java;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 /** @author DevDoctor */
 public class DefaultValues {
@@ -24,4 +22,8 @@ public class DefaultValues {
 
     public static final int PlDefaultX = tileSize * (MaxColTiles / 2) - tileSize / 2; // Default Player X cord
     public static final int PlDefaultY = tileSize * (MaxRowsTiles / 2) - tileSize / 2; // Default Player Y cord
+    
+    static public int Random(int mn, int mx) {
+        return ThreadLocalRandom.current().nextInt(mn, mx + 1);
+    }
 }
