@@ -171,9 +171,12 @@ public class Entity {
 
             gra2.setColor(new Color(35, 35, 35));
             gra2.fillRect(position[0] - 3, position[1] - 18, DefaultValues.tileSize + 6, 16);
-
-            gra2.setColor(Color.red);
-            gra2.fillRect(position[0], position[1] - 15, (int) hpBarValue, 10);
+            
+            if (health > 0) {
+                gra2.setColor(Color.red);
+                gra2.fillRect(position[0], position[1] - 15, (int) hpBarValue, 10);
+            }
+            
         }
 
         //SET TRANSPARENCY

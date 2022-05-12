@@ -40,6 +40,7 @@ public class World {
         floors.add(new Floor(gp, theme));
         floors.get(floor_number).Load();
         floor_number++;
+        gp.pl.RoomExplored = 0;
     }
 
     public Room GetCurrentRoom() {

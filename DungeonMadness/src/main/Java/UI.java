@@ -67,7 +67,7 @@ public class UI {
             for (int c = f.getCurr_room_cords()[1] - 2; c < f.getCurr_room_cords()[1] + 3; c++) {
                 boolean inBoundsC = (c >= 0) && (c < f.getSize());
                 if (inBoundsR && inBoundsC) {
-                    if (f.getRoomsMatrix()[r][c].isEmpty()) {
+                    if (f.getRoomsMatrix()[r][c].isExplored()) {
                         g2.setColor(Color.blue);
                     } else {
                         if (f.getRoomsMatrix()[r][c].GetValue() != 0) {

@@ -48,6 +48,7 @@ public class Room {
     
     boolean isEmpty;
     boolean isLast;
+    boolean explored;
 
     public Room(GamePanel gp) {
         this.gp = gp;
@@ -77,6 +78,7 @@ public class Room {
     }
 
     public void Load(String type) {
+        explored = true;
         String json = "";
         try {
             json = Files.readString(Path.of("src\\main\\resources\\data\\dungeon\\default.json"));
@@ -225,6 +227,10 @@ public class Room {
 
     public boolean isLast() {
         return isLast;
+    }
+
+    public boolean isExplored() {
+        return explored;
     }
     
     public boolean isEmpty() {
