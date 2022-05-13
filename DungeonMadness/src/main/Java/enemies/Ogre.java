@@ -11,7 +11,7 @@ import main.Java.GamePanel;
 import main.Java.entities.Entity;
 
 public class Ogre extends Entity {
-
+    
     public Ogre(GamePanel gp) {
         super(gp);
         type = 2;
@@ -73,5 +73,4 @@ public class Ogre extends Entity {
         actionLockCounter = 0;
         direction = gp.pl.direction;
     }
-    
 }

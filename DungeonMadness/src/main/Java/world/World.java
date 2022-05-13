@@ -1,7 +1,10 @@
 package main.Java.world;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import main.Java.DefaultValues;
 import main.Java.GamePanel;
 
 /**
@@ -12,6 +15,7 @@ public class World {
     GamePanel gp;
     ArrayList<Floor> floors;
 
+    List<String> AllThemesNames;
     public boolean DrawMap;
     int floor_number = 0;
     int[][] matrix;
@@ -29,6 +33,7 @@ public class World {
         this.DrawMap = true;
         this.floors = new ArrayList<Floor>();
         this.floors.add(new Floor(gp, theme));
+        LoadThemes();
     }
 
     public void LoadDungeon() {
@@ -41,6 +46,11 @@ public class World {
         floors.get(floor_number).Load();
         floor_number++;
         gp.pl.RoomExplored = 0;
+    }
+    
+    public void LoadThemes() {
+        File fl = new File(DefaultValues.themes_location);
+        AllThemesNames = Arrays.asList(fl.list());
     }
 
     public Room GetCurrentRoom() {

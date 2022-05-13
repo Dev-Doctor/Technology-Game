@@ -23,6 +23,8 @@ public class DefaultValues {
     public static final int PlDefaultX = tileSize * (MaxColTiles / 2) - tileSize / 2; // Default Player X cord
     public static final int PlDefaultY = tileSize * (MaxRowsTiles / 2) - tileSize / 2; // Default Player Y cord
     
+    public static final String themes_location = "src/main/"; // TEMPORARY
+    
     static public int Random(int mn, int mx) {
         return ThreadLocalRandom.current().nextInt(mn, mx + 1);
     }

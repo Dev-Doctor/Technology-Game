@@ -12,50 +12,54 @@ import main.Java.entities.Player;
 import main.Java.object.SuperObject;
 import main.Java.world.TileManager;
 
-/** @author DevDoctor */
+/**
+ * @author DevDoctor
+ */
 public class GamePanel extends JPanel implements Runnable {
+
     public CollisionChecker collisionChecker;
     TileManager tileManager = new TileManager(this);
     AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
     private final int FPS = 60;
-    
+
     Thread gameThread;
     KeyHandler keyHandler = new KeyHandler(this);
-    
+    SoundManager soundManager;
+
     public Player pl;
     public SuperObject obj[] = new SuperObject[10];
     public Entity npc[] = new Entity[10];
     public Entity enemy[] = new Entity[10];
-    
+
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
-    
+
     World world;
     Tile[][] matrix; // TEMPORARY
-    
-    
-    
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(DefaultValues.WindowWidth, DefaultValues.WindowHeight));
         this.setBackground(Color.white);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
-        
+
         this.collisionChecker = new CollisionChecker(this);
         this.matrix = new Tile[DefaultValues.MaxRowsTiles][DefaultValues.MaxColTiles];
-        
+
         pl = new Player(this, keyHandler);
-        
+
         world = new World(this, "default");
         world.LoadDungeon();
-        
-        /** !!! TEMPORARY !!! **/
+
+        /**
+         * !!! TEMPORARY !!! *
+         */
         matrix = world.GetCurrentRoom().getMatrix();
     }
-    
+
     void setupGame() {
 //        aSetter.setObject();
 //        aSetter.setNPC();
@@ -66,45 +70,48 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 1000000000/FPS;
+        double drawInterval = 1000000000 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
         long timer = 0;
         float drawCount = 0;
-        
-        while(gameThread != null) {
+
+        soundManager = new SoundManager();
+        soundManager.PlayMusic();
+
+        while (gameThread != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
             lastTime = currentTime;
-            
-            if(delta >= 1) {
+
+            if (delta >= 1) {
                 update();
                 repaint();
                 delta--;
                 drawCount++;
             }
-            
-            if(timer >= 1000000000) {
+
+            if (timer >= 1000000000) {
                 System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
-            
+
         }
     }
-    
+
     private void update() {
         if (gameState == pauseState) {
             return;
         }
         // UPDATE PLAYER
         pl.update();
-        
+
         // UPDATE ENEMIES
         world.GetCurrentFloor().UpdateRoomEnemies();
-        
+
 //        for (int i = 0; i < npc.length; i++) {
 //            if (npc[i] != null) {
 //                npc[i].update();
@@ -117,16 +124,16 @@ public class GamePanel extends JPanel implements Runnable {
 //            }
 //        }
     }
-    
+
     public void paintComponent(Graphics gra) {
         super.paintComponent(gra);
         Graphics2D gra2 = (Graphics2D) gra;
         // FIRST DRAW
-        if(world.DrawMap) {
+        if (world.DrawMap) {
             tileManager.DrawMap(world.GetCurrentRoom(), gra2);
 //            world.DrawMap = false;
         }
-        
+
 //        for (int i = 0; i < npc.length; i++) {
 //            if (npc[i] != null) {
 //                npc[i].draw(gra2);
@@ -144,31 +151,28 @@ public class GamePanel extends JPanel implements Runnable {
 //                obj[i].draw(gra2, this);
 //            }
 //        }
-        
         // DRAW ENEMIES
         world.GetCurrentFloor().DrawRoomEnemies(gra2);
-        
+
         // DRAW PLAYER
         pl.draw(gra2);
-        
+
         // DRAW GUI
         ui.draw(gra2);
-        
+
         // LAST DRAW
-        
         gra2.dispose();
     }
-    
-    
+
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
-    
+
     public Player GetPlayer() {
         return pl;
     }
-    
+
     public Tile[][] GetRoomMatrix() {
         return matrix;
     }
@@ -176,8 +180,12 @@ public class GamePanel extends JPanel implements Runnable {
     public World GetWorld() {
         return world;
     }
-    
+
     public TileManager GetTileManager() {
         return tileManager;
+    }
+    
+    public SoundManager GetSoundManager() {
+        return soundManager;
     }
 }

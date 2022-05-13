@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import main.Java.DefaultValues;
 import main.Java.GamePanel;
 
@@ -14,12 +15,17 @@ import main.Java.GamePanel;
 public class Entity {
 
     public GamePanel gp;
+    
+    //HITBOXES
     public Rectangle solidArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public Rectangle attackArea;
+    
+    //STYLE
     public BufferedImage[] animations;
     public BufferedImage[] attackAnimations;
-
+    private HashMap<String, String> sounds;
+    
     //ATTRIBUTES
     public int maxHealth;
     
@@ -49,10 +55,14 @@ public class Entity {
 
     public Entity(GamePanel gp) {
         this.gp = gp;
+        //STYLE
+        sounds = new HashMap<String, String>();
+        //HITBOXES
         solidArea = new Rectangle(16, 18, 32, 46);
         attackArea = new Rectangle(0, 0, 0, 0);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+        //ATTRIBUTES
         maxHealth = 0;
         health = 0;
         armor = 0;

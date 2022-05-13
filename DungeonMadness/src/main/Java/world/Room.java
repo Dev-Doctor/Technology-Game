@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.Java.GamePanel;
 import main.Java.DefaultValues;
+import static main.Java.DefaultValues.Random;
 import main.Java.enemies.Ogre;
 import main.Java.entities.Entity;
 import org.json.*;
@@ -27,7 +28,6 @@ public class Room {
     public Rectangle next_floor = null;
     GamePanel gp;
 
-    final String tile_loc = "src\\main\\resources\\data\\tile";
     final int gate_pos[][] = {
         {0, 7}, {0, 8}, {0, 9}, {0, 10},
         {4, 17}, {5, 17}, {6, 17}, {7, 17},
@@ -45,7 +45,7 @@ public class Room {
     int[][] matrix;
 
     int value;
-    
+
     boolean isEmpty;
     boolean isLast;
     boolean explored;
@@ -53,14 +53,12 @@ public class Room {
     public Room(GamePanel gp) {
         this.gp = gp;
         SetDefaultValues();
-        GetJSONfiles();
     }
 
     public Room(GamePanel gp, int value) {
         this.gp = gp;
         this.value = value;
         SetDefaultValues();
-        GetJSONfiles();
     }
 
     private void SetDefaultValues() {
@@ -78,10 +76,28 @@ public class Room {
     }
 
     public void Load(String type) {
+        String loc = DefaultValues.themes_location + "\\" + type + "\\data";
+        String tile_loc = loc + "\\tile";
+        String room_data_loc = loc + "\\rooms";
+        File fl = new File(tile_loc);
+        AllFiles = Arrays.asList(fl.list());
+
         explored = true;
+        Matrix(room_data_loc);
+        Materials(tile_loc);
+        CreateTileMatrix();
+    }
+
+    public void Matrix(String loc) {
+        File fl = new File(loc);
+        List<String> rooms_types = Arrays.asList(fl.list());
+
+        int selected = Random(0, rooms_types.size() - 1);
+        String map_loc = loc + "\\" + rooms_types.get(selected);
+        
         String json = "";
         try {
-            json = Files.readString(Path.of("src\\main\\resources\\data\\dungeon\\default.json"));
+            json = Files.readString(Path.of(map_loc));
         } catch (IOException ex) {
             Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -94,7 +110,9 @@ public class Room {
                 matrix[r][c] = Integer.parseInt(json_map.getString(r).substring(c, c + 1));
             }
         }
+    }
 
+    public void Materials(String tile_loc) {
         JSONObject materials = jo.getJSONObject("materials");
         var iter = materials.keys();
 
@@ -123,7 +141,6 @@ public class Room {
                 materials_map.put(key, new Tile());
             }
         }
-        CreateTileMatrix();
     }
 
     private void CreateTileMatrix() {
@@ -132,14 +149,9 @@ public class Room {
                 tile_matrix[r][c] = materials_map.get(String.valueOf(matrix[r][c]));
             }
         }
-        if(isLast) {
-            next_floor = new Rectangle(DefaultValues.tileSize * (DefaultValues.MaxColTiles / 2),DefaultValues.tileSize * (DefaultValues.MaxRowsTiles / 2), DefaultValues.tileSize, DefaultValues.tileSize);
+        if (isLast) {
+            next_floor = new Rectangle(DefaultValues.tileSize * (DefaultValues.MaxColTiles / 2), DefaultValues.tileSize * (DefaultValues.MaxRowsTiles / 2), DefaultValues.tileSize, DefaultValues.tileSize);
         }
-    }
-
-    private void GetJSONfiles() {
-        File fl = new File(tile_loc);
-        AllFiles = Arrays.asList(fl.list());
     }
 
     public void DefineGates(boolean top, boolean right, boolean bottom, boolean left) {
@@ -211,12 +223,12 @@ public class Room {
         tile_matrix[6][0] = materials_map.get("0");
         tile_matrix[7][0] = materials_map.get("0");
     }
-    
+
     public void SetIsLast(boolean value) {
         isLast = value;
         entities.clear();
     }
-    
+
     public void SetIsEmpty(boolean value) {
         isEmpty = value;
     }
@@ -232,11 +244,11 @@ public class Room {
     public boolean isExplored() {
         return explored;
     }
-    
+
     public boolean isEmpty() {
         return isEmpty;
     }
-    
+
     public int GetValue() {
         return value;
     }
