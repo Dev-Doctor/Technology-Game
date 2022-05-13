@@ -147,6 +147,7 @@ public class Floor {
         if (current_room.isEmpty == false) {
             current_room.CloseGates();
             gp.GetPlayer().RoomExplored++;
+            gp.GetPlayer().TotRoomExplored++;
         }
         gp.GetWorld().GetCurrentRoom();
     }

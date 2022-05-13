@@ -11,12 +11,12 @@ public class World {
 
     GamePanel gp;
     ArrayList<Floor> floors;
-    
+
     public boolean DrawMap;
     int floor_number = 0;
     int[][] matrix;
     String theme;
-    
+
 //  !!! TEMPORARY !!!
     Room r;
     Floor temp;
@@ -35,7 +35,7 @@ public class World {
         floors.get(floor_number).Load();
         floor_number++;
     }
-    
+
     public void ChangeFloor() {
         floors.add(new Floor(gp, theme));
         floors.get(floor_number).Load();
@@ -50,4 +50,10 @@ public class World {
     public Floor GetCurrentFloor() {
         return floors.get(floor_number - 1);
     }
+
+    public int getFloor_number() {
+        return floor_number;
+    }
+
+    
 }

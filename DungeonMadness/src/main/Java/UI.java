@@ -45,6 +45,9 @@ public class UI {
         int x = getXforCenteredText(text);
         int y = DefaultValues.WindowHeight / 2;
         g2.drawString(text, x, y);
+        g2.setFont(arial25);
+        g2.drawString("Explored Floors:" + (gp.GetWorld().getFloor_number() - 1), 10, 30);
+        g2.drawString("All Explored Rooms: " + gp.GetPlayer().TotRoomExplored, 10, 70);
     }
 
     public int getXforCenteredText(String text) {

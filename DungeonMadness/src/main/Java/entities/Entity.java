@@ -279,6 +279,10 @@ public class Entity {
     public void cDamageOn() {
         collisionDamageOn = true;
     }
+    
+     public void cDamageOff() {
+        collisionDamageOn = false;
+    }
 
     public int getDamage() {
         return damage;

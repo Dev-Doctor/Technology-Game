@@ -24,7 +24,8 @@ public class Player extends Entity {
 
     public int EnemyKilled = 0;
     public int RoomExplored = 0;
-
+    public int TotRoomExplored = 0;
+    
     public Player(GamePanel gp, KeyHandler keyHandler) {
         super(gp);
         animations = new BufferedImage[8];
@@ -259,6 +260,7 @@ public class Player extends Entity {
 
             if (gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health <= 0) {
                 gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).dying = true;
+                gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).cDamageOff();
             }
         }
     }
