@@ -40,6 +40,7 @@ public class Room {
     HashMap<String, Tile> materials_map;
 
     ArrayList<Entity> entities;
+    ArrayList<Entity> projectileList = new ArrayList<>();
 
     Tile[][] tile_matrix;
     int[][] matrix;
@@ -235,6 +236,10 @@ public class Room {
 
     public ArrayList<Entity> GetEnemies() {
         return entities;
+    }
+    
+    public ArrayList<Entity> GetProjectiles() {
+        return projectileList;
     }
 
     public boolean isLast() {

@@ -28,12 +28,12 @@ public class Entity {
     
     //ATTRIBUTES
     public int maxHealth;
-    
     public int health;
     public int armor;
     public String name;
     public int speed = 6;
     public int damage = 0;
+    public Projectile projectile;
 
     //STATE
     public String direction = "down";
@@ -45,13 +45,14 @@ public class Entity {
     public boolean attacking = false;
     public boolean alive = true;
     public boolean dying = false;
-    public int type; // 0=player 1=npc 2=enemy
+    public int type; // 0=player 1=npc 2=enemy 3=projectile
 
     //COUNTER
     public int invincibleCounter = 0;
     public int SpriteCounter = 0;
     public int actionLockCounter = 0;
     public int dyingCounter = 0;
+    public int shotAvailableCounter = 0;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -240,7 +241,6 @@ public class Entity {
             changeAlpha(g2, 1f);
         }
         if (dyingCounter > i * 8) {
-            dying = false;
             alive = false;
         }
     }
@@ -289,10 +289,6 @@ public class Entity {
     public void cDamageOn() {
         collisionDamageOn = true;
     }
-    
-     public void cDamageOff() {
-        collisionDamageOn = false;
-    }
 
     public int getDamage() {
         return damage;
@@ -304,6 +300,10 @@ public class Entity {
     
     public int getMaxHealth() {
         return maxHealth;
+    }
+
+    public int getType() {
+        return type;
     }
 
 }

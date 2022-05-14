@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
-import main.Java.entities.Entity;
 import main.Java.world.Tile;
 import main.Java.world.World;
 import main.Java.entities.Player;
@@ -29,8 +28,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Player pl;
     public SuperObject obj[] = new SuperObject[10];
-    public Entity npc[] = new Entity[10];
-    public Entity enemy[] = new Entity[10];
 
     public int gameState;
     public final int playState = 1;
@@ -62,9 +59,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     void setupGame() {
 //        aSetter.setObject();
-//        aSetter.setNPC();
-        aSetter.setEnemy();
-
         gameState = playState;
     }
 
@@ -111,7 +105,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         // UPDATE ENEMIES
         world.GetCurrentFloor().UpdateRoomEnemies();
-
+        world.GetCurrentFloor().UpdateRoomProjectiles();
 //        for (int i = 0; i < npc.length; i++) {
 //            if (npc[i] != null) {
 //                npc[i].update();
@@ -153,7 +147,10 @@ public class GamePanel extends JPanel implements Runnable {
 //        }
         // DRAW ENEMIES
         world.GetCurrentFloor().DrawRoomEnemies(gra2);
-
+        
+        //DRAW PROJECTILES
+        world.GetCurrentFloor().DrawRoomProjectiles(gra2);
+        
         // DRAW PLAYER
         pl.draw(gra2);
 

@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public boolean wPressed, sPressed, aPressed, dPressed, ePressed, spacePressed;
+    public boolean wPressed, sPressed, aPressed, dPressed, ePressed, spacePressed, fPressed;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -39,6 +39,10 @@ public class KeyHandler implements KeyListener {
             spacePressed = true;
         }
         
+        if (k == KeyEvent.VK_F) {
+            fPressed = true;
+        }
+        
         if (k == KeyEvent.VK_ESCAPE) {
             if (gp.gameState == gp.playState) {
                 gp.gameState = gp.pauseState;
@@ -68,6 +72,9 @@ public class KeyHandler implements KeyListener {
         }
         if (k == KeyEvent.VK_SPACE) {
             spacePressed = false;
+        }
+        if (k == KeyEvent.VK_F) {
+            fPressed = false;
         }
     }
 

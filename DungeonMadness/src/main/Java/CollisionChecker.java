@@ -58,7 +58,11 @@ public class CollisionChecker {
         }
 
         if (tile_1.Collision == true || tile_2.Collision == true) {
-            entity.collisionOn = true;
+            if (entity.getType() == 3) {
+                entity.alive = false;
+            }else{
+                entity.collisionOn = true;
+            }
         }
 
 //        System.out.println("LeftWorldX: " + EntityLeftWorldX + " RightWorldX: " + EntityRightWorldX);

@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import main.Java.DefaultValues;
 import main.Java.GamePanel;
 import main.Java.KeyHandler;
+import main.Java.object.arrow;
 
 /**
  * @author DevDoctor
@@ -34,6 +35,7 @@ public class Player extends Entity {
         attackArea.width = DefaultValues.tileSize;
         attackArea.height = DefaultValues.tileSize;
         name = "Player";
+        projectile = new arrow(gp);
 
         SetDefaultValues();
         getPlayerImage();
@@ -148,6 +150,12 @@ public class Player extends Entity {
             SpriteNumber = 1;
             SpriteCounter = 0;
         }
+        
+        if (keyHandler.fPressed && !projectile.alive && shotAvailableCounter == 30) {
+            projectile.set(position[0], position[1], direction, true, this);
+            gp.GetWorld().GetCurrentRoom().GetProjectiles().add(projectile);
+            shotAvailableCounter = 0;
+        }
 
         if (invincible) {
             invincibleCounter++;
@@ -155,6 +163,10 @@ public class Player extends Entity {
                 invincible = false;
                 invincibleCounter = 0;
             }
+        }
+        
+        if (shotAvailableCounter < 30) {
+            shotAvailableCounter++;
         }
 
     }
@@ -191,7 +203,7 @@ public class Player extends Entity {
             solidArea.height = attackArea.height;
 
             int enemyIndex = gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies());
-            damageEnemy(enemyIndex);
+            damageEnemy(enemyIndex, 40);
 
             position[0] = currentX;
             position[1] = currentY;
@@ -241,26 +253,26 @@ public class Player extends Entity {
         if (!gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).isCDamageOn()) {
             return;
         }
-        if (!invincible) {
+        if (!invincible && !gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).dying) {
             health -= gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).getDamage();
             invincible = true;
         }
     }
 
-    private void damageEnemy(int i) {
+    public void damageEnemy(int i, int dmg) {
         if (i == 999) {
             //System.out.println("miss");
             return;
         }
         //System.out.println("hit");
         if (!gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).invincible) {
-            gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health -= 20;
+            int damage = dmg;
+            gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health -= damage;
             gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).invincible = true;
             gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).damageReaction();
 
             if (gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health <= 0) {
                 gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).dying = true;
-                gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).cDamageOff();
             }
         }
     }

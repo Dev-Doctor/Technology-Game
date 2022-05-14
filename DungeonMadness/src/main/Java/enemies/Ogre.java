@@ -49,20 +49,36 @@ public class Ogre extends Entity {
     public void setAction(){
         
         actionLockCounter++;
-        if (actionLockCounter == 60) {
+        if (actionLockCounter == 10) {
             
-            Random r = new Random();
-            int d = r.nextInt(100)+1;
-        
-            if (d <= 25) {
-                direction = "up";
-            }else if (d <= 50) {
-                direction = "down";
-            }else if (d <= 75) {
-                direction = "left";
-            }else if (d <= 100) {
-                direction = "right";
-            }  
+//            Random r = new Random();
+//            int d = r.nextInt(100)+1;
+//        
+//            if (d <= 25) {
+//                direction = "up";
+//            }else if (d <= 50) {
+//                direction = "down";
+//            }else if (d <= 75) {
+//                direction = "left";
+//            }else if (d <= 100) {
+//                direction = "right";
+//            }  
+            int diffX = position[0] - gp.GetPlayer().GetX();
+            int diffY = position[1] - gp.GetPlayer().GetY();
+            
+            if (Math.abs(diffY) < Math.abs(diffX)) {
+                if (diffX < 0) {
+                    direction = "right";
+                }else{
+                    direction = "left";
+                }
+            }else{
+                if (diffY < 0) {
+                    direction = "down";
+                }else{
+                    direction = "up";
+                }
+            }
             actionLockCounter = 0;
         }
         

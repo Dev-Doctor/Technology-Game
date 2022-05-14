@@ -171,10 +171,29 @@ public class Floor {
 
     }
 
+    public void UpdateRoomProjectiles() {
+        ArrayList<Entity> projectileList = current_room.GetProjectiles();
+        for (int i = 0; i < projectileList.size(); i++) {
+                if (projectileList.get(i).alive) {
+                    projectileList.get(i).update();
+                }
+                if (!projectileList.get(i).alive) {
+                    projectileList.remove(i);
+                }
+            }
+    }
+
     public void DrawRoomEnemies(Graphics2D gra2) {
         ArrayList<Entity> entities = current_room.GetEnemies();
         for (int i = 0; i < entities.size(); i++) {
             entities.get(i).draw(gra2);
+        }
+    }
+    
+    public void DrawRoomProjectiles(Graphics2D gra2) {
+        ArrayList<Entity> projectileList = current_room.GetProjectiles();
+        for (int i = 0; i < projectileList.size(); i++) {
+            projectileList.get(i).draw(gra2);
         }
     }
 
@@ -214,7 +233,7 @@ public class Floor {
     public Room[][] getRoomsMatrix() {
         return rooms;
     }
-    
+
 //    public void Write() {
 //        String result = "";
 //        for (int r = 0; r < 7; r++) {
@@ -226,8 +245,8 @@ public class Floor {
 //        }
 //        System.out.println(result);
 //    }
-
     public int getSize() {
         return size;
     }
+
 }
