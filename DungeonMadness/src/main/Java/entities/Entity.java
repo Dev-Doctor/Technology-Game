@@ -96,11 +96,7 @@ public class Entity {
         boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
 
         if (this.type == 2 && contactPlayer == true) {
-            if (!gp.pl.invincible) {
-                gp.pl.health -= damage;
-                gp.pl.invincible = true;
-                //System.out.println("Health: " + gp.pl.health + "/" + gp.pl.maxHealth);
-            }
+            damagePlayer(damage);
         }
 
         if (collisionOn == false) {
@@ -139,6 +135,18 @@ public class Entity {
                 invincibleCounter = 0;
             }
         }
+        
+        if (shotAvailableCounter < 30) {
+            shotAvailableCounter++;
+        }
+    }
+    
+    public void damagePlayer(int damage){
+        if (!gp.GetPlayer().isInvincible()) {
+                gp.GetPlayer().health -= damage;
+                gp.GetPlayer().invincible = true;
+                //System.out.println("Health: " + gp.pl.health + "/" + gp.pl.maxHealth);
+            }
     }
 
     public void draw(Graphics2D gra2) {
@@ -304,6 +312,10 @@ public class Entity {
 
     public int getType() {
         return type;
+    }
+    
+    public boolean isInvincible(){
+        return invincible;
     }
 
 }

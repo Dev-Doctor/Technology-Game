@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import main.Java.GamePanel;
 import main.Java.entities.Entity;
+import main.Java.object.rock;
 
 public class Ogre extends Entity {
     
@@ -19,7 +20,9 @@ public class Ogre extends Entity {
         speed = 1;
         maxHealth = 100;
         health = maxHealth;
-        damage = 20;
+        damage = 30;
+        projectile = new rock(gp);
+        
         solidArea = new Rectangle(0, 18, 64, 46);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
@@ -82,11 +85,19 @@ public class Ogre extends Entity {
             actionLockCounter = 0;
         }
         
+        Random r = new Random();
+        int s = r.nextInt(100)+1;
+        if (s > 99 && !projectile.alive && shotAvailableCounter == 30) {
+            projectile.set(position[0], position[1], direction, true, this);
+            gp.GetWorld().GetCurrentRoom().GetProjectiles().add(projectile);
+            shotAvailableCounter = 0;
+        }
+        
     }
     
     @Override
     public void damageReaction() {
-        actionLockCounter = 0;
-        direction = gp.pl.direction;
+        actionLockCounter = -10;
+        direction = gp.GetPlayer().direction;
     }
 }

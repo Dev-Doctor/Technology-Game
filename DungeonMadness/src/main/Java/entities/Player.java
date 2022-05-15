@@ -253,7 +253,7 @@ public class Player extends Entity {
         if (!gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).isCDamageOn()) {
             return;
         }
-        if (!invincible && !gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).dying) {
+        if (!isInvincible() && !gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).dying) {
             health -= gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).getDamage();
             invincible = true;
         }
@@ -265,7 +265,7 @@ public class Player extends Entity {
             return;
         }
         //System.out.println("hit");
-        if (!gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).invincible) {
+        if (!gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).isInvincible()) {
             int damage = dmg;
             gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health -= damage;
             gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).invincible = true;
@@ -353,7 +353,7 @@ public class Player extends Entity {
         }
 
         //SET TRANSPARENCY 
-        if (invincible) {
+        if (isInvincible()) {
             gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         }
 
