@@ -26,7 +26,7 @@ public class Player extends Entity {
     public int EnemyKilled = 0;
     public int RoomExplored = 0;
     public int TotRoomExplored = 0;
-    
+
     public Player(GamePanel gp, KeyHandler keyHandler) {
         super(gp);
         animations = new BufferedImage[8];
@@ -150,7 +150,7 @@ public class Player extends Entity {
             SpriteNumber = 1;
             SpriteCounter = 0;
         }
-        
+
         if (keyHandler.fPressed && !projectile.alive && shotAvailableCounter == 30) {
             projectile.set(position[0], position[1], direction, true, this);
             gp.GetWorld().GetCurrentRoom().GetProjectiles().add(projectile);
@@ -165,11 +165,11 @@ public class Player extends Entity {
                 invincibleCounter = 0;
             }
         }
-        
+
         if (shotAvailableCounter < 30) {
             shotAvailableCounter++;
         }
-        
+
         if (health <= 0) {
             gp.gameState = gp.gameOverState;
         }
@@ -298,6 +298,8 @@ public class Player extends Entity {
         BufferedImage now = null;
         int tempX = position[0];
         int tempY = position[1];
+        int height = DefaultValues.tileSize;
+        int width = DefaultValues.tileSize;
 
         switch (direction) {
             case "up":
@@ -308,6 +310,7 @@ public class Player extends Entity {
                     } else {
                         now = attackAnimations[1];
                     }
+                    height = DefaultValues.tileSize * 2;
                 } else {
                     if (SpriteNumber == 1) {
                         now = animations[0];
@@ -323,6 +326,7 @@ public class Player extends Entity {
                     } else {
                         now = attackAnimations[3];
                     }
+                    height = DefaultValues.tileSize * 2;
                 } else {
                     if (SpriteNumber == 1) {
                         now = animations[2];
@@ -339,6 +343,7 @@ public class Player extends Entity {
                     } else {
                         now = attackAnimations[5];
                     }
+                    width = DefaultValues.tileSize * 2;
                 } else {
                     if (SpriteNumber == 1) {
                         now = animations[4];
@@ -354,6 +359,7 @@ public class Player extends Entity {
                     } else {
                         now = attackAnimations[7];
                     }
+                    width = DefaultValues.tileSize * 2;
                 } else {
                     if (SpriteNumber == 1) {
                         now = animations[6];
@@ -370,7 +376,7 @@ public class Player extends Entity {
         }
 
         // DRAW PLAYER
-        gra2.drawImage(now, tempX, tempY, DefaultValues.tileSize, DefaultValues.tileSize, null);
+        gra2.drawImage(now, tempX, tempY, width, height, null);
 
         // DRAW HITBOX
         if (DefaultValues.showHitboxes) {
@@ -380,7 +386,7 @@ public class Player extends Entity {
 
         //RESET TRANSPARENCY
         gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-        
+
         //gra2.drawString("Attacking:" + attacking, 10, 500);
         //gra2.drawString("Invincible:"+invincibleCounter, 10, 600);  
     }
@@ -392,7 +398,5 @@ public class Player extends Entity {
     public int getEnemyKilled() {
         return EnemyKilled;
     }
-    
-    
-    
+
 }
