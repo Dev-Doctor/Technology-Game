@@ -25,7 +25,7 @@ public class rock extends Projectile{
         speed = 4;
         maxHealth = 70;
         health = maxHealth;
-        damage = 10;
+        damage = 30;
         alive = false;
         solidArea = new Rectangle(16, 16, 32, 32);
         getImage();

@@ -155,6 +155,7 @@ public class Player extends Entity {
             projectile.set(position[0], position[1], direction, true, this);
             gp.GetWorld().GetCurrentRoom().GetProjectiles().add(projectile);
             shotAvailableCounter = 0;
+            //projectile
         }
 
         if (invincible) {
@@ -167,6 +168,10 @@ public class Player extends Entity {
         
         if (shotAvailableCounter < 30) {
             shotAvailableCounter++;
+        }
+        
+        if (health <= 0) {
+            gp.gameState = gp.gameOverState;
         }
 
     }
@@ -234,6 +239,13 @@ public class Player extends Entity {
                     nKey--;
                     gp.obj[i] = null;
                     //System.out.println("key:" + nKey);
+                }
+                break;
+            case "heart":
+                gp.obj[i] = null;
+                health += 25;
+                if (health > maxHealth) {
+                    health = 100;
                 }
                 break;
         }

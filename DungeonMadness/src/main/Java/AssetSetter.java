@@ -6,6 +6,7 @@
 package main.Java;
 
 import main.Java.object.chest;
+import main.Java.object.heart;
 import main.Java.object.key;
 
 public class AssetSetter {
@@ -27,6 +28,11 @@ public class AssetSetter {
         gp.obj[1] = new chest();
         gp.obj[1].SetX(2*DefaultValues.tileSize);
         gp.obj[1].SetY(2*DefaultValues.tileSize);
+        
+        gp.obj[2] = new heart();
+        gp.obj[2].SetX(5*DefaultValues.tileSize);
+        gp.obj[2].SetY(5*DefaultValues.tileSize);
+        
     }
     
 }

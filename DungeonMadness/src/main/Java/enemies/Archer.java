@@ -1,32 +1,38 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
 package main.Java.enemies;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import main.Java.DefaultValues;
 import main.Java.GamePanel;
 import main.Java.entities.Entity;
+import main.Java.object.rock;
 
-public class Ogre extends Entity {
+public class Archer extends Entity{
     
-    public Ogre(GamePanel gp) {
+    public Archer(GamePanel gp) {
         super(gp);
         type = 2;
-        name = "Ogre";
+        name = "Archer";
         speed = 1;
         maxHealth = 100;
         health = maxHealth;
-        damage = 40;
+        projectile = new rock(gp);
         
         solidArea = new Rectangle(0, 18, 64, 46);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         animations = new BufferedImage[8];
         
-        cDamageOn();
         getImage();
     }
     
@@ -42,7 +48,7 @@ public class Ogre extends Entity {
             animations[6] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/enemies/ogreTemp/right1.png"));
             animations[7] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/enemies/ogreTemp/right2.png"));
         } catch (IOException ex) {
-            Logger.getLogger(Ogre.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Archer.class.getName()).log(Level.SEVERE, null, ex);
         }
    
     }
@@ -64,6 +70,14 @@ public class Ogre extends Entity {
                 direction = "right";
             }  
             actionLockCounter = 0;
+        }
+        
+        Random r = new Random();
+        int s = r.nextInt(100)+1;
+        if (s > 95 && !projectile.alive && shotAvailableCounter == 30) {
+            projectile.set(position[0], position[1], direction, true, this);
+            gp.GetWorld().GetCurrentRoom().GetProjectiles().add(projectile);
+            shotAvailableCounter = 0;
         }
         
     }

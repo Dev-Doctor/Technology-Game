@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 import main.Java.GamePanel;
 import main.Java.DefaultValues;
 import static main.Java.DefaultValues.Random;
+import main.Java.enemies.Archer;
+import main.Java.enemies.Chaser;
 import main.Java.enemies.Ogre;
 import main.Java.entities.Entity;
 import org.json.*;
@@ -73,6 +75,12 @@ public class Room {
             Ogre t = new Ogre(gp);
             t.SetNewCordinates(300, 300);
             entities.add(t);
+            Chaser c = new Chaser(gp);
+            c.SetNewCordinates(400, 300);
+            entities.add(c);
+            Archer a = new Archer(gp);
+            a.SetNewCordinates(500, 300);
+            entities.add(a);
         }
     }
 

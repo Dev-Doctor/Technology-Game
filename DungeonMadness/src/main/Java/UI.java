@@ -14,11 +14,13 @@ public class UI {
 
     GamePanel gp;
     Graphics2D g2;
+    Font arial80;
     Font arial40;
     Font arial25;
 
     public UI(GamePanel gp) {
         this.gp = gp;
+        arial80 = new Font("Arial", Font.PLAIN, 80);
         arial40 = new Font("Arial", Font.PLAIN, 40);
         arial25 = new Font("Arial", Font.PLAIN, 25);
     }
@@ -37,6 +39,21 @@ public class UI {
         if (gp.gameState == gp.pauseState) {
             drawPauseScreen();
         }
+        if (gp.gameState == gp.gameOverState) {
+            drawGameOverScreen();
+        }
+    }
+    
+    public void drawGameOverScreen(){
+        g2.setColor(new Color(0, 0, 0, 150));
+        g2.fillRect(0, 0, DefaultValues.WindowWidth, DefaultValues.WindowHeight);
+        
+        String text = "GAME OVER";
+        int x = getXforCenteredText(text);
+        int y = DefaultValues.tileSize * 4;
+        g2.setFont(arial80);
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x, y);
     }
 
     public void drawPauseScreen() {
