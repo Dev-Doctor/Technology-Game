@@ -33,7 +33,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState = 1;
     public final int pauseState = 2;
     public final int gameOverState = 3;
-
+    
+    public String theme = "default";
+    
     World world;
     Tile[][] matrix; // TEMPORARY
 
@@ -49,7 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         pl = new Player(this, keyHandler);
 
-        world = new World(this, "default");
+        world = new World(this, theme);
         world.LoadDungeon();
 
         /**

@@ -33,11 +33,13 @@ public class Archer extends Entity{
         solidAreaDefaultY = solidArea.y;
         animations = new BufferedImage[8];
         
-        getImage();
+        SetTheme();
     }
     
-    public void getImage(){
-
+    public void SetTheme(){
+        HitSound = "archer/hit.wav";
+        DeathSound = "archer/death.wav";
+        
         try {
             animations[0] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/enemies/ogreTemp/right1.png"));
             animations[1] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/enemies/ogreTemp/right2.png"));

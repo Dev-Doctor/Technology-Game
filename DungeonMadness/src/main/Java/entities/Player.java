@@ -2,9 +2,7 @@ package main.Java.entities;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -38,8 +36,13 @@ public class Player extends Entity {
         projectile = new arrow(gp);
 
         SetDefaultValues();
+        LoadTheme();
         getPlayerImage();
         getPlayerAttackImage();
+    }
+
+    public void LoadTheme() {
+        String loc = DefaultValues.themes_location;
     }
 
     public void SetDefaultValues() {
@@ -171,7 +174,10 @@ public class Player extends Entity {
         }
 
         if (health <= 0) {
-            gp.gameState = gp.gameOverState;
+            if (gp.gameState != gp.gameOverState) {
+                gp.gameState = gp.gameOverState;
+                gp.GetSoundManager().PlaySound("player\\death.wav");
+            }
         }
 
     }
@@ -282,6 +288,8 @@ public class Player extends Entity {
             gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health -= damage;
             gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).invincible = true;
             gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).damageReaction();
+            System.out.println(gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).HitSound);
+            gp.GetSoundManager().PlaySound(gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).HitSound);
 
             if (gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).health <= 0) {
                 gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).dying = true;

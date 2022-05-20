@@ -24,17 +24,16 @@ public class Chaser extends Entity{
         health = maxHealth;
         damage = 30;
         
-        solidArea = new Rectangle(0, 18, 64, 46);
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
         animations = new BufferedImage[8];
         
         cDamageOn();
-        getImage();
+        SetTheme();
     }
     
-    public void getImage(){
-
+    public void SetTheme(){
+        HitSound = "chaser/hit.wav";
+        DeathSound = "chaser/death.wav";
+        
         try {
             animations[0] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def.png"));
             animations[1] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def2.png"));

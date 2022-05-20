@@ -161,11 +161,11 @@ public class Floor {
                 }
                 if (!entities.get(i).alive) {
                     entities.remove(i);
+                    gp.GetPlayer().EnemyKilled++;
                 }
             }
             if (gp.GetWorld().GetCurrentRoom().GetEnemies().isEmpty()) {
                 gp.GetWorld().GetCurrentFloor().UnlockRoom();
-                gp.GetPlayer().EnemyKilled++;
             }
         }
 

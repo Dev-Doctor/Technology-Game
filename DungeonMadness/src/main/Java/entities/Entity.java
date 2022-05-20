@@ -15,17 +15,18 @@ import main.Java.GamePanel;
 public class Entity {
 
     public GamePanel gp;
-    
+
     //HITBOXES
     public Rectangle solidArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public Rectangle attackArea;
-    
+
     //STYLE
     public BufferedImage[] animations;
     public BufferedImage[] attackAnimations;
-    private HashMap<String, String> sounds;
-    
+    public String HitSound;
+    public String DeathSound;
+
     //ATTRIBUTES
     public int maxHealth;
     public int health;
@@ -56,8 +57,6 @@ public class Entity {
 
     public Entity(GamePanel gp) {
         this.gp = gp;
-        //STYLE
-        sounds = new HashMap<String, String>();
         //HITBOXES
         solidArea = new Rectangle(16, 18, 32, 46);
         attackArea = new Rectangle(0, 0, 0, 0);
@@ -135,18 +134,24 @@ public class Entity {
                 invincibleCounter = 0;
             }
         }
-        
+
         if (shotAvailableCounter < 30) {
             shotAvailableCounter++;
         }
     }
-    
-    public void damagePlayer(int damage){
-        if (!gp.GetPlayer().isInvincible()) {
-                gp.GetPlayer().health -= damage;
-                gp.GetPlayer().invincible = true;
-                //System.out.println("Health: " + gp.pl.health + "/" + gp.pl.maxHealth);
-            }
+
+    public void damagePlayer(int damage) {
+        if (gp.GetPlayer().isInvincible()) {
+            return;
+        }
+        if (type == 2 && collisionDamageOn) {
+            return;
+        }
+        gp.GetSoundManager().PlaySound("player\\hit.wav");
+        gp.GetPlayer().health -= damage;
+        gp.GetPlayer().invincible = true;
+        //System.out.println("Health: " + gp.pl.health + "/" + gp.pl.maxHealth);
+
     }
 
     public void draw(Graphics2D gra2) {
@@ -190,12 +195,12 @@ public class Entity {
 
             gra2.setColor(new Color(35, 35, 35));
             gra2.fillRect(position[0] - 3, position[1] - 18, DefaultValues.tileSize + 6, 16);
-            
+
             if (health > 0) {
                 gra2.setColor(Color.red);
                 gra2.fillRect(position[0], position[1] - 15, (int) hpBarValue, 10);
             }
-            
+
         }
 
         //SET TRANSPARENCY
@@ -305,7 +310,7 @@ public class Entity {
     public boolean isCDamageOn() {
         return collisionDamageOn;
     }
-    
+
     public int getMaxHealth() {
         return maxHealth;
     }
@@ -313,8 +318,8 @@ public class Entity {
     public int getType() {
         return type;
     }
-    
-    public boolean isInvincible(){
+
+    public boolean isInvincible() {
         return invincible;
     }
 

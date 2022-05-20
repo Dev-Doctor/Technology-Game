@@ -1,15 +1,10 @@
 package main.Java;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * @author DevDoctor
@@ -27,7 +22,6 @@ public class SoundManager {
 
     public void PlayMusic() {
         f = new File(sounds_loc + "\\theme.wav");
-        System.out.println(sounds_loc + "\\theme.wav");
         // ONLY SET
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(f);
@@ -59,8 +53,7 @@ public class SoundManager {
             AudioInputStream ais = AudioSystem.getAudioInputStream(f);
             clip = AudioSystem.getClip();
             clip.open(ais);
-        } catch (Exception ex) {
-        }
+        } catch (Exception ex) { }
 
         FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(20f * (float) Math.log10(.2));

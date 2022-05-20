@@ -27,11 +27,13 @@ public class Ogre extends Entity {
         animations = new BufferedImage[8];
         
         cDamageOn();
-        getImage();
+        SetTheme();
     }
     
-    public void getImage(){
-
+    public void SetTheme(){
+        HitSound = "ogre/hit.wav";
+        DeathSound = "ogre/death.wav";
+        
         try {
             animations[0] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/enemies/ogreTemp/right1.png"));
             animations[1] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/enemies/ogreTemp/right2.png"));
