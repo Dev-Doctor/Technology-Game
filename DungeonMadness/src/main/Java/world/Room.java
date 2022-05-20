@@ -16,6 +16,7 @@ import main.Java.DefaultValues;
 import static main.Java.DefaultValues.Random;
 import main.Java.enemies.Archer;
 import main.Java.enemies.Chaser;
+import main.Java.enemies.Kamikaze;
 import main.Java.enemies.Ogre;
 import main.Java.entities.Entity;
 import org.json.*;
@@ -81,6 +82,9 @@ public class Room {
             Archer a = new Archer(gp);
             a.SetNewCordinates(500, 300);
             entities.add(a);
+            Kamikaze k = new Kamikaze(gp);
+            k.SetNewCordinates(600, 300);
+            entities.add(k);
         }
     }
 

@@ -17,6 +17,7 @@ public class UI {
     Font arial80;
     Font arial40;
     Font arial25;
+    int commandNum = 0;
 
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -49,11 +50,29 @@ public class UI {
         g2.fillRect(0, 0, DefaultValues.WindowWidth, DefaultValues.WindowHeight);
         
         String text = "GAME OVER";
-        int x = getXforCenteredText(text);
+        int x = getXforCenteredText(text) - 165;
         int y = DefaultValues.tileSize * 4;
         g2.setFont(arial80);
         g2.setColor(Color.WHITE);
         g2.drawString(text, x, y);
+        
+        g2.setFont(arial40);
+        
+        text = "Retry";
+        x = getXforCenteredText(text);
+        y = DefaultValues.tileSize * 6;
+        g2.drawString(text, x, y);
+        if (commandNum == 0) {
+            g2.drawString(">", x - 25, y);
+        }
+        
+        text = "Quit";
+        x = getXforCenteredText(text);
+        y += 80;
+        g2.drawString(text, x, y);
+        if (commandNum == 1) {
+            g2.drawString(">", x - 25, y);
+        }
     }
 
     public void drawPauseScreen() {

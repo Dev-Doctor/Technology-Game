@@ -274,6 +274,9 @@ public class Player extends Entity {
         if (!isInvincible() && !gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).dying) {
             health -= gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).getDamage();
             invincible = true;
+            if (gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).getName() == "Kamikaze") {
+                gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).alive = false;
+            }
         }
     }
 
