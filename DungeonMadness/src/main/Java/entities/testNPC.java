@@ -1,8 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * @author Jifrid
+ * @version 0.2
+ * @file testNPC.java
+ *
+ * @brief Very simple NPC
+ * @deprecated
  */
-
 package main.Java.entities;
 
 import java.awt.image.BufferedImage;
@@ -13,18 +16,27 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import main.Java.GamePanel;
 
-public class testNPC extends Entity{
+/**
+ * @class testNPC
+ *
+ * @brief First NPC class
+ *
+ * The class of the first NPC
+ * @deprecated
+ */
+@Deprecated
+public class testNPC extends Entity {
 
     public testNPC(GamePanel gp) {
         super(gp);
-        
+
         speed = 1;
         animations = new BufferedImage[8];
-        
+
         getImage();
     }
-    
-    public void getImage(){
+
+    public void getImage() {
         try {
             animations[0] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def.png"));
             animations[1] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/npcs/testNPC/def2.png"));
@@ -37,29 +49,29 @@ public class testNPC extends Entity{
         } catch (IOException ex) {
             Logger.getLogger(testNPC.class.getName()).log(Level.SEVERE, null, ex);
         }
-   
+
     }
-    
-    public void setAction(){
-        
+
+    public void setAction() {
+
         actionLockCounter++;
         if (actionLockCounter == 60) {
-            
+
             Random r = new Random();
-            int d = r.nextInt(100)+1;
-        
+            int d = r.nextInt(100) + 1;
+
             if (d <= 25) {
                 direction = "up";
-            }else if (d <= 50) {
+            } else if (d <= 50) {
                 direction = "down";
-            }else if (d <= 75) {
+            } else if (d <= 75) {
                 direction = "left";
-            }else if (d <= 100) {
+            } else if (d <= 100) {
                 direction = "right";
-            }  
+            }
             actionLockCounter = 0;
         }
-        
+
     }
-        
+
 }

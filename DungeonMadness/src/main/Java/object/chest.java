@@ -1,13 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * @author Jifrid
+ * @version 1.0
+ * @file chest.java
+ *
+ * @brief CUT CONTENT: The chest object file
+ *
  */
-
 package main.Java.object;
 
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/** 
+* @class chest
+* 
+* @brief CUT CONTENT: The chest object class
+* @see main.Java.object.SuperObject
+*/ 
 public class chest extends SuperObject{
 
     public chest() {

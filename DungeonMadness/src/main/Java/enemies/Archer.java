@@ -1,8 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * @author Jifrid
+ * @version 1.0
+ * @file Archer.java
+ *
+ * @brief The Archer class file
  */
-
 package main.Java.enemies;
 
 import java.awt.Rectangle;
@@ -17,6 +19,11 @@ import main.Java.GamePanel;
 import main.Java.entities.Entity;
 import main.Java.object.rock;
 
+/**
+ * @class Archer
+ *
+ * @brief The Archer class
+ */
 public class Archer extends Entity{
     
     public Archer(GamePanel gp) {
@@ -36,6 +43,11 @@ public class Archer extends Entity{
         SetTheme();
     }
     
+    /**
+     * @brief Loads the theme
+     * 
+     * Load sounds and textures from the current theme
+     */
     public void SetTheme(){
         HitSound = "archer/hit.wav";
         DeathSound = "archer/death.wav";
@@ -55,6 +67,11 @@ public class Archer extends Entity{
    
     }
     
+    /**
+     * @brief set the Action
+     * 
+     * performs the action
+     */
     public void setAction(){
         
         actionLockCounter++;

@@ -1,8 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * @author Jifrid
+ * @version 1.0
+ * @file Kamikaze.java
+ *
+ * @brief The Kamikaze class file
  */
-
 package main.Java.enemies;
 
 import java.awt.Rectangle;
@@ -14,6 +16,11 @@ import javax.imageio.ImageIO;
 import main.Java.GamePanel;
 import main.Java.entities.Entity;
 
+/**
+ * @class Kamikaze
+ *
+ * @brief The Kamikaze class
+ */
 public class Kamikaze extends Entity{
     public Kamikaze(GamePanel gp) {
         super(gp);
@@ -33,9 +40,14 @@ public class Kamikaze extends Entity{
         SetTheme();
     }
     
+    /**
+     * @brief Loads the theme
+     * 
+     * Load sounds and textures from the current theme
+     */
     public void SetTheme(){
         HitSound = "kamikaze/hit.wav";
-        DeathSound = "kamikaze/hit.wav";
+        DeathSound = "kamikaze/death.wav";
         
         
         try {
@@ -53,6 +65,11 @@ public class Kamikaze extends Entity{
    
     }
     
+    /**
+     * @brief set the Action
+     * 
+     * performs the action
+     */
     public void setAction(){
         
         actionLockCounter++;

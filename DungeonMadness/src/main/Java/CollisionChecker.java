@@ -1,13 +1,26 @@
+/**
+* @author  Jifrid, DevDoctor
+* @version 1.0
+* @file CollisionChecker.java 
+* 
+* @brief Manage collisions
+* 
+* Manage all the collisions for all the entities, objects and tiles
+* 
+*/
 package main.Java;
 
 import java.util.ArrayList;
 import main.Java.entities.Entity;
-import main.Java.entities.Player;
 import main.Java.world.Tile;
 
-/**
- * @author Jifrid - DevDoctor
- */
+/** 
+* @class CollisionChecker
+* 
+* @brief Manage collisions
+* 
+* Manage all the collisions for all the entities, objects and tiles
+*/ 
 public class CollisionChecker {
 
     GamePanel gp;
@@ -15,12 +28,21 @@ public class CollisionChecker {
     public CollisionChecker(GamePanel gp) {
         this.gp = gp;
     }
-
+    
+    /**
+     * @brief check collisions with world
+     * 
+     * Check the collisions with the world for the entity passed as parameter.
+     * If the entity is an enemy or the player he collides with the wall.
+     * If it is a projectile it will be destroyed
+     * Contains the magic souts!!!
+     * @param entity the entity to check
+     */
     public void checkTile(Entity entity) {
         
-        /* SOUT MAGICA */
+        /* MAGIC SOUT */
         System.out.println("");
-        /* FINE SOUT MAGICA */
+        /* END OF MAGIC SOUT */
         
         int EntityLeftWorldX = entity.GetX() + entity.solidArea.x;
         int EntityRightWorldX = entity.GetX() + entity.solidArea.x + entity.solidArea.width;
@@ -33,9 +55,9 @@ public class CollisionChecker {
         int entityTopRow = EntityTopWorldY / DefaultValues.tileSize;
         int entityBottomRow = EntityBottomWorldY / DefaultValues.tileSize;
 
-        /* L'ALTRA SOUT MAGICA */
+        /* OTHER MAGIC SOUT */
         System.out.println("");
-        /* FINE DELL'ALTRA SOUT MAGICA */
+        /* END OF OTHER MAGIC SOUT */
         
         Tile tile_1 = null, tile_2 = null;
 
@@ -73,12 +95,16 @@ public class CollisionChecker {
                 entity.collisionOn = true;
             }
         }
-
-//        System.out.println("LeftWorldX: " + EntityLeftWorldX + " RightWorldX: " + EntityRightWorldX);
-//        System.out.println("TopWorldY: " + EntityTopWorldY + " BottomWorldY: " + EntityBottomWorldY);
-//        System.out.println("--------------------------------------------------------------------");
     }
 
+    /**
+     * @brief check the passed entity collisions with other enemies
+     * 
+     * check the passed entity collisions with all the other entities in the current room
+     * @param entity the entity to check
+     * @param target all the enemies in the current room
+     * @return the position of the current colliding entity in the ArrayList
+     */
     public int checkEntity(Entity entity, ArrayList<Entity> target) {
         int index = 999;
 
@@ -123,54 +149,69 @@ public class CollisionChecker {
         }
         return index;
     }
-
-    public int checkObject(Entity entity, boolean player) {
+    /**
+     * @brief check the passed Entity collisions with the objects
+     * 
+     * check the Player collisions with all the objects
+     * If the object has tile collision, the Player collides with the object and returns the position of the object in the ArrayList
+     * If it hasn't, it just returns the position of the object in the ArrayList
+     * @param player check the player
+     * @return the position of the object in the ArrayList
+     */
+    public int checkObject(Entity player) {
         int index = 999;
 
-        for (int i = 0; i < gp.obj.length; i++) {
+        for (int i = 0; i < gp.obj.size(); i++) {
 
-            if (gp.obj[i] != null) {
+            if (gp.obj.get(i) != null) {
 
-                entity.solidArea.x += entity.GetX();
-                entity.solidArea.y += entity.GetY();
+                player.solidArea.x += player.GetX();
+                player.solidArea.y += player.GetY();
 
-                gp.obj[i].solidArea.x += gp.obj[i].GetX();
-                gp.obj[i].solidArea.y += gp.obj[i].GetY();
+                gp.obj.get(i).solidArea.x += gp.obj.get(i).GetX();
+                gp.obj.get(i).solidArea.y += gp.obj.get(i).GetY();
 
-                switch (entity.direction) {
+                switch (player.direction) {
                     case "up":
-                        entity.solidArea.y -= entity.speed;
+                        player.solidArea.y -= player.speed;
                         break;
                     case "down":
-                        entity.solidArea.y += entity.speed;
+                        player.solidArea.y += player.speed;
                         break;
                     case "left":
-                        entity.solidArea.x -= entity.speed;
+                        player.solidArea.x -= player.speed;
                         break;
                     case "right":
-                        entity.solidArea.x += entity.speed;
+                        player.solidArea.x += player.speed;
                         break;
                 }
 
-                if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                    if (gp.obj[i].collision) {
-                        entity.collisionOn = true;
+                if (player.solidArea.intersects(gp.obj.get(i).solidArea)) {
+                    if (gp.obj.get(i).collision) {
+                        player.collisionOn = true;
                     }
 
                     index = i;
-
                 }
 
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
-                gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
-                gp.obj[i].solidArea.y = gp.obj[i].solidAreaDefaultY;
+                player.solidArea.x = player.solidAreaDefaultX;
+                player.solidArea.y = player.solidAreaDefaultY;
+                gp.obj.get(i).solidArea.x = gp.obj.get(i).solidAreaDefaultX;
+                gp.obj.get(i).solidArea.y = gp.obj.get(i).solidAreaDefaultY;
             }
 
         }
         return index;
     }
 
+    /**
+     * @brief check the passed Entity collisions with the player
+     * 
+     * check the passed Entity collisions with the player.
+     * If it collide it activates the collisions
+     * @param entity entity to check
+     * @return if the entity is colliding with the player returns true else false
+     */
     public boolean checkPlayer(Entity entity) {
 
         boolean contactPlayer = false;
@@ -208,15 +249,23 @@ public class CollisionChecker {
 
         return contactPlayer;
     }
-
+    
+    /***
+     * @brief Check the collisions with the "doors"
+     * 
+     * Check the collisions with the "exits" from the room.
+     * If the entity that is colliding is a player it changes the room to the next one in that direction
+     * else if the entity is a projectile it destroys it
+     * @param entity entity to check
+     */
     public void checkBorder(Entity entity) {
         entity.solidArea.x += entity.GetX();
         entity.solidArea.y += entity.GetY();
         
-        if(entity.type == 3 && (entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_top) 
-                || entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_right) 
-                || entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_bottom))
-                || entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_left)) {
+       if (entity.type == 3 && (entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_top)
+                || entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_right)
+                || entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_bottom)
+                || entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_left))) {
             entity.alive = false;
             return;
         }

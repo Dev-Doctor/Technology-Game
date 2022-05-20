@@ -46,7 +46,7 @@ public class Room {
     ArrayList<Entity> projectileList = new ArrayList<>();
 
     Tile[][] tile_matrix;
-    int[][] matrix;
+    String[][] matrix;
 
     int value;
 
@@ -68,22 +68,22 @@ public class Room {
     private void SetDefaultValues() {
         this.materials_map = new HashMap<String, Tile>();
         this.tile_matrix = new Tile[DefaultValues.MaxRowsTiles][DefaultValues.MaxColTiles];
-        this.matrix = new int[DefaultValues.MaxRowsTiles][DefaultValues.MaxColTiles];
+        this.matrix = new String[DefaultValues.MaxRowsTiles][DefaultValues.MaxColTiles];
         this.entities = new ArrayList<Entity>();
         this.isEmpty = false;
         this.isLast = false;
         if (value != 1) {
             Ogre t = new Ogre(gp);
-            t.SetNewCordinates(300, 300);
+            t.SetNewCoordinates(300, 300);
             entities.add(t);
             Chaser c = new Chaser(gp);
-            c.SetNewCordinates(400, 300);
+            c.SetNewCoordinates(400, 300);
             entities.add(c);
             Archer a = new Archer(gp);
-            a.SetNewCordinates(500, 300);
+            a.SetNewCoordinates(500, 300);
             entities.add(a);
             Kamikaze k = new Kamikaze(gp);
-            k.SetNewCordinates(600, 300);
+            k.SetNewCoordinates(600, 300);
             entities.add(k);
         }
     }
@@ -95,6 +95,8 @@ public class Room {
         File fl = new File(tile_loc);
         AllFiles = Arrays.asList(fl.list());
 
+        gp.obj.clear();
+        
         explored = true;
         Matrix(room_data_loc);
         Materials(tile_loc);
@@ -121,7 +123,7 @@ public class Room {
 
         for (int r = 0; r < 12; r++) {
             for (int c = 0; c < 18; c++) {
-                matrix[r][c] = Integer.parseInt(json_map.getString(r).substring(c, c + 1));
+                matrix[r][c] = json_map.getString(r).substring(c, c + 1);
             }
         }
     }
@@ -146,10 +148,10 @@ public class Room {
 
                 try {
                     if (tl.getBoolean("gate") == true) {
-                        materials_map.put(key, new Tile(tl.getBoolean("collision"), tl.getString("texture"), tl.getBoolean("gate")));
+                        materials_map.put(key, new Tile(tl.getBoolean("collision"), tl.getString("texture"), tl.getBoolean("gate"), gp.theme));
                     }
                 } catch (Exception ex) {
-                    materials_map.put(key, new Tile(tl.getBoolean("collision"), tl.getString("texture")));
+                    materials_map.put(key, new Tile(tl.getBoolean("collision"), tl.getString("texture"), gp.theme));
                 }
             } else {
                 materials_map.put(key, new Tile());

@@ -1,3 +1,10 @@
+/**
+ * @author Jifrid
+ * @version 1.0
+ * @file Ogre.java
+ *
+ * @brief The Ogre class file
+ */
 package main.Java.enemies;
 
 import java.awt.Rectangle;
@@ -10,6 +17,11 @@ import main.Java.DefaultValues;
 import main.Java.GamePanel;
 import main.Java.entities.Entity;
 
+/**
+ * @class Ogre
+ *
+ * @brief The Ogre class
+ */
 public class Ogre extends Entity {
     
     public Ogre(GamePanel gp) {
@@ -30,6 +42,11 @@ public class Ogre extends Entity {
         SetTheme();
     }
     
+    /**
+     * @brief Loads the theme
+     * 
+     * Load sounds and textures from the current theme
+     */
     public void SetTheme(){
         HitSound = "ogre/hit.wav";
         DeathSound = "ogre/death.wav";
@@ -49,6 +66,11 @@ public class Ogre extends Entity {
    
     }
     
+    /**
+     * @brief set the Action
+     * 
+     * performs the action
+     */
     public void setAction(){
         
         actionLockCounter++;

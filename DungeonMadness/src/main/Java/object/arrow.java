@@ -1,6 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * @author Jifrid
+ * @version 1.0
+ * @file arrow.java
+ *
+ * @brief The arrow projectile file
+ *
  */
 package main.Java.object;
 
@@ -12,6 +16,12 @@ import javax.imageio.ImageIO;
 import main.Java.GamePanel;
 import main.Java.entities.Projectile;
 
+/**
+ * @class arrow
+ *
+ * @brief The arrow projectile class
+ * @see main.Java.entities.Projectile
+ */
 public class arrow extends Projectile {
 
     GamePanel gp;
@@ -28,7 +38,12 @@ public class arrow extends Projectile {
         alive = false;
         getImage();
     }
-
+    
+    /**
+     * @brief Load Texture
+     * 
+     * Loads the texture for the arrow
+     */
     private void getImage() {
         try {
             animations[0] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/projectiles/arrow/arrowUp.png"));

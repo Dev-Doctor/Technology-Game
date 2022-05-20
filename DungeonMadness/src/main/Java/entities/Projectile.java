@@ -1,10 +1,24 @@
+/**
+ * @author Jifrid
+ * @version 1.0
+ * @file Projectile.java
+ *
+ * @brief The main file for projectiles
+ *
+ */
 package main.Java.entities;
 
 import java.awt.Rectangle;
 import main.Java.GamePanel;
 
+/**
+ * @class Projectile
+ *
+ * @brief The main class for projectiles
+ */
 public class Projectile extends Entity {
-
+    
+    /**The creator of the Projectile*/
     Entity user;
 
     public Projectile(GamePanel gp) {
@@ -22,6 +36,11 @@ public class Projectile extends Entity {
         this.health = maxHealth;
     }
 
+    /**
+     * @brief Update the Projectile
+     *
+     * Update the Projectile position, animation and time left
+     */
     public void update() {
         if (user == gp.GetPlayer()) {
             gp.collisionChecker.checkBorder(this);

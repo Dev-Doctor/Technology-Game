@@ -1,3 +1,11 @@
+/**
+ * @author DevDoctor
+ * @version 1.0
+ * @file Floor.java
+ *
+ * @brief The Floor class file
+ *
+ */
 package main.Java.world;
 
 import java.awt.Graphics2D;
@@ -14,23 +22,37 @@ import main.Java.entities.Entity;
 import org.json.*;
 
 /**
- * @author DevDoctor
+ * @class Floor
+ *
+ * @brief The Floor class
+ *
+ * Manages the dungeon floor
  */
+
 public class Floor {
 
+    /**Object for JSON loading*/
     JSONObject jo;
     GamePanel gp;
-
+    
+    /**Current room tile matrix*/
     Room[][] rooms;
+    /**Current room value on the map*/
     int[][] rooms_value;
 
+    /**Current room cords*/
     int[] curr_room_cords;
+    /**Exit room cords*/
     int[] last_room_cords;
 
+    /**Current room*/
     Room current_room;
+    /**Total number of rooms on the current floor*/
     public int tot_rooms;
+    /**Current loaded theme*/
     String theme;
-
+    
+    /**Floor size*/
     int size = 7;
 
     public Floor(GamePanel gp, String theme) {
@@ -41,7 +63,13 @@ public class Floor {
         current_room = null;
         tot_rooms = -1;
     }
-
+    
+    
+    /**
+     * @brief Load the Floor
+     * 
+     * Loads the current room and sets the default values
+     */
     public void Load() {
         LoadMapFromJSON();
         current_room.Load(theme);
@@ -50,6 +78,9 @@ public class Floor {
         rooms[last_room_cords[0]][last_room_cords[1]].isEmpty = true;
     }
 
+    /**
+     * @brief load the map from JSON
+     */
     private void LoadMapFromJSON() {
         String json = "";
         try {
@@ -81,7 +112,11 @@ public class Floor {
         rooms[last_room_cords[0]][last_room_cords[1]].SetIsLast(true);
         System.out.println(last_room_cords[0] + " " + last_room_cords[1]);
     }
-
+    /**
+     * @brief Define Room Gates
+     * 
+     * Closes the close exit gates from the room by reading the tile map
+     */
     private void DefineRoomGates() {
         boolean top = true, right = true, bottom = true, left = true;
         if (current_room.isEmpty == true) {
@@ -113,26 +148,33 @@ public class Floor {
     public Room GetCurrentRoom() {
         return current_room;
     }
-
+    
+    /**
+     * @brief Change to the next room
+     * 
+     * Changes the room from the current one to the next one according to the value passed as parameter.
+     * Loads it and it empty the current room.
+     * @param what the next room location according to the current room
+     */
     public void ChangeRoom(String what) {
         switch (what) {
             case "up":
-                gp.GetPlayer().SetNewCordinates(9 * DefaultValues.tileSize - DefaultValues.tileSize / 2, 9 * DefaultValues.tileSize);
+                gp.GetPlayer().SetNewCoordinates(9 * DefaultValues.tileSize - DefaultValues.tileSize / 2, 9 * DefaultValues.tileSize);
                 current_room = rooms[curr_room_cords[0] - 1][curr_room_cords[1]];
                 curr_room_cords = new int[]{curr_room_cords[0] - 1, curr_room_cords[1]};
                 break;
             case "right":
-                gp.GetPlayer().SetNewCordinates(2 * DefaultValues.tileSize, 6 * DefaultValues.tileSize - DefaultValues.tileSize / 2);
+                gp.GetPlayer().SetNewCoordinates(2 * DefaultValues.tileSize, 6 * DefaultValues.tileSize - DefaultValues.tileSize / 2);
                 current_room = rooms[curr_room_cords[0]][curr_room_cords[1] + 1];
                 curr_room_cords = new int[]{curr_room_cords[0], curr_room_cords[1] + 1};
                 break;
             case "bottom":
-                gp.GetPlayer().SetNewCordinates(9 * DefaultValues.tileSize - DefaultValues.tileSize / 2, 2 * DefaultValues.tileSize);
+                gp.GetPlayer().SetNewCoordinates(9 * DefaultValues.tileSize - DefaultValues.tileSize / 2, 2 * DefaultValues.tileSize);
                 current_room = rooms[curr_room_cords[0] + 1][curr_room_cords[1]];
                 curr_room_cords = new int[]{curr_room_cords[0] + 1, curr_room_cords[1]};
                 break;
             case "left":
-                gp.GetPlayer().SetNewCordinates(15 * DefaultValues.tileSize, 6 * DefaultValues.tileSize - DefaultValues.tileSize / 2);
+                gp.GetPlayer().SetNewCoordinates(15 * DefaultValues.tileSize, 6 * DefaultValues.tileSize - DefaultValues.tileSize / 2);
                 current_room = rooms[curr_room_cords[0]][curr_room_cords[1] - 1];
                 curr_room_cords = new int[]{curr_room_cords[0], curr_room_cords[1] - 1};
                 break;
@@ -152,11 +194,17 @@ public class Floor {
         gp.GetWorld().GetCurrentRoom();
     }
 
+    /**
+     * @brief Updates the room enemies
+     * 
+     * Updates the room enemies, it see if they are alive and if they don't it removes them from the ArrayList
+     */
     public void UpdateRoomEnemies() {
         ArrayList<Entity> entities = current_room.GetEnemies();
         if (gp.GetWorld().GetCurrentRoom().isEmpty == false) {
             for (int i = 0; i < entities.size(); i++) {
                 if (!entities.get(i).alive) {
+                    gp.GetSoundManager().PlaySound(entities.get(i).DeathSound);
                     entities.remove(i);
                     gp.GetPlayer().EnemyKilled++;
                 }
@@ -167,6 +215,11 @@ public class Floor {
         }
     }
 
+    /**
+     * @brief Update Room Projectiles
+     * 
+     * Update the current "alive" projectiles in the room
+     */
     public void UpdateRoomProjectiles() {
         ArrayList<Entity> projectileList = current_room.GetProjectiles();
         for (int i = 0; i < projectileList.size(); i++) {
@@ -178,7 +231,12 @@ public class Floor {
                 }
             }
     }
-
+    
+    /**
+     * @brief Draws the enemies on the screen
+     * 
+     * @param gra2 
+     */
     public void DrawRoomEnemies(Graphics2D gra2) {
         ArrayList<Entity> entities = current_room.GetEnemies();
         for (int i = 0; i < entities.size(); i++) {
@@ -186,13 +244,23 @@ public class Floor {
         }
     }
     
+    /**
+     * @brief Draws the projectiles on the screen
+     * 
+     * @param gra2 
+     */
     public void DrawRoomProjectiles(Graphics2D gra2) {
         ArrayList<Entity> projectileList = current_room.GetProjectiles();
         for (int i = 0; i < projectileList.size(); i++) {
             projectileList.get(i).draw(gra2);
         }
     }
-
+    
+    /**
+     * @brief Define the last room
+     * 
+     * defines the last room of the dungeon by looking at the hightest number on them map and then randomizing it if it's more than one room 
+     */
     public void DefineLastRoom() {
         ArrayList<int[]> last_rooms = new ArrayList<int[]>();
         int current_last_room = -1;
@@ -216,7 +284,10 @@ public class Floor {
         int selected = Random(0, last_rooms.size() - 1);
         last_room_cords = last_rooms.get(selected);
     }
-
+    
+    /**
+     * @brief Unlocks the current room
+     */
     public void UnlockRoom() {
         current_room.SetIsEmpty(true);
         DefineRoomGates();

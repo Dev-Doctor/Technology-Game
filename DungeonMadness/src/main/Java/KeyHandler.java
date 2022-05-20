@@ -1,11 +1,25 @@
+/**
+* @author  DevDoctor, Jifrid
+* @version 1.0
+* @file KeyHandler.java 
+* 
+* @brief Handles the keys inputs
+*
+*/
 package main.Java;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/** 
+* @class KeyHandler
+* 
+* @brief Handles the keys inputs
+*/ 
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
+    /**The values for the relative pressed key, true if it's pressed else false*/
     public boolean wPressed, sPressed, aPressed, dPressed, ePressed, spacePressed, fPressed;
 
     public KeyHandler(GamePanel gp) {
@@ -16,6 +30,13 @@ public class KeyHandler implements KeyListener {
     public void keyTyped(KeyEvent e) {
     }
 
+    
+    /**
+     * @brief it handle the key pressed event
+     * 
+     * Regulate the pressed keys in the various scenarios
+     * @param e pressed key event
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
@@ -28,6 +49,12 @@ public class KeyHandler implements KeyListener {
         }
     }
 
+    /**
+     * @brief it handle the key release event
+     * 
+     * Regulate the release keys
+     * @param e release key event
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         int k = e.getKeyCode();
@@ -53,7 +80,13 @@ public class KeyHandler implements KeyListener {
             fPressed = false;
         }
     }
-
+    
+    /**
+     * @brief it handles the keys when the game is playing
+     * 
+     * it handles the keys when the game is in the state of playing
+     * @param k pressed key code
+     */
     private void playState(int k) {
         if (k == KeyEvent.VK_W) {
             wPressed = true;
@@ -84,12 +117,24 @@ public class KeyHandler implements KeyListener {
         }
     }
 
+    /**
+     * @brief it handles the keys when the game is paused
+     * 
+     * it handles the keys when the game is in the state of pause
+     * @param k pressed key code
+     */
     private void pauseState(int k) {
         if (k == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState;
         }
     }
-
+    
+    /**
+     * @brief it handles the keys when the game is over
+     * 
+     * it handles the keys when the game is in the state of gameover
+     * @param k pressed key code
+     */
     private void gameOverState(int k) {
         if (k == KeyEvent.VK_W) {
             gp.ui.commandNum--;

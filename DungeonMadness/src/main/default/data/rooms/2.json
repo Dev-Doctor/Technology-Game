@@ -1,22 +1,31 @@
 {
   "map":[
-    "111111100001111111",
-    "111111000000111111",
-    "110000000000000011",
-    "100000000000000001",
-    "000000100000000000",
+    "66666C300003B66666",
+    "623333000000333346",
+    "C3000000000000003B",
+    "300000000000000003",
     "000000000000000000",
     "000000000000000000",
     "000000000000000000",
-    "100000000000000001",
-    "110000000000000011",
-    "111111000000111111",
-    "111111100001111111"
+    "000000000000000000",
+    "90000000000000000A",
+    "7900000000000000A8",
+    "675559000000A55586",
+    "66666790000A866666"
   ],
   "materials":{
-	"0":"cut_copper.json",
+	"0":"room2_floor.json",
 	"1":"default_wall.json",
-      "2":"default_floor.json",
-      "3":"default_gate.json"
+    "2":"room1_left_wall.json",
+    "3":"room1_top_wall.json",
+	"4":"room1_right_wall.json",
+	"5":"room1_bottom_wall.json",
+	"6":"room1_filler.json",
+	"7":"room1_bottom_left_corner.json",
+	"8":"room1_bottom_right_corner.json",
+	"9":"room1_L_corner1.json",
+	"A":"room1_L_corner2.json",
+	"B":"room1_L_corner3.json",
+	"C":"room1_L_corner4.json"
   }
 }

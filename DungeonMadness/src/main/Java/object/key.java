@@ -1,14 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * @author Jifrid
+ * @version 1.0
+ * @file key.java
+ *
+ * @brief CUT CONTENT: The key object file
+ *
  */
-
 package main.Java.object;
 
 import java.awt.Rectangle;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/** 
+* @class key
+* 
+* @brief CUT CONTENT: The key object class
+* @see main.Java.object.SuperObject
+*/ 
 public class key extends SuperObject{
 
     public key() {

@@ -1,8 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * @author Jifrid
+ * @version 1.0
+ * @file rock.java
+ *
+ * @brief The rock projectile file
+ *
  */
-
 package main.Java.object;
 
 import java.awt.Rectangle;
@@ -14,6 +17,12 @@ import javax.imageio.ImageIO;
 import main.Java.GamePanel;
 import main.Java.entities.Projectile;
 
+/**
+ * @class rock
+ *
+ * @brief The rock projectile class
+ * @see main.Java.entities.Projectile
+ */
 public class rock extends Projectile{
     GamePanel gp;
 
@@ -31,6 +40,11 @@ public class rock extends Projectile{
         getImage();
     }
 
+     /**
+     * @brief Load Texture
+     * 
+     * Loads the texture for the rock
+     */
     private void getImage() {
         try {
             animations[0] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/projectiles/rock/rock.png"));

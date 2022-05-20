@@ -1,16 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+/**
+* @author  Jifrid, DevDoctor
+* @version 1.0
+* @file UI.java 
+* 
+* @brief Manages the GUI of the game
+*
+* Manages the GUI of the game in the different states of it
+*/
 package main.Java;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import javax.swing.JButton;
 import main.Java.world.Floor;
 
+/** 
+* @class UI
+* 
+* @brief Manages the GUI of the game 
+* 
+* Manages the GUI of the game in the different states of it
+*/ 
 public class UI {
 
     GamePanel gp;
@@ -27,6 +38,12 @@ public class UI {
         arial25 = new Font("Arial", Font.PLAIN, 25);
     }
 
+    /**
+     * @brief draw during the PlayState
+     * 
+     * Calls the other draw methods if it isn't in PlayState anymore
+     * @param g2 
+     */
     public void draw(Graphics2D g2) {
         this.g2 = g2;
         g2.setFont(arial25);
@@ -46,6 +63,11 @@ public class UI {
         }
     }
     
+    /**
+     * @brief draw during the GameOver state
+     * 
+     * Draws the game over GUI on the screen
+     */
     public void drawGameOverScreen(){
         g2.setColor(new Color(0, 0, 0, 150));
         g2.fillRect(0, 0, DefaultValues.WindowWidth, DefaultValues.WindowHeight);
@@ -76,6 +98,11 @@ public class UI {
         }
     }
 
+    /**
+     * @brief draw during the Paused state
+     * 
+     * Draws the paused GUI on the screen
+     */
     public void drawPauseScreen() {
 //        JButton jb = new JButton("mute");
         String text = "PAUSED";
@@ -93,11 +120,23 @@ public class UI {
         g2.drawString("All Explored Rooms: " + gp.GetPlayer().TotRoomExplored, 10, 70);
     }
 
+    /**
+     * @brief Calculate a X 
+     * 
+     * Calculate the X cord to draw the String in the center
+     * @param text the String that needs to be centered
+     * @return the X cord to draw the String in the center
+     */
     public int getXforCenteredText(String text) {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return DefaultValues.WindowWidth / 2 - length / 2;
     }
-
+    
+    /**
+     * @brief Draws the minimap
+     * 
+     * Draws the minimap in the right corner of the game screen
+     */
     public void DrawMinimap() {
         int[] base_pos = new int[]{970, 20};
         int roomsize = 30;

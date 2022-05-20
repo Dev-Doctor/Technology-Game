@@ -1,3 +1,11 @@
+/**
+ * @author DevDoctor
+ * @version 1.0
+ * @file TileManager.java
+ *
+ * @brief The TileManager
+ *
+ */
 package main.Java.world;
 
 import java.awt.Color;
@@ -11,7 +19,11 @@ import main.Java.DefaultValues;
 import main.Java.GamePanel;
 
 /**
- * @author DevDoctor
+ * @class TileManager
+ *
+ * @brief The TileManager class
+ *
+ * Draws the tiles on the screen
  */
 public class TileManager {
 
@@ -20,7 +32,11 @@ public class TileManager {
     public TileManager(GamePanel gp) {
         this.gp = gp;
     }
-
+    /**
+     * @brief Draws the tiles of the room
+     * @param r current room to draw
+     * @param gra2 
+     */
     public void DrawMap(Room r, Graphics2D gra2) {
         for (int i = 0; i < DefaultValues.MaxRowsTiles; i++) {
             for (int j = 0; j < DefaultValues.MaxColTiles; j++) {

@@ -1,6 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * @author Jifrid
+ * @version 1.0
+ * @file SuperObject.java
+ *
+ * @brief The main file for Objects
+ *
  */
 package main.Java.object;
 
@@ -11,15 +15,33 @@ import java.awt.image.BufferedImage;
 import main.Java.DefaultValues;
 import main.Java.GamePanel;
 
+/**
+ * @class SuperObject
+ *
+ * @brief The main class for all the Objects
+ *
+ * It is the main class used to create all the objects
+ */
 public class SuperObject {
-
+    
+    /**The object image*/
     public BufferedImage image;
+    /**The name of the object*/
     public String name;
+    /**determinate if the object has collisions*/
     public boolean collision = false;
+    /**coordinates of the object*/
     public int[] position = new int[2];
+    /**Hitbox of the object*/
     public Rectangle solidArea = new Rectangle(0, 0, 64, 64);
+    /**Default hitbox values*/
     public int solidAreaDefaultX = 0, solidAreaDefaultY = 0;
-
+    
+    /**
+     * @brief Draws the object on the screen
+     * @param gra2
+     * @param gp 
+     */
     public void draw(Graphics2D gra2, GamePanel gp) {
         
         // DRAW OBJECT SPRITE

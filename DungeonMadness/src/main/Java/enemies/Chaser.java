@@ -1,8 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * @author Jifrid
+ * @version 1.0
+ * @file Chaser.java
+ *
+ * @brief The Chaser class file
  */
-
 package main.Java.enemies;
 
 import java.awt.Rectangle;
@@ -14,6 +16,11 @@ import javax.imageio.ImageIO;
 import main.Java.GamePanel;
 import main.Java.entities.Entity;
 
+/**
+ * @class Chaser
+ *
+ * @brief The Chaser class
+ */
 public class Chaser extends Entity{
     public Chaser(GamePanel gp) {
         super(gp);
@@ -30,6 +37,11 @@ public class Chaser extends Entity{
         SetTheme();
     }
     
+    /**
+     * @brief Loads the theme
+     * 
+     * Load sounds and textures from the current theme
+     */
     public void SetTheme(){
         HitSound = "chaser/hit.wav";
         DeathSound = "chaser/death.wav";
@@ -49,6 +61,11 @@ public class Chaser extends Entity{
    
     }
     
+    /**
+     * @brief set the Action
+     * 
+     * performs the action
+     */
     public void setAction(){
         
         actionLockCounter++;
@@ -75,6 +92,11 @@ public class Chaser extends Entity{
        
     }
     
+    /**
+     * @brief reaction for getting damage
+     * 
+     * performs the reaction for taking damage
+     */
      @Override
     public void damageReaction() {
         actionLockCounter = -10;

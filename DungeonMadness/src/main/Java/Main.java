@@ -1,12 +1,22 @@
+/**
+* @author  DevDoctor
+* @version 1.0
+* @file Main.java 
+* 
+* @brief set the basic settings of the main thread and the window
+*
+* it does absolutely nothing but start and set the basic settings of the main thread and the window
+*/
 package main.Java;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-/**
- *
- * @author DevDoctor
- */
+/** 
+* @class Main
+* 
+* @brief Main class of the game
+*/ 
 public class Main {
 
     /**

@@ -1,3 +1,11 @@
+/**
+ * @author DevDoctor, Jifrid
+ * @version 1.0
+ * @file Player.java
+ *
+ * @brief The Player file
+ *
+ */
 package main.Java.entities;
 
 import java.awt.AlphaComposite;
@@ -14,15 +22,29 @@ import main.Java.KeyHandler;
 import main.Java.object.arrow;
 
 /**
- * @author DevDoctor - Jifrid
+ * @class Player
+ *
+ * @brief The Player class
  */
 public class Player extends Entity {
 
     KeyHandler keyHandler;
+    /**
+     * Cut Content Key counter
+     */
     public int nKey = 0;
 
+    /**
+     * Total kills
+     */
     public int EnemyKilled = 0;
+    /**
+     * Current floor Explored rooms
+     */
     public int RoomExplored = 0;
+    /**
+     * All explored rooms
+     */
     public int TotRoomExplored = 0;
 
     public Player(GamePanel gp, KeyHandler keyHandler) {
@@ -41,10 +63,16 @@ public class Player extends Entity {
         getPlayerAttackImage();
     }
 
+    /**
+     * @brief Load the current theme skin and sounds
+     */
     public void LoadTheme() {
         String loc = DefaultValues.themes_location;
     }
 
+    /**
+     * @brief Set the default values
+     */
     public void SetDefaultValues() {
         position[0] = DefaultValues.PlDefaultX;
         position[1] = DefaultValues.PlDefaultY;
@@ -84,6 +112,11 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * @brief Update the Player
+     *
+     * Update the Player movement, action, invincibility, animation and death
+     */
     public void update() {
         collisionOn = false;
 
@@ -110,13 +143,10 @@ public class Player extends Entity {
             gp.collisionChecker.checkTile(this);
             gp.collisionChecker.checkBorder(this);
 
-            int npcIndex = gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies()); // NPCS
-            interactNPC(npcIndex);
-
             int enemyIndex = gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies()); //ENEMIES
             contactEnemy(enemyIndex);
 
-            int objectIndex = gp.collisionChecker.checkObject(this, true);
+            int objectIndex = gp.collisionChecker.checkObject(this);
             pickUpObject(objectIndex);
 
             if (collisionOn == false) {
@@ -182,6 +212,11 @@ public class Player extends Entity {
 
     }
 
+    /**
+     * @brief Attack other Entity
+     *
+     * Check if the player sword hitbox is colliding with the Entity
+     */
     private void attack() {
         SpriteCounter++;
         if (SpriteCounter <= 5) {
@@ -229,26 +264,29 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * @brief Function for pick up items
+     * @param i the item location in the obj ArrayList
+     */
     private void pickUpObject(int i) {
         if (i == 999) {
             return;
         }
-        String objName = gp.obj[i].getName();
+        String objName = gp.obj.get(i).getName();
         switch (objName) {
             case "key":
                 nKey++;
-                gp.obj[i] = null;
-                //System.out.println("key:" + nKey);
+                gp.obj.remove(i);
                 break;
             case "chest":
                 if (nKey > 0) {
                     nKey--;
-                    gp.obj[i] = null;
-                    //System.out.println("key:" + nKey);
+                    gp.obj.remove(i);
                 }
                 break;
             case "heart":
-                gp.obj[i] = null;
+                gp.GetSoundManager().PlaySound("heart/pickup.wav");
+                gp.obj.remove(i);
                 health += 25;
                 if (health > maxHealth) {
                     health = 100;
@@ -257,6 +295,14 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * @brief CUT CONTENT: Interaction with NPC
+     *
+     * The function to interact with the NPCs
+     * @param i The NPC location in the ArrayList
+     * @deprecated
+     */
+    @Deprecated
     private void interactNPC(int i) {
         if (i == 999) {
             return;
@@ -264,6 +310,15 @@ public class Player extends Entity {
         //System.out.println("Stai colpendo un NPC");
     }
 
+    /**
+     * @brief Entity colliding with Player
+     *
+     * If the other Entity doesn't have the damage on return; If the other
+     * Entity is not dying and the player is not invincibility get damaged by
+     * the other Entity; If the other Entity is the Kamikaze damage and delete
+     * him
+     * @param i the other Entity position in the ArrayList
+     */
     private void contactEnemy(int i) {
         if (i == 999) {
             return;
@@ -280,6 +335,13 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * @brief Damage other Entity
+     *
+     * Damage the other Entity, give him knockback and invincibility
+     * @param i the other Entity position in the ArrayList
+     * @param dmg the damage
+     */
     public void damageEnemy(int i, int dmg) {
         if (i == 999) {
             //System.out.println("miss");
@@ -299,12 +361,26 @@ public class Player extends Entity {
             }
         }
     }
-
-    public void SetNewCordinates(int X, int Y) {
+    
+    /**
+     * @brief Change the coordinates
+     *
+     * Sets the new coordinates for the Player
+     * @param X
+     * @param Y
+     */
+    public void SetNewCoordinates(int X, int Y) {
         position[0] = X;
         position[1] = Y;
     }
 
+    /**
+     * @brief Draws the Player
+     *
+     * Draws the current Player on the screen, this is affected by invincibility and if the player is attacking
+     *
+     * @param gra2
+     */
     public void draw(Graphics2D gra2) {
         BufferedImage now = null;
         int tempX = position[0];

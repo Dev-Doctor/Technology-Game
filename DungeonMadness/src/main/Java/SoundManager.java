@@ -6,20 +6,27 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
-/**
- * @author DevDoctor
- */
+/** @author DevDoctor */
 public class SoundManager {
-
+    
+    /**The audios one for the music and one for every other one*/
     Clip clip, music;
+    /**Location of the sound files*/
     String sounds_loc = DefaultValues.themes_location + "\\default\\sounds";
+    /**Empty File*/
     File f;
+    /**NOT USED: time passed for the music*/
     Long music_time;
     //String music = ;
 
     public SoundManager() {
     }
 
+    /**
+     * @brief Play the theme
+     * 
+     * Plays the music of the dungeon and set it to loop
+     */
     public void PlayMusic() {
         f = new File(sounds_loc + "\\theme.wav");
         // ONLY SET
@@ -36,17 +43,34 @@ public class SoundManager {
         music.loop(Clip.LOOP_CONTINUOUSLY);
         // ONLY LOOP
     }
-
+    
+    /**
+     * @brief stops the music
+     * 
+     * NOT USED
+     * stops the music and save the current time. 
+     */
     public void StopMusic() {
         music_time = music.getMicrosecondPosition();
         music.stop();
     }
 
+    /**
+     * @brief resume the music
+     * 
+     * NOT USED
+     * resume the music from the saved time. 
+     */
     public void ResumeMusic() {
         music.setMicrosecondPosition(music_time);
         music.start();
     }
-
+    /**
+     * @brief Plays the passed sound
+     * 
+     * Play the sound passed as parameter
+     * @param SoundName name of the sound to play
+     */
     public void PlaySound(String SoundName) {
         f = new File(sounds_loc + "\\" + SoundName);
         try {
