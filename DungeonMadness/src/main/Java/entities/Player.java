@@ -14,7 +14,7 @@ import main.Java.KeyHandler;
 import main.Java.object.arrow;
 
 /**
- * @author DevDoctor
+ * @author DevDoctor - Jifrid
  */
 public class Player extends Entity {
 
@@ -108,7 +108,7 @@ public class Player extends Entity {
             }
 
             gp.collisionChecker.checkTile(this);
-            gp.collisionChecker.CheckBorder(this);
+            gp.collisionChecker.checkBorder(this);
 
             int npcIndex = gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies()); // NPCS
             interactNPC(npcIndex);
@@ -274,7 +274,7 @@ public class Player extends Entity {
         if (!isInvincible() && !gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).dying) {
             health -= gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).getDamage();
             invincible = true;
-            if (gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).getName() == "Kamikaze") {
+            if (gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).GetName() == "Kamikaze") {
                 gp.GetWorld().GetCurrentRoom().GetEnemies().get(i).alive = false;
             }
         }

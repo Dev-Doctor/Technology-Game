@@ -5,14 +5,16 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
+import static java.lang.Thread.sleep;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import main.Java.DefaultValues;
 import main.Java.GamePanel;
 
 /**
  * @author DevDoctor Jifrid
  */
-public class Entity {
+public class Entity extends Thread {
 
     public GamePanel gp;
 
@@ -68,7 +70,7 @@ public class Entity {
         armor = 0;
         name = "";
     }
-
+    
     public Entity(int[] pos, int maxHealth, String name) {
         this.position = pos;
         this.maxHealth = maxHealth;
@@ -76,6 +78,26 @@ public class Entity {
         this.name = name;
     }
 
+    @Override
+    public void run() {
+        while (alive && gp.gameState != gp.gameOverState) {
+            if (gp.gameState != gp.pauseState) {
+                    update();
+                try {
+                    sleep(16);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Entity.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        if(type == 2) {
+            int rand = DefaultValues.Random(1, 100);
+            if(rand <= 10) {
+                
+            }
+        }
+    }
+    
     public void setAction() {
 
     }
@@ -144,12 +166,15 @@ public class Entity {
         if (gp.GetPlayer().isInvincible()) {
             return;
         }
-        if (type == 2 && collisionDamageOn) {
+        if (type == 2 && !collisionDamageOn) {
             return;
         }
         gp.GetSoundManager().PlaySound("player\\hit.wav");
         gp.GetPlayer().health -= damage;
         gp.GetPlayer().invincible = true;
+        if(name == "Kamikaze") {
+            alive = false;
+        }
         //System.out.println("Health: " + gp.pl.health + "/" + gp.pl.maxHealth);
 
     }
@@ -295,7 +320,7 @@ public class Entity {
         this.health = health;
     }
 
-    public String getName() {
+    public String GetName() {
         return name;
     }
 

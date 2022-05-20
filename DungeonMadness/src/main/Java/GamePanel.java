@@ -162,7 +162,11 @@ public class GamePanel extends JPanel implements Runnable {
         // LAST DRAW
         gra2.dispose();
     }
-
+    
+    public void restart() {
+        
+    }
+    
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();

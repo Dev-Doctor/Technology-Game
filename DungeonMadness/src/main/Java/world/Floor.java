@@ -156,9 +156,6 @@ public class Floor {
         ArrayList<Entity> entities = current_room.GetEnemies();
         if (gp.GetWorld().GetCurrentRoom().isEmpty == false) {
             for (int i = 0; i < entities.size(); i++) {
-                if (entities.get(i).alive && !entities.get(i).dying) {
-                    entities.get(i).update();
-                }
                 if (!entities.get(i).alive) {
                     entities.remove(i);
                     gp.GetPlayer().EnemyKilled++;
@@ -168,7 +165,6 @@ public class Floor {
                 gp.GetWorld().GetCurrentFloor().UnlockRoom();
             }
         }
-
     }
 
     public void UpdateRoomProjectiles() {

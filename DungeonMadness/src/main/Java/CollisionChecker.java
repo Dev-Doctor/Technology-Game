@@ -17,6 +17,11 @@ public class CollisionChecker {
     }
 
     public void checkTile(Entity entity) {
+        
+        /* SOUT MAGICA */
+        System.out.println("");
+        /* FINE SOUT MAGICA */
+        
         int EntityLeftWorldX = entity.GetX() + entity.solidArea.x;
         int EntityRightWorldX = entity.GetX() + entity.solidArea.x + entity.solidArea.width;
 
@@ -28,6 +33,10 @@ public class CollisionChecker {
         int entityTopRow = EntityTopWorldY / DefaultValues.tileSize;
         int entityBottomRow = EntityBottomWorldY / DefaultValues.tileSize;
 
+        /* L'ALTRA SOUT MAGICA */
+        System.out.println("");
+        /* FINE DELL'ALTRA SOUT MAGICA */
+        
         Tile tile_1 = null, tile_2 = null;
 
         Tile[][] room = gp.GetWorld().GetCurrentRoom().getMatrix();
@@ -200,33 +209,41 @@ public class CollisionChecker {
         return contactPlayer;
     }
 
-    public void CheckBorder(Player player) {
-        player.solidArea.x += player.GetX();
-        player.solidArea.y += player.GetY();
-
-        if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_top)) {
+    public void checkBorder(Entity entity) {
+        entity.solidArea.x += entity.GetX();
+        entity.solidArea.y += entity.GetY();
+        
+        if(entity.type == 3 && (entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_top) 
+                || entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_right) 
+                || entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_bottom))
+                || entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_left)) {
+            entity.alive = false;
+            return;
+        }
+        
+        if (entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_top)) {
             gp.world.GetCurrentFloor().ChangeRoom("up");
         }
 
-        if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_right)) {
+        if (entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_right)) {
             gp.world.GetCurrentFloor().ChangeRoom("right");
         }
 
-        if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_bottom)) {
+        if (entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_bottom)) {
             gp.world.GetCurrentFloor().ChangeRoom("bottom");
         }
 
-        if (player.solidArea.intersects(gp.world.GetCurrentRoom().hit_left)) {
+        if (entity.solidArea.intersects(gp.world.GetCurrentRoom().hit_left)) {
             gp.world.GetCurrentFloor().ChangeRoom("left");
         }
 
         if (gp.world.GetCurrentRoom().isLast()) {
-            if (player.solidArea.intersects(gp.world.GetCurrentRoom().next_floor)) {
+            if (entity.solidArea.intersects(gp.world.GetCurrentRoom().next_floor)) {
                 gp.world.GetCurrentFloor().ChangeRoom("floor");
             }
         }
 
-        player.solidArea.x = player.solidAreaDefaultX;
-        player.solidArea.y = player.solidAreaDefaultY;
+        entity.solidArea.x = entity.solidAreaDefaultX;
+        entity.solidArea.y = entity.solidAreaDefaultY;
     }
 }

@@ -106,6 +106,7 @@ public class KeyHandler implements KeyListener {
         if (k == KeyEvent.VK_SPACE) {
             if (gp.ui.commandNum == 0) {
                 gp.gameState =  gp.playState;
+                gp.restart();
             }else{
                 System.exit(0);
             }

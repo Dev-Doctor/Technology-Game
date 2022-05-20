@@ -8,6 +8,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import javax.swing.JButton;
 import main.Java.world.Floor;
 
 public class UI {
@@ -76,10 +77,16 @@ public class UI {
     }
 
     public void drawPauseScreen() {
+//        JButton jb = new JButton("mute");
         String text = "PAUSED";
+        
         g2.setFont(arial40);
+//        jb.setBounds(200, 200, 25, 10);
         int x = getXforCenteredText(text);
         int y = DefaultValues.WindowHeight / 2;
+//        gp.add(jb);
+        
+        
         g2.drawString(text, x, y);
         g2.setFont(arial25);
         g2.drawString("Explored Floors:" + (gp.GetWorld().getFloor_number() - 1), 10, 30);

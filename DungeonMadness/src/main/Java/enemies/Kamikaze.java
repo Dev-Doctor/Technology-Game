@@ -30,11 +30,14 @@ public class Kamikaze extends Entity{
         animations = new BufferedImage[8];
         
         cDamageOn();
-        getImage();
+        SetTheme();
     }
     
-    public void getImage(){
-
+    public void SetTheme(){
+        HitSound = "kamikaze/hit.wav";
+        DeathSound = "kamikaze/hit.wav";
+        
+        
         try {
             animations[0] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/enemies/kamikaze/def.png"));
             animations[1] = ImageIO.read(getClass().getResourceAsStream("/main/resources/assets/textures/enemies/kamikaze/def2.png"));

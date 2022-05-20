@@ -99,6 +99,7 @@ public class Room {
         Matrix(room_data_loc);
         Materials(tile_loc);
         CreateTileMatrix();
+        StartEnemiesBrains();
     }
 
     public void Matrix(String loc) {
@@ -272,6 +273,12 @@ public class Room {
 
     public Tile[][] getMatrix() {
         return tile_matrix;
+    }
+    
+     private void StartEnemiesBrains() {
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).start();
+        }
     }
 
     public void Write() {

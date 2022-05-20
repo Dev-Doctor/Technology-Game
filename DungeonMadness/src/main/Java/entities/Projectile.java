@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package main.Java.entities;
 
 import java.awt.Rectangle;
@@ -16,7 +12,7 @@ public class Projectile extends Entity {
         type = 3;
         solidArea = new Rectangle(16, 16, 32, 32);
     }
-
+    
     public void set(int x, int y, String direction, boolean alive, Entity user) {
         this.position[0] = x;
         this.position[1] = y;
@@ -27,8 +23,8 @@ public class Projectile extends Entity {
     }
 
     public void update() {
-        
         if (user == gp.GetPlayer()) {
+            gp.collisionChecker.checkBorder(this);
             int enemyIndex = gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies());
             if (enemyIndex != 999) {
                 gp.GetPlayer().damageEnemy(enemyIndex, damage);
