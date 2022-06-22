@@ -38,7 +38,7 @@ public class CollisionChecker {
      * Contains the magic souts!!!
      * @param entity the entity to check
      */
-    public void checkTile(Entity entity) {
+    synchronized public void checkTile(Entity entity) {
         
         /* MAGIC SOUT */
         System.out.println("");
@@ -105,7 +105,7 @@ public class CollisionChecker {
      * @param target all the enemies in the current room
      * @return the position of the current colliding entity in the ArrayList
      */
-    public int checkEntity(Entity entity, ArrayList<Entity> target) {
+    synchronized public int checkEntity(Entity entity, ArrayList<Entity> target) {
         int index = 999;
 
         for (int i = 0; i < target.size(); i++) {
@@ -158,7 +158,7 @@ public class CollisionChecker {
      * @param player check the player
      * @return the position of the object in the ArrayList
      */
-    public int checkObject(Entity player) {
+    synchronized public int checkObject(Entity player) {
         int index = 999;
 
         for (int i = 0; i < gp.obj.size(); i++) {
@@ -212,7 +212,7 @@ public class CollisionChecker {
      * @param entity entity to check
      * @return if the entity is colliding with the player returns true else false
      */
-    public boolean checkPlayer(Entity entity) {
+    synchronized public boolean checkPlayer(Entity entity) {
 
         boolean contactPlayer = false;
 
@@ -258,7 +258,7 @@ public class CollisionChecker {
      * else if the entity is a projectile it destroys it
      * @param entity entity to check
      */
-    public void checkBorder(Entity entity) {
+    synchronized public void checkBorder(Entity entity) {
         entity.solidArea.x += entity.GetX();
         entity.solidArea.y += entity.GetY();
         
