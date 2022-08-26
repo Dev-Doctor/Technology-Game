@@ -40,10 +40,6 @@ public class CollisionChecker {
      */
     synchronized public void checkTile(Entity entity) {
         
-        /* MAGIC SOUT */
-        System.out.println("");
-        /* END OF MAGIC SOUT */
-        
         int EntityLeftWorldX = entity.GetX() + entity.solidArea.x;
         int EntityRightWorldX = entity.GetX() + entity.solidArea.x + entity.solidArea.width;
 
@@ -54,10 +50,6 @@ public class CollisionChecker {
         int entityRightCol = EntityRightWorldX / DefaultValues.tileSize;
         int entityTopRow = EntityTopWorldY / DefaultValues.tileSize;
         int entityBottomRow = EntityBottomWorldY / DefaultValues.tileSize;
-
-        /* OTHER MAGIC SOUT */
-        System.out.println("");
-        /* END OF OTHER MAGIC SOUT */
         
         Tile tile_1 = null, tile_2 = null;
 
@@ -110,7 +102,7 @@ public class CollisionChecker {
 
         for (int i = 0; i < target.size(); i++) {
 
-            if (target.get(i) != null) {
+            if (target.get(i) != null && !target.get(i).GetName().equalsIgnoreCase("player")) {
 
                 entity.solidArea.x += entity.GetX();
                 entity.solidArea.y += entity.GetY();

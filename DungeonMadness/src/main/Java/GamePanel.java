@@ -15,11 +15,16 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import main.Java.world.Tile;
 import main.Java.world.World;
 import main.Java.entities.Player;
+import main.Java.multiplayer.GameClient;
+import main.Java.multiplayer.GameServer;
 import main.Java.object.SuperObject;
+import main.Java.packets.Packet00Login;
+import main.Java.entities.PlayerMP;
 import main.Java.world.TileManager;
 
 /** 
@@ -34,16 +39,19 @@ public class GamePanel extends JPanel implements Runnable {
     /**The tilemanager for all the classes*/
     TileManager tileManager = new TileManager(this);
     /**The main GUI*/
-    public UI ui = new UI(this);
+    public UI ui;
     /**Number of FPS*/
     private final int FPS = 60;
 
     /**The thread of this class*/
     Thread gameThread;
     /**The KeyHandler for all the classes*/
-    KeyHandler keyHandler = new KeyHandler(this);
+    public KeyHandler keyHandler = new KeyHandler(this);
     /**The SoundManager for all the classes*/
     SoundManager soundManager;
+    
+    private GameServer socketServer;
+    private GameClient socketClient;
 
     /**The Player*/
     public Player pl;
@@ -73,11 +81,23 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
 
         this.collisionChecker = new CollisionChecker(this);
-
-        pl = new Player(this, keyHandler);
-
+        
+        if (JOptionPane.showConfirmDialog(this, "Run server") == 0) {
+            socketServer = new GameServer(this);
+            socketServer.start();
+        }
+        
+        pl = new PlayerMP(null, -1, this, keyHandler, JOptionPane.showInputDialog("Enter username"));
+        Packet00Login loginPacket = new Packet00Login(pl.getUsername());
+        if (socketServer != null) {    
+            socketServer.addConnection((PlayerMP)pl, loginPacket);
+        }
         world = new World(this, theme);
         world.LoadDungeon();
+        
+        socketClient = new GameClient(this,"localhost");
+        socketClient.start();
+        loginPacket.writeData(socketClient);
     }
 
     /**
@@ -85,6 +105,7 @@ public class GamePanel extends JPanel implements Runnable {
     */
     void setupGame() {
         gameState = playState;
+        ui = new UI(this);
     }
 
     @Override
@@ -113,7 +134,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
+                //System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -130,8 +151,8 @@ public class GamePanel extends JPanel implements Runnable {
             return;
         }
         // UPDATE PLAYER
-        pl.update();
-
+            pl.update();
+        
         // UPDATE ENEMIES
         world.GetCurrentFloor().UpdateRoomEnemies();
         world.GetCurrentFloor().UpdateRoomProjectiles();
@@ -174,7 +195,7 @@ public class GamePanel extends JPanel implements Runnable {
         world.GetCurrentFloor().DrawRoomProjectiles(gra2);
         
         // DRAW PLAYER
-        pl.draw(gra2);
+            pl.draw(gra2);
 
         // DRAW GUI
         ui.draw(gra2);

@@ -19,6 +19,7 @@ import main.Java.enemies.Chaser;
 import main.Java.enemies.Kamikaze;
 import main.Java.enemies.Ogre;
 import main.Java.entities.Entity;
+import main.Java.entities.PlayerMP;
 import org.json.*;
 
 /** @author DevDoctor */
@@ -293,5 +294,13 @@ public class Room {
             result += "\n";
         }
         System.out.println(result);
+    }
+
+    public void AddEntity(Entity e) {
+        entities.add(e);
+    }
+    
+    public void RemoveEntity(Entity e) {
+        entities.remove(e);
     }
 }

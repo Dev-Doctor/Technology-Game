@@ -10,6 +10,7 @@ package main.Java.entities;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -27,6 +28,8 @@ import main.Java.object.arrow;
  * @brief The Player class
  */
 public class Player extends Entity {
+
+    public String Username;
 
     KeyHandler keyHandler;
     /**
@@ -47,8 +50,9 @@ public class Player extends Entity {
      */
     public int TotRoomExplored = 0;
 
-    public Player(GamePanel gp, KeyHandler keyHandler) {
+    public Player(GamePanel gp, KeyHandler keyHandler, String username) {
         super(gp);
+        this.Username = username;
         animations = new BufferedImage[8];
         attackAnimations = new BufferedImage[8];
         this.keyHandler = keyHandler;
@@ -122,66 +126,61 @@ public class Player extends Entity {
 
         if (attacking) {
             attack();
-        } else if (keyHandler.wPressed || keyHandler.sPressed
-                || keyHandler.aPressed || keyHandler.dPressed || keyHandler.spacePressed) {
-            if (keyHandler.wPressed) {
-                direction = "up";
-            }
-            if (keyHandler.sPressed) {
-                direction = "down";
-            }
-            if (keyHandler.aPressed) {
-                direction = "left";
-            }
-            if (keyHandler.dPressed) {
-                direction = "right";
-            }
-            if (keyHandler.spacePressed) {
-                attacking = true;
-            }
+        } else if (keyHandler != null) {
+            if (keyHandler.wPressed || keyHandler.sPressed
+                    || keyHandler.aPressed || keyHandler.dPressed || keyHandler.spacePressed) {
 
-            gp.collisionChecker.checkTile(this);
-            gp.collisionChecker.checkBorder(this);
-
-            int enemyIndex = gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies()); //ENEMIES
-            contactEnemy(enemyIndex);
-
-            int objectIndex = gp.collisionChecker.checkObject(this);
-            pickUpObject(objectIndex);
-
-            if (collisionOn == false) {
-                if (keyHandler.wPressed) {
-                    position[1] -= speed;
+                if (keyHandler.spacePressed) {
+                    attacking = true;
                 }
-                if (keyHandler.sPressed) {
-                    position[1] += speed;
-                }
-                if (keyHandler.aPressed) {
-                    position[0] -= speed;
-                }
-                if (keyHandler.dPressed) {
-                    position[0] += speed;
-                }
-            }
 
-            if (keyHandler.ePressed) {
+                gp.collisionChecker.checkTile(this);
+                gp.collisionChecker.checkBorder(this);
 
-            }
+                int enemyIndex = gp.collisionChecker.checkEntity(this, gp.GetWorld().GetCurrentRoom().GetEnemies()); //ENEMIES
+                contactEnemy(enemyIndex);
 
-            SpriteCounter++;
+                int objectIndex = gp.collisionChecker.checkObject(this);
+                pickUpObject(objectIndex);
 
-            if (SpriteCounter
-                    > 10) {
-                if (SpriteNumber == 1) {
-                    SpriteNumber = 2;
-                } else if (SpriteNumber == 2) {
-                    SpriteNumber = 1;
+                if (collisionOn == false) {
+                    if (keyHandler.wPressed) {
+                        position[1] -= speed;
+                        direction = "up";
+                    }
+                    if (keyHandler.sPressed) {
+                        position[1] += speed;
+                        direction = "down";
+                    }
+                    if (keyHandler.aPressed) {
+                        position[0] -= speed;
+                        direction = "left";
+                    }
+                    if (keyHandler.dPressed) {
+                        position[0] += speed;
+                        direction = "right";
+                    }
                 }
+
+                if (keyHandler.ePressed) {
+
+                }
+
+                SpriteCounter++;
+
+                if (SpriteCounter
+                        > 10) {
+                    if (SpriteNumber == 1) {
+                        SpriteNumber = 2;
+                    } else if (SpriteNumber == 2) {
+                        SpriteNumber = 1;
+                    }
+                    SpriteCounter = 0;
+                }
+            } else {
+                SpriteNumber = 1;
                 SpriteCounter = 0;
             }
-        } else {
-            SpriteNumber = 1;
-            SpriteCounter = 0;
         }
 
         if (keyHandler.fPressed && !projectile.alive && shotAvailableCounter == 30) {
@@ -361,7 +360,7 @@ public class Player extends Entity {
             }
         }
     }
-    
+
     /**
      * @brief Change the coordinates
      *
@@ -377,7 +376,8 @@ public class Player extends Entity {
     /**
      * @brief Draws the Player
      *
-     * Draws the current Player on the screen, this is affected by invincibility and if the player is attacking
+     * Draws the current Player on the screen, this is affected by invincibility
+     * and if the player is attacking
      *
      * @param gra2
      */
@@ -475,7 +475,11 @@ public class Player extends Entity {
         gra2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         //gra2.drawString("Attacking:" + attacking, 10, 500);
-        //gra2.drawString("Invincible:"+invincibleCounter, 10, 600);  
+        //gra2.drawString("Invincible:"+invincibleCounter, 10, 600); 
+        gra2.setFont(new Font("Arial", Font.PLAIN, 25));
+        gra2.setColor(Color.WHITE);
+        int length = (int) gra2.getFontMetrics().getStringBounds(Username, gra2).getWidth();
+        gra2.drawString(Username, position[0] + DefaultValues.tileSize / 2 - length / 2, position[1] - 10);
     }
 
     public int getRoomExplored() {
@@ -484,6 +488,10 @@ public class Player extends Entity {
 
     public int getEnemyKilled() {
         return EnemyKilled;
+    }
+
+    public String getUsername() {
+        return Username;
     }
 
 }
