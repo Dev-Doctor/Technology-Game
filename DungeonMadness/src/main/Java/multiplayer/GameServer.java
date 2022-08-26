@@ -18,6 +18,7 @@ import main.Java.entities.Entity;
 import main.Java.entities.PlayerMP;
 import main.Java.packets.Packet;
 import main.Java.packets.Packet00Login;
+import main.Java.packets.Packet01Disconnect;
 
 public class GameServer extends Thread {
 
@@ -84,11 +85,13 @@ public class GameServer extends Thread {
             case 0:
                 packet = new Packet00Login(data);
                 System.out.println("[" + address.getHostAddress() + ":" + port + "]" + ((Packet00Login) packet).getUsername() + " has connected...");
-                PlayerMP player = player = new PlayerMP(address, port, gp, ((Packet00Login) packet).getUsername());
-                ;
+                PlayerMP player = new PlayerMP(address, port, gp, ((Packet00Login) packet).getUsername());
                 this.addConnection(player, (Packet00Login) packet);
                 break;
             case 1:
+                packet = new Packet01Disconnect(data);
+                System.out.println("[" + address.getHostAddress() + ":" + port + "]" + ((Packet01Disconnect) packet).getUsername() + " has left...");
+                this.removeConnection((Packet01Disconnect) packet);
                 break;
             case 2:
                 break;
@@ -117,6 +120,31 @@ public class GameServer extends Thread {
             this.connectedPlayers.add(player);
             //packet.writeData(this);
         }
+    }
+
+    public void removeConnection(Packet01Disconnect packet) {
+        this.connectedPlayers.remove(getPlayerMPindex(packet.getUsername()));
+        packet.writeData(this);
+    }
+    
+    public PlayerMP getPlayerMP(String username){
+        for (PlayerMP p : this.connectedPlayers) {
+            if (p.getUsername().equalsIgnoreCase(username)) {
+                return p;
+            }
+        }
+        return null;
+    }
+    
+    public int getPlayerMPindex(String username){
+        int i = 0;
+        for (PlayerMP p : this.connectedPlayers) {
+            if (p.getUsername().equalsIgnoreCase(username)) {
+                break;
+            }
+            i++;
+        }
+        return i;
     }
 
 }

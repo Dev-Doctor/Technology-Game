@@ -24,7 +24,7 @@ public class Main {
      */
     public static void main(String[] args) {
         JFrame window = new JFrame("My Game");
-		GamePanel gamePanel = new GamePanel();
+		GamePanel gamePanel = new GamePanel(window);
 		ImageIcon img = new ImageIcon("G:\\Programming\\java\\EclipseWorkspace\\TecnologyGame\\src\\main\\resources\\assets\\textures\\test.png");
                 
                 window.setIconImage(img.getImage());

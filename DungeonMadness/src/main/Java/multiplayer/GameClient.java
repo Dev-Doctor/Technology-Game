@@ -16,6 +16,7 @@ import main.Java.GamePanel;
 import main.Java.entities.PlayerMP;
 import main.Java.packets.Packet;
 import main.Java.packets.Packet00Login;
+import main.Java.packets.Packet01Disconnect;
 
 public class GameClient extends Thread {
 
@@ -70,6 +71,9 @@ public class GameClient extends Thread {
                 gp.GetWorld().GetCurrentRoom().AddEntity(player);
                 break;
             case 1:
+                packet = new Packet01Disconnect(data);
+                System.out.println("[" + address.getHostAddress() + ":" + port + "]" + ((Packet01Disconnect) packet).getUsername() + " has left...");
+                gp.GetWorld().GetCurrentRoom().RemovePlayer(((Packet01Disconnect) packet).getUsername());
                 break;
             case 2:
                 break;

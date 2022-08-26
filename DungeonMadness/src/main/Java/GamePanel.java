@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import main.Java.world.Tile;
@@ -34,6 +35,8 @@ import main.Java.world.TileManager;
 */ 
 public class GamePanel extends JPanel implements Runnable {
 
+   public JFrame window = null;
+    
     /**The collision checker for all the classes*/
     public CollisionChecker collisionChecker;
     /**The tilemanager for all the classes*/
@@ -50,9 +53,11 @@ public class GamePanel extends JPanel implements Runnable {
     /**The SoundManager for all the classes*/
     SoundManager soundManager;
     
-    private GameServer socketServer;
-    private GameClient socketClient;
+    public GameServer socketServer;
+    public GameClient socketClient;
 
+    
+    public WindowHandler windowHandler;
     /**The Player*/
     public Player pl;
     /**Contains all the objects of the current room*/
@@ -73,12 +78,14 @@ public class GamePanel extends JPanel implements Runnable {
     /**The current world*/
     World world;
 
-    public GamePanel() {
+    public GamePanel(JFrame frame) {
         this.setPreferredSize(new Dimension(DefaultValues.WindowWidth, DefaultValues.WindowHeight));
         this.setBackground(Color.white);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+        this.window = frame;
+        windowHandler = new WindowHandler(this);
 
         this.collisionChecker = new CollisionChecker(this);
         

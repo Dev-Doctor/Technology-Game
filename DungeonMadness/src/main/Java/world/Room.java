@@ -20,6 +20,7 @@ import main.Java.enemies.Kamikaze;
 import main.Java.enemies.Ogre;
 import main.Java.entities.Entity;
 import main.Java.entities.PlayerMP;
+import main.Java.packets.Packet01Disconnect;
 import org.json.*;
 
 /** @author DevDoctor */
@@ -302,5 +303,16 @@ public class Room {
     
     public void RemoveEntity(Entity e) {
         entities.remove(e);
+    }
+
+    public void RemovePlayer(String username) {
+        int i = 0;
+        for (Entity e : entities) {
+            if (e instanceof PlayerMP && ((PlayerMP)e).getUsername().equals(username)) {
+                break;
+            }
+            i++;
+        }
+        this.entities.remove(i);
     }
 }
