@@ -511,5 +511,9 @@ public class Entity extends Thread {
     public boolean isInvincible() {
         return invincible;
     }
+    
+    public String getDirection() {
+        return direction;
+    }
 
 }

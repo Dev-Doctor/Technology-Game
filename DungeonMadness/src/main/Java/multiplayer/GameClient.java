@@ -17,6 +17,7 @@ import main.Java.entities.PlayerMP;
 import main.Java.packets.Packet;
 import main.Java.packets.Packet00Login;
 import main.Java.packets.Packet01Disconnect;
+import main.Java.packets.Packet02Move;
 
 public class GameClient extends Thread {
 
@@ -50,7 +51,7 @@ public class GameClient extends Thread {
             this.ParsePacket(packet.getData(), packet.getAddress(), packet.getPort());
         }
     }
-    
+
     private void ParsePacket(byte[] data, InetAddress address, int port) {
         String message = new String(data).trim();
         int id;
@@ -66,9 +67,7 @@ public class GameClient extends Thread {
                 break;
             case 0:
                 packet = new Packet00Login(data);
-                System.out.println("[" + address.getHostAddress() + ":" + port + "]" + ((Packet00Login) packet).getUsername() + " has joined...");
-                PlayerMP player = new PlayerMP(address, port, gp, ((Packet00Login) packet).getUsername());
-                gp.GetWorld().GetCurrentRoom().AddEntity(player);
+                this.HandleLogin((Packet00Login) packet, address, port);
                 break;
             case 1:
                 packet = new Packet01Disconnect(data);
@@ -76,17 +75,33 @@ public class GameClient extends Thread {
                 gp.GetWorld().GetCurrentRoom().RemovePlayer(((Packet01Disconnect) packet).getUsername());
                 break;
             case 2:
+                packet = new Packet02Move(data);
+                if (((Packet02Move) packet).getUsername().equals(gp.pl.getUsername())) {
+                    break;
+                }
+                System.out.println(((Packet02Move) packet).getUsername() + " has moved to " + ((Packet02Move) packet).getX() + "," + ((Packet02Move) packet).getY());
+                this.HandleMove((Packet02Move) packet);
                 break;
         }
     }
-    
-    public void sendData(byte[] data){
+
+    public void sendData(byte[] data) {
         DatagramPacket packet = new DatagramPacket(data, data.length, ipAddress, 1234);
         try {
             socket.send(packet);
         } catch (IOException ex) {
             Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void HandleMove(Packet02Move packet) {
+        gp.GetWorld().GetCurrentRoom().movePlayer(packet.getUsername(), packet.getX(), packet.getY(), packet.getDirection());
+    }
+
+    private void HandleLogin(Packet00Login packet, InetAddress address, int port) {
+        System.out.println("[" + address.getHostAddress() + ":" + port + "]" + packet.getUsername() + " has joined...");
+        PlayerMP player = new PlayerMP(address, port, gp, packet.getUsername(), packet.getX(), packet.getY(), packet.getDirection());
+        gp.GetWorld().GetCurrentRoom().AddEntity(player);
     }
 
 }

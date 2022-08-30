@@ -216,7 +216,7 @@ public class Player extends Entity {
      *
      * Check if the player sword hitbox is colliding with the Entity
      */
-    private void attack() {
+    public void attack() {
         SpriteCounter++;
         if (SpriteCounter <= 5) {
             SpriteNumber = 1;
@@ -267,7 +267,7 @@ public class Player extends Entity {
      * @brief Function for pick up items
      * @param i the item location in the obj ArrayList
      */
-    private void pickUpObject(int i) {
+    public void pickUpObject(int i) {
         if (i == 999) {
             return;
         }
@@ -318,7 +318,7 @@ public class Player extends Entity {
      * him
      * @param i the other Entity position in the ArrayList
      */
-    private void contactEnemy(int i) {
+    public void contactEnemy(int i) {
         if (i == 999) {
             return;
         }

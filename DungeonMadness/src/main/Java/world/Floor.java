@@ -118,7 +118,7 @@ public class Floor {
      * Closes the close exit gates from the room by reading the tile map
      */
     private void DefineRoomGates() {
-        boolean top = true, right = true, bottom = true, left = true;
+        boolean top = false, right = false, bottom = false, left = false;
         if (current_room.isEmpty == true) {
             current_room.OpenAllGates();
         }

@@ -19,6 +19,7 @@ import main.Java.entities.PlayerMP;
 import main.Java.packets.Packet;
 import main.Java.packets.Packet00Login;
 import main.Java.packets.Packet01Disconnect;
+import main.Java.packets.Packet02Move;
 
 public class GameServer extends Thread {
 
@@ -85,7 +86,7 @@ public class GameServer extends Thread {
             case 0:
                 packet = new Packet00Login(data);
                 System.out.println("[" + address.getHostAddress() + ":" + port + "]" + ((Packet00Login) packet).getUsername() + " has connected...");
-                PlayerMP player = new PlayerMP(address, port, gp, ((Packet00Login) packet).getUsername());
+                PlayerMP player = new PlayerMP(address, port, gp, ((Packet00Login) packet).getUsername(), 100, 100, "down");
                 this.addConnection(player, (Packet00Login) packet);
                 break;
             case 1:
@@ -94,6 +95,9 @@ public class GameServer extends Thread {
                 this.removeConnection((Packet01Disconnect) packet);
                 break;
             case 2:
+                packet = new Packet02Move(data);
+                System.out.println(((Packet02Move) packet).getUsername() + " has moved to " + ((Packet02Move) packet).getX() + "," + ((Packet02Move) packet).getY());
+                this.HandleMove((Packet02Move) packet);
                 break;
         }
     }
@@ -109,10 +113,10 @@ public class GameServer extends Thread {
                     p.setPort(player.getPort());
                 }
                 alreadyConnected = true;
-            }else{
+            } else {
                 this.sendData(packet.getData(), p.getIp(), p.getPort());
-                
-                packet = new Packet00Login(p.getUsername());
+
+                packet = new Packet00Login(p.getUsername(), p.GetX(), p.GetY(), p.getDirection());
                 this.sendData(packet.getData(), player.getIp(), player.getPort());
             }
         }
@@ -126,8 +130,8 @@ public class GameServer extends Thread {
         this.connectedPlayers.remove(getPlayerMPindex(packet.getUsername()));
         packet.writeData(this);
     }
-    
-    public PlayerMP getPlayerMP(String username){
+
+    public PlayerMP getPlayerMP(String username) {
         for (PlayerMP p : this.connectedPlayers) {
             if (p.getUsername().equalsIgnoreCase(username)) {
                 return p;
@@ -135,8 +139,8 @@ public class GameServer extends Thread {
         }
         return null;
     }
-    
-    public int getPlayerMPindex(String username){
+
+    public int getPlayerMPindex(String username) {
         int i = 0;
         for (PlayerMP p : this.connectedPlayers) {
             if (p.getUsername().equalsIgnoreCase(username)) {
@@ -145,6 +149,16 @@ public class GameServer extends Thread {
             i++;
         }
         return i;
+    }
+
+    private void HandleMove(Packet02Move packet) {
+        if (getPlayerMP(packet.getUsername()) == null) {
+            return;
+        }
+        int index = getPlayerMPindex(packet.getUsername());
+        this.connectedPlayers.get(index).position[0] = packet.getX();
+        this.connectedPlayers.get(index).position[1] = packet.getY();
+        packet.writeData(this);
     }
 
 }

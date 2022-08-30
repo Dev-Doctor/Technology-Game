@@ -95,7 +95,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         
         pl = new PlayerMP(null, -1, this, keyHandler, JOptionPane.showInputDialog("Enter username"));
-        Packet00Login loginPacket = new Packet00Login(pl.getUsername());
+        Packet00Login loginPacket = new Packet00Login(pl.getUsername(), pl.GetX(), pl.GetY(), pl.getDirection());
         if (socketServer != null) {    
             socketServer.addConnection((PlayerMP)pl, loginPacket);
         }

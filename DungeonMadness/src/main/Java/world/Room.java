@@ -315,4 +315,22 @@ public class Room {
         }
         this.entities.remove(i);
     }
+    
+     public int getPlayerMPindex(String username){
+        int i = 0;
+        for (Entity e : entities) {
+            if (e instanceof PlayerMP && ((PlayerMP)e).getUsername().equals(username)) {
+                break;
+            }
+            i++;
+        }
+        return i;
+    }
+     
+     public void movePlayer(String username, int x, int y, String dir) {
+         int index = getPlayerMPindex(username);
+         this.entities.get(index).position[0] = x;
+         this.entities.get(index).position[1] = y;
+         this.entities.get(index).direction = dir;
+    }
 }
